@@ -13,12 +13,13 @@
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.10.9",
     "@mui/material": "^5.10.12",
+    "@mui/system": "5.4.1",
+    "@mui/x-date-pickers": "5.0.7",
     "formik": "2.2.9",
     "yup": "0.32.11",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "6.4.3",
-    "react-virtualized": "9.22.3",
     "@densys/api-client": "workspace:*"
   },
   "devDependencies": {

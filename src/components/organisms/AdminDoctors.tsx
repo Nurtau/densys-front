@@ -13,7 +13,9 @@ export const AdminDoctors = () => {
         sx={{ display: "flex", justifyContent: "space-between", mb: "30px" }}
       >
         <Typography variant="h4">Doctors</Typography>
-        <Button variant="contained" onClick={() => setFormOpen(true)}>ADD DOCTOR</Button>
+        <Button variant="contained" onClick={() => setFormOpen(true)}>
+          ADD DOCTOR
+        </Button>
       </Box>
       <Modal open={formOpen} onClose={() => setFormOpen(false)}>
         <DoctorForm />
