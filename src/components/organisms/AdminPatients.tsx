@@ -20,7 +20,7 @@ export const AdminPatients = () => {
         </Button>
       </Box>
       <Modal open={formOpen} onClose={closeModal}>
-        <PatientForm onCancel={closeModal}/>
+        <PatientForm mode="creation" onCancel={closeModal} />
       </Modal>
     </div>
   );

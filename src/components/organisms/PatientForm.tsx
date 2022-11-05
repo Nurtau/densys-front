@@ -3,8 +3,13 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import { Box, TextField, Button } from "@mui/material";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import { useState } from "react";
 
-import { PatientRegistrationApi, type PatientCreate } from "@densys/api-client";
+import {
+  PatientRegistrationApi,
+  type PatientCreate,
+  type PatientPublic,
+} from "@densys/api-client";
 
 import { useAuth } from "@app/auth";
 import {
@@ -26,24 +31,44 @@ const validationSchema = yup.object({
     .string()
     .min(7, "Password should be of minimum 7 characters length")
     .required("Password is required"),
-   passwordConfirmation: yup.string()
-     .oneOf([yup.ref('password'), null], 'Passwords must match')
+  passwordConfirmation: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "Passwords must match"),
 });
 
-interface PatientFormProps {
+interface PatientFormBaseProps {
   onCancel(): void;
 }
 
-export const PatientForm = ({onCancel}: PatientFormProps) => {
+interface PatientCreateFormProps {
+  mode: "creation";
+  patient?: never;
+}
+
+interface PatientModifyFormProps {
+  mode: "modification";
+  patient: PatientPublic;
+}
+
+type PatientFormProps = PatientFormBaseProps &
+  (PatientCreateFormProps | PatientModifyFormProps);
+
+export const PatientForm = ({ onCancel, mode, patient }: PatientFormProps) => {
+  const [modify, setModify] = useState(false);
   const { accessToken } = useAuth();
 
+  const areInputDisabled = mode === "modification" && !modify;
 
-const formik = useFormik<Omit<PatientCreate, "access_token" | "registration_date"> & {passwordConfirmation: string}>({
+  const formik = useFormik<
+    Omit<PatientCreate, "access_token" | "registration_date"> & {
+      passwordConfirmation: string;
+    }
+  >({
     initialValues: {
       name: "",
       surname: "",
       middle_name: "",
-      iin: 0,
+      iin: patient?.iin ?? 0,
       contact_number: "+7",
       blood_group: "A",
       emergency_contact_number: "+7",
@@ -52,6 +77,7 @@ const formik = useFormik<Omit<PatientCreate, "access_token" | "registration_date
       day_of_birth: dayjs("2001-01-01").toDate(),
       passwordConfirmation: "",
       marital_status: undefined,
+      ...patient,
     },
     validationSchema: validationSchema,
     onSubmit: async (data) => {
@@ -59,14 +85,12 @@ const formik = useFormik<Omit<PatientCreate, "access_token" | "registration_date
       const requestBody: PatientCreate = {
         ...data,
         access_token: `Bearer ${accessToken?.access_token ?? ""}`,
-registration_date: new Date(),
-      }
-      const response = await api.createPatient({patientCreate: requestBody});
+        registration_date: patient?.registration_date ?? new Date(),
+      };
+      const response = await api.createPatient({ patientCreate: requestBody });
       console.log(response);
-
     },
   });
-
 
   return (
     <ModalInnerContainer>
@@ -76,8 +100,8 @@ registration_date: new Date(),
           "& .MuiTextField-root": { m: 1, width: "25ch" },
           alignItems: "center",
         }}
-          onSubmit={formik.handleSubmit}
-          noValidate
+        onSubmit={formik.handleSubmit}
+        noValidate
       >
         <h1>Patient Form</h1>
         <div>
@@ -92,7 +116,7 @@ registration_date: new Date(),
               onChange={formik.handleChange}
               error={formik.touched.name && Boolean(formik.errors.name)}
               helperText={formik.touched.name && formik.errors.name}
-
+              disabled={areInputDisabled}
             />
             <TextField
               required
@@ -104,6 +128,7 @@ registration_date: new Date(),
               onChange={formik.handleChange}
               error={formik.touched.surname && Boolean(formik.errors.surname)}
               helperText={formik.touched.surname && formik.errors.surname}
+              disabled={areInputDisabled}
             />
           </div>
           <div>
@@ -114,8 +139,13 @@ registration_date: new Date(),
               name="middle_name"
               value={formik.values.middle_name}
               onChange={formik.handleChange}
-              error={formik.touched.middle_name && Boolean(formik.errors.middle_name)}
-              helperText={formik.touched.middle_name && formik.errors.middle_name}
+              error={
+                formik.touched.middle_name && Boolean(formik.errors.middle_name)
+              }
+              helperText={
+                formik.touched.middle_name && formik.errors.middle_name
+              }
+              disabled={areInputDisabled}
             />
             <TextField
               required
@@ -125,8 +155,14 @@ registration_date: new Date(),
               name="contact_number"
               value={formik.values.contact_number}
               onChange={formik.handleChange}
-              error={formik.touched.contact_number && Boolean(formik.errors.contact_number)}
-              helperText={formik.touched.contact_number && formik.errors.contact_number}
+              error={
+                formik.touched.contact_number &&
+                Boolean(formik.errors.contact_number)
+              }
+              helperText={
+                formik.touched.contact_number && formik.errors.contact_number
+              }
+              disabled={areInputDisabled}
             />
           </div>
           <div>
@@ -134,7 +170,10 @@ registration_date: new Date(),
               label="Birth date"
               renderInput={(params) => <TextField {...params} />}
               value={dayjs(formik.values.day_of_birth)}
-              onChange={(value) => formik.setFieldValue("day_of_birth", value?.toDate())}
+              onChange={(value) =>
+                formik.setFieldValue("day_of_birth", value?.toDate())
+              }
+              disabled={areInputDisabled}
             />
             <TextField
               required
@@ -146,6 +185,7 @@ registration_date: new Date(),
               onChange={formik.handleChange}
               error={formik.touched.iin && Boolean(formik.errors.iin)}
               helperText={formik.touched.iin && formik.errors.iin}
+              disabled={areInputDisabled}
             />
           </div>
           <div>
@@ -154,6 +194,7 @@ registration_date: new Date(),
               id="outlined-required"
               label="ID number"
               placeholder="ID number"
+              disabled={areInputDisabled}
             />
             <TextField
               required
@@ -165,7 +206,7 @@ registration_date: new Date(),
               onChange={formik.handleChange}
               error={formik.touched.address && Boolean(formik.errors.address)}
               helperText={formik.touched.address && formik.errors.address}
-
+              disabled={areInputDisabled}
             />
           </div>
           <div>
@@ -173,15 +214,26 @@ registration_date: new Date(),
               name="blood_group"
               value={formik.values.blood_group}
               onChange={formik.handleChange}
-              error={formik.touched.blood_group && Boolean(formik.errors.blood_group)}
-              helperText={formik.touched.blood_group && formik.errors.blood_group}
+              error={
+                formik.touched.blood_group && Boolean(formik.errors.blood_group)
+              }
+              helperText={
+                formik.touched.blood_group && formik.errors.blood_group
+              }
+              disabled={areInputDisabled}
             />
             <SelectMaritalStatus
               name="marital_status"
               value={formik.values.marital_status}
               onChange={formik.handleChange}
-              error={formik.touched.marital_status && Boolean(formik.errors.marital_status)}
-              helperText={formik.touched.marital_status && formik.errors.marital_status}
+              error={
+                formik.touched.marital_status &&
+                Boolean(formik.errors.marital_status)
+              }
+              helperText={
+                formik.touched.marital_status && formik.errors.marital_status
+              }
+              disabled={areInputDisabled}
             />
           </div>
           <div>
@@ -192,10 +244,26 @@ registration_date: new Date(),
               name="emergency_contact_number"
               value={formik.values.emergency_contact_number}
               onChange={formik.handleChange}
-              error={formik.touched.emergency_contact_number && Boolean(formik.errors.emergency_contact_number)}
-              helperText={formik.touched.emergency_contact_number && formik.errors.emergency_contact_number}
+              error={
+                formik.touched.emergency_contact_number &&
+                Boolean(formik.errors.emergency_contact_number)
+              }
+              helperText={
+                formik.touched.emergency_contact_number &&
+                formik.errors.emergency_contact_number
+              }
+              disabled={areInputDisabled}
             />
-            <TextField label="Email" placeholder="example@gmail.com" />
+            <TextField
+              label="Email"
+              placeholder="example@gmail.com"
+              name="email"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              error={formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
+              disabled={areInputDisabled}
+            />
           </div>
           <div>
             <TextField
@@ -210,6 +278,7 @@ registration_date: new Date(),
               onChange={formik.handleChange}
               error={formik.touched.password && Boolean(formik.errors.password)}
               helperText={formik.touched.password && formik.errors.password}
+              disabled={areInputDisabled}
             />
             <TextField
               required
@@ -221,9 +290,15 @@ registration_date: new Date(),
               name="passwordConfirmation"
               value={formik.values.passwordConfirmation}
               onChange={formik.handleChange}
-              error={formik.touched.passwordConfirmation && Boolean(formik.errors.passwordConfirmation)}
-              helperText={formik.touched.passwordConfirmation && formik.errors.passwordConfirmation}
-
+              error={
+                formik.touched.passwordConfirmation &&
+                Boolean(formik.errors.passwordConfirmation)
+              }
+              helperText={
+                formik.touched.passwordConfirmation &&
+                formik.errors.passwordConfirmation
+              }
+              disabled={areInputDisabled}
             />
           </div>
           <Box
@@ -233,14 +308,19 @@ registration_date: new Date(),
               mt: "20px",
             }}
           >
-            <Button sx={{ ml: "auto" }} type="submit" variant="text" onClick={onCancel}>
+            <Button
+              sx={{ ml: "auto" }}
+              type="submit"
+              variant="text"
+              onClick={onCancel}
+            >
               CANCEL
             </Button>
             <Button sx={{ mr: "8px" }} type="submit" variant="contained">
               CREATE
             </Button>
           </Box>
-          </div>
+        </div>
       </Box>
     </ModalInnerContainer>
   );

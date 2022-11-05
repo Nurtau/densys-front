@@ -1,12 +1,8 @@
 import { TextField, MenuItem, type TextFieldProps } from "@mui/material";
 
 const maritalStatus = [
-  {text: "Married",
-  value: true,
-  },
-{text: "Single",
-  value: false,
-  },
+  { text: "Married", value: true },
+  { text: "Single", value: false },
 ];
 
 export const SelectMaritalStatus = (props: TextFieldProps) => {
@@ -18,7 +14,7 @@ export const SelectMaritalStatus = (props: TextFieldProps) => {
       placeholder="Married"
       {...props}
     >
-      {maritalStatus.map(({text, value}) => (
+      {maritalStatus.map(({ text, value }) => (
         <MenuItem value={value as any}>{text}</MenuItem>
       ))}
     </TextField>
