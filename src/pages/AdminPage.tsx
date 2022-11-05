@@ -12,14 +12,16 @@ import {
 
 export default function AdminPage() {
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", width: "100%" }}>
       <AdminSidebar />
-      <Routes>
-        <Route path="/patients" element={<AdminPatients />} />
-        <Route path="/doctors" element={<AdminDoctors />} />
-        <Route path="/departments" element={<AdminDepartments />} />
-        <Route path="/specializations" element={<AdminSpecializations />} />
-      </Routes>
+      <Box sx={{ flexGrow: "1", p: "40px", pr: "200px" }}>
+        <Routes>
+          <Route path="/patients" element={<AdminPatients />} />
+          <Route path="/doctors" element={<AdminDoctors />} />
+          <Route path="/departments" element={<AdminDepartments />} />
+          <Route path="/specializations" element={<AdminSpecializations />} />
+        </Routes>
+      </Box>
     </Box>
   );
 }

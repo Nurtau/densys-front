@@ -1,3 +1,23 @@
+import { useState } from "react";
+
+import { Box, Typography, Button, Modal } from "@mui/material";
+
+import { DoctorForm } from "@app/components";
+
 export const AdminDoctors = () => {
-  return <div>Admin doctors</div>;
+  const [formOpen, setFormOpen] = useState(false);
+
+  return (
+    <div>
+      <Box
+        sx={{ display: "flex", justifyContent: "space-between", mb: "30px" }}
+      >
+        <Typography variant="h4">Doctors</Typography>
+        <Button variant="contained" onClick={() => setFormOpen(true)}>ADD DOCTOR</Button>
+      </Box>
+      <Modal open={formOpen} onClose={() => setFormOpen(false)}>
+        <DoctorForm />
+      </Modal>
+    </div>
+  );
 };

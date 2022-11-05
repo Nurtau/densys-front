@@ -47,7 +47,7 @@ export default function LoginPage() {
 
       if (access_token) {
         changeToken(access_token);
-        navigate("/admin");
+        navigate("/admin/patients");
       }
     },
   });
