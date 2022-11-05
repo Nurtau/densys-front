@@ -15,7 +15,6 @@ export const SelectBloodGroup = () => {
       id="outlined-select-role"
       select
       label="Blood group"
-      placeholder="A"
       value={bloodGroup}
       onChange={handleChange}
       helperText="Please select your blood type"
