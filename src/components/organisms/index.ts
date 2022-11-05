@@ -6,3 +6,4 @@ export * from "./AdminSpecializations";
 export * from "./DepartmentsTable";
 export * from "./SpecializationsTable";
 export * from "./DoctorForm";
+export * from "./PatientForm";
