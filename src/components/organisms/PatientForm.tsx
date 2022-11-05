@@ -1,4 +1,7 @@
-import { Box, TextField, Typography } from "@mui/material";
+import dayjs, { Dayjs } from 'dayjs';
+import { useState } from "react";
+import { Box, TextField } from "@mui/material";
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 
 import {
   ModalInnerContainer,
@@ -7,6 +10,8 @@ import {
 } from "@app/components";
 
 export const PatientForm = () => {
+const [value, setValue] = useState<Dayjs | null>(dayjs('2022-04-07'));
+
   return (
     <ModalInnerContainer>
       <Box
@@ -42,6 +47,15 @@ export const PatientForm = () => {
             label="Phone number"
             placeholder="Phone number"
           />
+          <DesktopDatePicker
+          label="For desktop"
+          value={value}
+          minDate={dayjs('2017-01-01')}
+          onChange={(newValue) => {
+            setValue(newValue);
+          }}
+          renderInput={(params) => <TextField {...params} />}
+        />
           <TextField
             required
             id="outlined-required"
