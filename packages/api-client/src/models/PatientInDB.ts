@@ -16,99 +16,99 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface PatientCreate
+ * @interface PatientInDB
  */
-export interface PatientCreate {
+export interface PatientInDB {
     /**
      * 
      * @type {number}
-     * @memberof PatientCreate
+     * @memberof PatientInDB
      */
     iin: number;
     /**
      * 
      * @type {string}
-     * @memberof PatientCreate
+     * @memberof PatientInDB
      */
     name: string;
     /**
      * 
      * @type {string}
-     * @memberof PatientCreate
+     * @memberof PatientInDB
      */
     surname: string;
     /**
      * 
      * @type {string}
-     * @memberof PatientCreate
+     * @memberof PatientInDB
      */
     middle_name: string;
     /**
      * 
      * @type {string}
-     * @memberof PatientCreate
+     * @memberof PatientInDB
      */
     contact_number: string;
     /**
      * 
      * @type {Date}
-     * @memberof PatientCreate
+     * @memberof PatientInDB
      */
     day_of_birth: Date;
     /**
      * 
      * @type {string}
-     * @memberof PatientCreate
+     * @memberof PatientInDB
      */
     blood_group: string;
     /**
      * 
      * @type {string}
-     * @memberof PatientCreate
+     * @memberof PatientInDB
      */
     emergency_contact_number: string;
     /**
      * 
      * @type {string}
-     * @memberof PatientCreate
+     * @memberof PatientInDB
      */
     email?: string;
     /**
      * 
      * @type {string}
-     * @memberof PatientCreate
+     * @memberof PatientInDB
      */
     address: string;
     /**
      * 
      * @type {boolean}
-     * @memberof PatientCreate
+     * @memberof PatientInDB
      */
     marital_status?: boolean;
     /**
      * 
      * @type {Date}
-     * @memberof PatientCreate
+     * @memberof PatientInDB
      */
     registration_date?: Date;
     /**
      * 
      * @type {string}
-     * @memberof PatientCreate
+     * @memberof PatientInDB
      */
     password: string;
     /**
      * 
      * @type {string}
-     * @memberof PatientCreate
+     * @memberof PatientInDB
      */
-    access_token: string;
+    salt: string;
 }
 
 /**
- * Check if a given object implements the PatientCreate interface.
+ * Check if a given object implements the PatientInDB interface.
  */
-export function instanceOfPatientCreate(value: object): boolean {
+export function instanceOfPatientInDB(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "iin" in value;
     isInstance = isInstance && "name" in value;
@@ -120,16 +120,16 @@ export function instanceOfPatientCreate(value: object): boolean {
     isInstance = isInstance && "emergency_contact_number" in value;
     isInstance = isInstance && "address" in value;
     isInstance = isInstance && "password" in value;
-    isInstance = isInstance && "access_token" in value;
+    isInstance = isInstance && "salt" in value;
 
     return isInstance;
 }
 
-export function PatientCreateFromJSON(json: any): PatientCreate {
-    return PatientCreateFromJSONTyped(json, false);
+export function PatientInDBFromJSON(json: any): PatientInDB {
+    return PatientInDBFromJSONTyped(json, false);
 }
 
-export function PatientCreateFromJSONTyped(json: any, ignoreDiscriminator: boolean): PatientCreate {
+export function PatientInDBFromJSONTyped(json: any, ignoreDiscriminator: boolean): PatientInDB {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -148,11 +148,11 @@ export function PatientCreateFromJSONTyped(json: any, ignoreDiscriminator: boole
         'marital_status': !exists(json, 'marital_status') ? undefined : json['marital_status'],
         'registration_date': !exists(json, 'registration_date') ? undefined : (new Date(json['registration_date'])),
         'password': json['password'],
-        'access_token': json['access_token'],
+        'salt': json['salt'],
     };
 }
 
-export function PatientCreateToJSON(value?: PatientCreate | null): any {
+export function PatientInDBToJSON(value?: PatientInDB | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -174,7 +174,7 @@ export function PatientCreateToJSON(value?: PatientCreate | null): any {
         'marital_status': value.marital_status,
         'registration_date': value.registration_date === undefined ? undefined : (value.registration_date.toISOString().substr(0,10)),
         'password': value.password,
-        'access_token': value.access_token,
+        'salt': value.salt,
     };
 }
 

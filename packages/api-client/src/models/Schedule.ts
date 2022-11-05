@@ -16,42 +16,42 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface Specialisation
+ * @interface Schedule
  */
-export interface Specialisation {
+export interface Schedule {
     /**
      * 
-     * @type {string}
-     * @memberof Specialisation
+     * @type {number}
+     * @memberof Schedule
      */
-    name: string;
+    id: number;
 }
 
 /**
- * Check if a given object implements the Specialisation interface.
+ * Check if a given object implements the Schedule interface.
  */
-export function instanceOfSpecialisation(value: object): boolean {
+export function instanceOfSchedule(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "id" in value;
 
     return isInstance;
 }
 
-export function SpecialisationFromJSON(json: any): Specialisation {
-    return SpecialisationFromJSONTyped(json, false);
+export function ScheduleFromJSON(json: any): Schedule {
+    return ScheduleFromJSONTyped(json, false);
 }
 
-export function SpecialisationFromJSONTyped(json: any, ignoreDiscriminator: boolean): Specialisation {
+export function ScheduleFromJSONTyped(json: any, ignoreDiscriminator: boolean): Schedule {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'name': json['name'],
+        'id': json['id'],
     };
 }
 
-export function SpecialisationToJSON(value?: Specialisation | null): any {
+export function ScheduleToJSON(value?: Schedule | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -60,7 +60,7 @@ export function SpecialisationToJSON(value?: Specialisation | null): any {
     }
     return {
         
-        'name': value.name,
+        'id': value.id,
     };
 }
 

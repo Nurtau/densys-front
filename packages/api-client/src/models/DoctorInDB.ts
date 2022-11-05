@@ -16,117 +16,123 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface DoctorPublic
+ * @interface DoctorInDB
  */
-export interface DoctorPublic {
+export interface DoctorInDB {
     /**
      * 
      * @type {number}
-     * @memberof DoctorPublic
+     * @memberof DoctorInDB
      */
     iin: number;
     /**
      * 
      * @type {string}
-     * @memberof DoctorPublic
+     * @memberof DoctorInDB
      */
     name: string;
     /**
      * 
      * @type {string}
-     * @memberof DoctorPublic
+     * @memberof DoctorInDB
      */
     surname: string;
     /**
      * 
      * @type {string}
-     * @memberof DoctorPublic
+     * @memberof DoctorInDB
      */
     middle_name: string;
     /**
      * 
      * @type {string}
-     * @memberof DoctorPublic
+     * @memberof DoctorInDB
      */
     contact_number: string;
     /**
      * 
      * @type {number}
-     * @memberof DoctorPublic
+     * @memberof DoctorInDB
      */
     experience: number;
     /**
      * 
      * @type {number}
-     * @memberof DoctorPublic
+     * @memberof DoctorInDB
      */
     price: number;
     /**
      * 
      * @type {number}
-     * @memberof DoctorPublic
+     * @memberof DoctorInDB
      */
     rating: number;
     /**
      * 
      * @type {string}
-     * @memberof DoctorPublic
+     * @memberof DoctorInDB
      */
     url: string;
     /**
      * 
      * @type {string}
-     * @memberof DoctorPublic
+     * @memberof DoctorInDB
      */
     address: string;
     /**
      * 
      * @type {string}
-     * @memberof DoctorPublic
+     * @memberof DoctorInDB
      */
     education: string;
     /**
      * 
      * @type {string}
-     * @memberof DoctorPublic
+     * @memberof DoctorInDB
      */
     photo?: string;
     /**
      * 
      * @type {string}
-     * @memberof DoctorPublic
+     * @memberof DoctorInDB
      */
     category: string;
     /**
      * 
      * @type {number}
-     * @memberof DoctorPublic
+     * @memberof DoctorInDB
      */
     specialisation_id: number;
     /**
      * 
      * @type {number}
-     * @memberof DoctorPublic
+     * @memberof DoctorInDB
      */
     department_id: number;
     /**
      * 
      * @type {number}
-     * @memberof DoctorPublic
+     * @memberof DoctorInDB
      */
     schedule_id: number;
     /**
      * 
      * @type {string}
-     * @memberof DoctorPublic
+     * @memberof DoctorInDB
      */
     password: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DoctorInDB
+     */
+    salt: string;
 }
 
 /**
- * Check if a given object implements the DoctorPublic interface.
+ * Check if a given object implements the DoctorInDB interface.
  */
-export function instanceOfDoctorPublic(value: object): boolean {
+export function instanceOfDoctorInDB(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "iin" in value;
     isInstance = isInstance && "name" in value;
@@ -144,15 +150,16 @@ export function instanceOfDoctorPublic(value: object): boolean {
     isInstance = isInstance && "department_id" in value;
     isInstance = isInstance && "schedule_id" in value;
     isInstance = isInstance && "password" in value;
+    isInstance = isInstance && "salt" in value;
 
     return isInstance;
 }
 
-export function DoctorPublicFromJSON(json: any): DoctorPublic {
-    return DoctorPublicFromJSONTyped(json, false);
+export function DoctorInDBFromJSON(json: any): DoctorInDB {
+    return DoctorInDBFromJSONTyped(json, false);
 }
 
-export function DoctorPublicFromJSONTyped(json: any, ignoreDiscriminator: boolean): DoctorPublic {
+export function DoctorInDBFromJSONTyped(json: any, ignoreDiscriminator: boolean): DoctorInDB {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -175,10 +182,11 @@ export function DoctorPublicFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'department_id': json['department_id'],
         'schedule_id': json['schedule_id'],
         'password': json['password'],
+        'salt': json['salt'],
     };
 }
 
-export function DoctorPublicToJSON(value?: DoctorPublic | null): any {
+export function DoctorInDBToJSON(value?: DoctorInDB | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -204,6 +212,7 @@ export function DoctorPublicToJSON(value?: DoctorPublic | null): any {
         'department_id': value.department_id,
         'schedule_id': value.schedule_id,
         'password': value.password,
+        'salt': value.salt,
     };
 }
 

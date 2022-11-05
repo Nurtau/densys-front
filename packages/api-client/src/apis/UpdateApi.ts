@@ -16,44 +16,44 @@
 import * as runtime from '../runtime';
 import type {
   DoctorCreate,
-  DoctorPublic,
+  DoctorInDB,
   HTTPValidationError,
   PatientCreate,
-  PatientPublic,
+  PatientInDB,
 } from '../models';
 import {
     DoctorCreateFromJSON,
     DoctorCreateToJSON,
-    DoctorPublicFromJSON,
-    DoctorPublicToJSON,
+    DoctorInDBFromJSON,
+    DoctorInDBToJSON,
     HTTPValidationErrorFromJSON,
     HTTPValidationErrorToJSON,
     PatientCreateFromJSON,
     PatientCreateToJSON,
-    PatientPublicFromJSON,
-    PatientPublicToJSON,
+    PatientInDBFromJSON,
+    PatientInDBToJSON,
 } from '../models';
 
-export interface CreateDoctorRequest {
+export interface UpdateDoctorRequest {
     doctorCreate: DoctorCreate;
 }
 
-export interface CreatePatientRequest {
+export interface UpdatePatientRequest {
     patientCreate: PatientCreate;
 }
 
 /**
  * 
  */
-export class PatientRegistrationApi extends runtime.BaseAPI {
+export class UpdateApi extends runtime.BaseAPI {
 
     /**
-     * Register the Patient
-     * Doctor Create
+     * Update doctor details
+     * Update Doctor
      */
-    async createDoctorRaw(requestParameters: CreateDoctorRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<DoctorPublic>> {
+    async updateDoctorRaw(requestParameters: UpdateDoctorRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<DoctorInDB>> {
         if (requestParameters.doctorCreate === null || requestParameters.doctorCreate === undefined) {
-            throw new runtime.RequiredError('doctorCreate','Required parameter requestParameters.doctorCreate was null or undefined when calling createDoctor.');
+            throw new runtime.RequiredError('doctorCreate','Required parameter requestParameters.doctorCreate was null or undefined when calling updateDoctor.');
         }
 
         const queryParameters: any = {};
@@ -63,32 +63,32 @@ export class PatientRegistrationApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/users/create_doctor`,
-            method: 'POST',
+            path: `/users/update_doctor`,
+            method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
             body: DoctorCreateToJSON(requestParameters.doctorCreate),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => DoctorPublicFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => DoctorInDBFromJSON(jsonValue));
     }
 
     /**
-     * Register the Patient
-     * Doctor Create
+     * Update doctor details
+     * Update Doctor
      */
-    async createDoctor(requestParameters: CreateDoctorRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<DoctorPublic> {
-        const response = await this.createDoctorRaw(requestParameters, initOverrides);
+    async updateDoctor(requestParameters: UpdateDoctorRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<DoctorInDB> {
+        const response = await this.updateDoctorRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
-     * Register the Patient
-     * Patient Create
+     * Update patient details
+     * Update Patient
      */
-    async createPatientRaw(requestParameters: CreatePatientRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PatientPublic>> {
+    async updatePatientRaw(requestParameters: UpdatePatientRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PatientInDB>> {
         if (requestParameters.patientCreate === null || requestParameters.patientCreate === undefined) {
-            throw new runtime.RequiredError('patientCreate','Required parameter requestParameters.patientCreate was null or undefined when calling createPatient.');
+            throw new runtime.RequiredError('patientCreate','Required parameter requestParameters.patientCreate was null or undefined when calling updatePatient.');
         }
 
         const queryParameters: any = {};
@@ -98,22 +98,22 @@ export class PatientRegistrationApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/users/create_patinet`,
-            method: 'POST',
+            path: `/users/update_patient`,
+            method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
             body: PatientCreateToJSON(requestParameters.patientCreate),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => PatientPublicFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => PatientInDBFromJSON(jsonValue));
     }
 
     /**
-     * Register the Patient
-     * Patient Create
+     * Update patient details
+     * Update Patient
      */
-    async createPatient(requestParameters: CreatePatientRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PatientPublic> {
-        const response = await this.createPatientRaw(requestParameters, initOverrides);
+    async updatePatient(requestParameters: UpdatePatientRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PatientInDB> {
+        const response = await this.updatePatientRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
