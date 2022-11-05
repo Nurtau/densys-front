@@ -1,26 +1,18 @@
-import { useState } from "react";
-import { TextField, MenuItem } from "@mui/material";
+import { TextField, MenuItem, type TextFieldProps } from "@mui/material";
 
 const bloodGroups = ["A", "B", "AB", "O"];
 
-export const SelectBloodGroup = () => {
-  const [bloodGroup, setBloodGroup] = useState("A");
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setBloodGroup(event.target.value);
-  };
-
+export const SelectBloodGroup = (props: TextFieldProps) => {
   return (
     <TextField
       id="outlined-select-role"
       select
       label="Blood group"
-      value={bloodGroup}
-      onChange={handleChange}
-      helperText="Please select your blood type"
+      placeholder="A"
+      {...props}
     >
       {bloodGroups.map((bloodType) => (
-        <MenuItem>{bloodType}</MenuItem>
+        <MenuItem value={bloodType}>{bloodType}</MenuItem>
       ))}
     </TextField>
   );

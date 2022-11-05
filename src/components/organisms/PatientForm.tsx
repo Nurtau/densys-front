@@ -1,16 +1,72 @@
-import dayjs, { Dayjs } from "dayjs";
-import { useState } from "react";
+import dayjs from "dayjs";
+import * as yup from "yup";
+import { useFormik } from "formik";
 import { Box, TextField, Button } from "@mui/material";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 
+import { PatientRegistrationApi, type PatientCreate } from "@densys/api-client";
+
+import { useAuth } from "@app/auth";
 import {
   ModalInnerContainer,
   SelectBloodGroup,
   SelectMaritalStatus,
 } from "@app/components/atoms";
 
-export const PatientForm = () => {
-  const [value, setValue] = useState<Dayjs | null>(dayjs("2022-04-07"));
+const validationSchema = yup.object({
+  name: yup.string().required("Name is required"),
+  surname: yup.string().required("Surname is required"),
+  iin: yup.number().required("IIN is required"),
+  contact_number: yup.string().required("Contact number is required"),
+  day_of_birth: yup.date().required("Day of birth is required"),
+  blood_group: yup.string().required("Blood group is required"),
+  emergency_contact_number: yup.string().required("It is is required"),
+  address: yup.string().required("Address is required"),
+  password: yup
+    .string()
+    .min(7, "Password should be of minimum 7 characters length")
+    .required("Password is required"),
+   passwordConfirmation: yup.string()
+     .oneOf([yup.ref('password'), null], 'Passwords must match')
+});
+
+interface PatientFormProps {
+  onCancel(): void;
+}
+
+export const PatientForm = ({onCancel}: PatientFormProps) => {
+  const { accessToken } = useAuth();
+
+
+const formik = useFormik<Omit<PatientCreate, "access_token" | "registration_date"> & {passwordConfirmation: string}>({
+    initialValues: {
+      name: "",
+      surname: "",
+      middle_name: "",
+      iin: 0,
+      contact_number: "+7",
+      blood_group: "A",
+      emergency_contact_number: "+7",
+      address: "",
+      password: "",
+      day_of_birth: dayjs("2001-01-01").toDate(),
+      passwordConfirmation: "",
+      marital_status: undefined,
+    },
+    validationSchema: validationSchema,
+    onSubmit: async (data) => {
+      const api = new PatientRegistrationApi();
+      const requestBody: PatientCreate = {
+        ...data,
+        access_token: `Bearer ${accessToken?.access_token ?? ""}`,
+registration_date: new Date(),
+      }
+      const response = await api.createPatient({patientCreate: requestBody});
+      console.log(response);
+
+    },
+  });
+
 
   return (
     <ModalInnerContainer>
@@ -20,8 +76,8 @@ export const PatientForm = () => {
           "& .MuiTextField-root": { m: 1, width: "25ch" },
           alignItems: "center",
         }}
-        noValidate
-        autoComplete="off"
+          onSubmit={formik.handleSubmit}
+          noValidate
       >
         <h1>Patient Form</h1>
         <div>
@@ -31,12 +87,23 @@ export const PatientForm = () => {
               id="outlined-required"
               label="Name"
               placeholder="Name"
+              name="name"
+              value={formik.values.name}
+              onChange={formik.handleChange}
+              error={formik.touched.name && Boolean(formik.errors.name)}
+              helperText={formik.touched.name && formik.errors.name}
+
             />
             <TextField
               required
               id="outlined-required"
               label="Surname"
               placeholder="Surname"
+              name="surname"
+              value={formik.values.surname}
+              onChange={formik.handleChange}
+              error={formik.touched.surname && Boolean(formik.errors.surname)}
+              helperText={formik.touched.surname && formik.errors.surname}
             />
           </div>
           <div>
@@ -44,29 +111,41 @@ export const PatientForm = () => {
               id="outlined-not-required"
               label="Middle name"
               placeholder="Middle name"
+              name="middle_name"
+              value={formik.values.middle_name}
+              onChange={formik.handleChange}
+              error={formik.touched.middle_name && Boolean(formik.errors.middle_name)}
+              helperText={formik.touched.middle_name && formik.errors.middle_name}
             />
             <TextField
               required
               id="outlined-required"
               label="Phone number"
               placeholder="+7 707 000 00 00"
+              name="contact_number"
+              value={formik.values.contact_number}
+              onChange={formik.handleChange}
+              error={formik.touched.contact_number && Boolean(formik.errors.contact_number)}
+              helperText={formik.touched.contact_number && formik.errors.contact_number}
             />
           </div>
           <div>
             <DesktopDatePicker
               label="Birth date"
-              value={value}
-              minDate={dayjs("2017-01-01")}
-              onChange={(newValue) => {
-                setValue(newValue);
-              }}
               renderInput={(params) => <TextField {...params} />}
+              value={dayjs(formik.values.day_of_birth)}
+              onChange={(value) => formik.setFieldValue("day_of_birth", value?.toDate())}
             />
             <TextField
               required
               id="outlined-required"
               label="IIN number"
               placeholder="IIN number"
+              name="iin"
+              value={formik.values.iin}
+              onChange={formik.handleChange}
+              error={formik.touched.iin && Boolean(formik.errors.iin)}
+              helperText={formik.touched.iin && formik.errors.iin}
             />
           </div>
           <div>
@@ -81,16 +160,40 @@ export const PatientForm = () => {
               id="outlined-required"
               label="Address"
               placeholder="Address"
+              name="address"
+              value={formik.values.address}
+              onChange={formik.handleChange}
+              error={formik.touched.address && Boolean(formik.errors.address)}
+              helperText={formik.touched.address && formik.errors.address}
+
             />
           </div>
           <div>
-            <SelectBloodGroup />
-            <SelectMaritalStatus />
+            <SelectBloodGroup
+              name="blood_group"
+              value={formik.values.blood_group}
+              onChange={formik.handleChange}
+              error={formik.touched.blood_group && Boolean(formik.errors.blood_group)}
+              helperText={formik.touched.blood_group && formik.errors.blood_group}
+            />
+            <SelectMaritalStatus
+              name="marital_status"
+              value={formik.values.marital_status}
+              onChange={formik.handleChange}
+              error={formik.touched.marital_status && Boolean(formik.errors.marital_status)}
+              helperText={formik.touched.marital_status && formik.errors.marital_status}
+            />
           </div>
           <div>
             <TextField
+              required
               label="Emergency phone number"
               placeholder="+7 707 000 00 00"
+              name="emergency_contact_number"
+              value={formik.values.emergency_contact_number}
+              onChange={formik.handleChange}
+              error={formik.touched.emergency_contact_number && Boolean(formik.errors.emergency_contact_number)}
+              helperText={formik.touched.emergency_contact_number && formik.errors.emergency_contact_number}
             />
             <TextField label="Email" placeholder="example@gmail.com" />
           </div>
@@ -102,6 +205,11 @@ export const PatientForm = () => {
               type="password"
               autoComplete="current-password"
               placeholder="Password"
+              name="password"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
             />
             <TextField
               required
@@ -110,6 +218,12 @@ export const PatientForm = () => {
               type="password"
               autoComplete="current-password"
               placeholder="Confirm password"
+              name="passwordConfirmation"
+              value={formik.values.passwordConfirmation}
+              onChange={formik.handleChange}
+              error={formik.touched.passwordConfirmation && Boolean(formik.errors.passwordConfirmation)}
+              helperText={formik.touched.passwordConfirmation && formik.errors.passwordConfirmation}
+
             />
           </div>
           <Box
@@ -119,7 +233,7 @@ export const PatientForm = () => {
               mt: "20px",
             }}
           >
-            <Button sx={{ ml: "auto" }} type="submit" variant="text">
+            <Button sx={{ ml: "auto" }} type="submit" variant="text" onClick={onCancel}>
               CANCEL
             </Button>
             <Button sx={{ mr: "8px" }} type="submit" variant="contained">
