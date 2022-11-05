@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { Box, Typography, Button, Modal } from "@mui/material";
 
-import { PatientForm } from "@app/components";
+import { PatientForm } from "./PatientForm";
 
 export const AdminPatients = () => {
   const [formOpen, setFormOpen] = useState(false);

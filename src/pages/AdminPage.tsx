@@ -3,12 +3,12 @@ import { Route, Routes } from "react-router-dom";
 import { Box } from "@mui/material";
 
 import {
-  AdminSidebar,
   AdminDoctors,
   AdminPatients,
   AdminSpecializations,
   AdminDepartments,
-} from "@app/components";
+} from "@app/components/organisms";
+import { AdminSidebar } from "@app/components/molecules";
 
 export default function AdminPage() {
   return (

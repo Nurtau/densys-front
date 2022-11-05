@@ -7,7 +7,7 @@ import {
   ModalInnerContainer,
   SelectBloodGroup,
   SelectMaritalStatus,
-} from "@app/components";
+} from "@app/components/atoms";
 
 export const PatientForm = () => {
   const [value, setValue] = useState<Dayjs | null>(dayjs("2022-04-07"));
@@ -55,7 +55,6 @@ export const PatientForm = () => {
           <div>
             <DesktopDatePicker
               label="Birth date"
-              placeholder="MM/DD/YY"
               value={value}
               minDate={dayjs("2017-01-01")}
               onChange={(newValue) => {
@@ -127,7 +126,7 @@ export const PatientForm = () => {
               CREATE
             </Button>
           </Box>
-        </div>
+          </div>
       </Box>
     </ModalInnerContainer>
   );

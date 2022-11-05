@@ -12,7 +12,8 @@ import {
 } from "@mui/material";
 
 import { UserLoginApi } from "@densys/api-client";
-import { LogoName } from "@app/components";
+
+import { LogoName } from "@app/components/atoms";
 
 export default function SignUp() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -24,7 +25,7 @@ export default function SignUp() {
     });
 
     const api = new UserLoginApi();
-    const response = await api.createAdmin({
+    const response = await api.addAdmin({
       adminCreate: {
         id: 0,
         username: data.get("email") as string,

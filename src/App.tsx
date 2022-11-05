@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 
-import { NavBar, ProtectedRoute } from "@app/components";
+import {  ProtectedRoute } from "@app/components/molecules";
+import { NavBar } from "@app/components/organisms";
 import HomePage from "@app/pages/HomePage";
 import LoginPage from "@app/pages/LoginPage";
 import SignupPage from "@app/pages/SignupPage";

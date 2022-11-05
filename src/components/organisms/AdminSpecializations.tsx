@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 
-import { SpecializationsTable } from "@app/components";
+import { SpecializationsTable } from "./SpecializationsTable";
 
 export const AdminSpecializations = () => {
   return (
