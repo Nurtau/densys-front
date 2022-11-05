@@ -1,5 +1,6 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { Link,  Navigate, useNavigate } from "react-router-dom";
+import * as yup from "yup";
+import { useFormik } from "formik";
 
 import {
   Button,
@@ -16,30 +17,44 @@ import { UserLoginApi } from "@densys/api-client";
 import { useAuth } from "@app/auth";
 import { LogoName } from "@app/components/atoms";
 
+const validationSchema = yup.object({
+  username: yup.string().required("Username is required"),
+  password: yup
+    .string()
+    .min(7, "Password should be of minimum 7 characters length")
+    .required("Password is required"),
+});
+
 export default function LoginPage() {
-  const { changeToken } = useAuth();
+  const { accessToken, changeToken } = useAuth();
+  const navigate = useNavigate();
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      password: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: async ({ username, password }) => {
+      const api = new UserLoginApi();
 
-    const api = new UserLoginApi();
+      const { access_token } = await api.login({
+        adminLogin: {
+          username,
+          password,
+        },
+      });
 
-    const { access_token } = await api.login({
-      adminLogin: {
-        username: data.get("email") as string,
-        password: data.get("password") as string,
-      },
-    });
+      if (access_token) {
+        changeToken(access_token);
+        navigate("/admin");
+      }
+    },
+  });
 
-    if (access_token) {
-      changeToken(access_token);
-    }
-  };
+  if (accessToken) {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -56,16 +71,20 @@ export default function LoginPage() {
         <Typography sx={{ marginTop: 2 }} component="h1" variant="subtitle2">
           Sign in to your DenSys.me account
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box component="form" onSubmit={formik.handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            id="username"
+            label="Username"
+            name="username"
             autoFocus
+            autoComplete="username"
+            value={formik.values.username}
+            onChange={formik.handleChange}
+            error={formik.touched.username && Boolean(formik.errors.username)}
+            helperText={formik.touched.username && formik.errors.username}
           />
           <TextField
             margin="normal"
@@ -76,6 +95,10 @@ export default function LoginPage() {
             type="password"
             id="password"
             autoComplete="current-password"
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            error={formik.touched.password && Boolean(formik.errors.password)}
+            helperText={formik.touched.password && formik.errors.password}
           />
           <Button
             type="submit"

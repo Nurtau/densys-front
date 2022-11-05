@@ -122,7 +122,7 @@ export class UserLoginApi extends runtime.BaseAPI {
 
     const headerParameters: runtime.HTTPHeaders = {};
 
-    headerParameters["Content-Type"] = "application/json";
+    headerParameters["Content-Type"] = "text/plain";
 
     const response = await this.request(
       {
