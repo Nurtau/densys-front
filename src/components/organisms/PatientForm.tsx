@@ -220,7 +220,7 @@ export const PatientForm = ({ onCancel, mode, patient }: PatientFormProps) => {
               helperText={
                 formik.touched.blood_group && formik.errors.blood_group
               }
-              disabled={areInputDisabled}
+              disabled={areInputDisabled} 
             />
             <SelectMaritalStatus
               name="marital_status"
