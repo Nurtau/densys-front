@@ -1,4 +1,4 @@
-import { Link,  Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { useFormik } from "formik";
 
@@ -71,7 +71,12 @@ export default function LoginPage() {
         <Typography sx={{ marginTop: 2 }} component="h1" variant="subtitle2">
           Sign in to your DenSys.me account
         </Typography>
-        <Box component="form" onSubmit={formik.handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box
+          component="form"
+          onSubmit={formik.handleSubmit}
+          noValidate
+          sx={{ mt: 1 }}
+        >
           <TextField
             margin="normal"
             required

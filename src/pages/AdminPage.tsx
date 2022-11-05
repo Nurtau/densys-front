@@ -1,3 +1,12 @@
+import { Box } from "@mui/material";
+
+import { AdminSidebar } from "@app/components";
+
 export default function AdminPage() {
-  return <div>Admin Page</div>;
+  return (
+    <Box sx={{ display: "flex" }}>
+      <AdminSidebar />
+      <Box>Admin page block</Box>
+    </Box>
+  );
 }

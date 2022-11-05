@@ -6,7 +6,7 @@ interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 
-export const ProtectedRoute = ({children}: ProtectedRouteProps) => {
+export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const { accessToken } = useAuth();
 
   if (!accessToken) {
@@ -14,4 +14,4 @@ export const ProtectedRoute = ({children}: ProtectedRouteProps) => {
   }
 
   return <>{children}</>;
-}
+};

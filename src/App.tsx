@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 
 import { Container, Toolbar } from "@mui/material";
 
-import { NavBar, ProtectedRoute} from "@app/components";
+import { NavBar, ProtectedRoute } from "@app/components";
 import HomePage from "@app/pages/HomePage";
 import LoginPage from "@app/pages/LoginPage";
 import SignupPage from "@app/pages/SignupPage";
@@ -17,7 +17,14 @@ export default function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/sign-up" element={<SignupPage />} />
-          <Route path="/admin/*" element={<ProtectedRoute><AdminPage /></ProtectedRoute>} />
+          <Route
+            path="/admin/*"
+            element={
+              <ProtectedRoute>
+                <AdminPage />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </Toolbar>
     </Container>
