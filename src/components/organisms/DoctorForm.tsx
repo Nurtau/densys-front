@@ -1,9 +1,21 @@
 import * as yup from "yup";
 import { useState } from "react";
 import { useFormik } from "formik";
-import { Box, TextField, Button, MenuItem } from "@mui/material";
+import {
+  Box,
+  TextField,
+  Button,
+  MenuItem,
+  Typography,
+  Switch,
+} from "@mui/material";
 
-import { PatientRegistrationApi, type DoctorCreate, type DoctorPublic } from "@densys/api-client";
+import {
+  PatientRegistrationApi,
+  UpdateApi,
+  type DoctorCreate,
+  type DoctorPublic,
+} from "@densys/api-client";
 
 import { useAuth } from "@app/auth";
 import { ModalInnerContainer, ImageInput } from "@app/components/atoms";
@@ -34,6 +46,7 @@ const validationSchema = yup.object({
 
 interface DoctorFormBaseProps {
   onCancel(): void;
+  onDoctorChange(): void;
 }
 
 interface DoctorCreateFormProps {
@@ -53,8 +66,15 @@ const categories = ["Highest", "First", "Second"];
 const degrees = ["Bachelor", "Master", "Phd"];
 
 const doctorRegistrationApi = new PatientRegistrationApi();
+const doctorUpdateApi = new UpdateApi();
 
-export const DoctorForm = ({ onCancel, mode, doctor }: DoctorFormProps) => {
+export const DoctorForm = ({
+  onCancel,
+  mode,
+  doctor,
+  onDoctorChange,
+}: DoctorFormProps) => {
+  const [isRequestPending, setIsRequestPending] = useState(false);
   const { accessToken } = useAuth();
   const [modify, setModify] = useState(false);
 
@@ -92,8 +112,24 @@ export const DoctorForm = ({ onCancel, mode, doctor }: DoctorFormProps) => {
         ...data,
         access_token: accessToken?.access_token ?? "",
       };
-      const response = await doctorRegistrationApi.createDoctor({doctorCreate: requestBody});
-      console.log(response);
+
+      try {
+        if (mode === "modification") {
+          setIsRequestPending(true);
+          await doctorUpdateApi.updateDoctor({ doctorCreate: requestBody });
+          onDoctorChange();
+        } else {
+          setIsRequestPending(true);
+          const response = await doctorRegistrationApi.createDoctor({
+            doctorCreate: requestBody,
+          });
+          onDoctorChange();
+          console.log(response);
+        }
+      } catch (error) {
+        console.log(error);
+        setIsRequestPending(false);
+      }
     },
   });
 
@@ -108,7 +144,34 @@ export const DoctorForm = ({ onCancel, mode, doctor }: DoctorFormProps) => {
         onSubmit={formik.handleSubmit}
         noValidate
       >
-        <h1>Doctor Form</h1>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "flex-start",
+            justifyContent: "space-between",
+            mb: 2,
+          }}
+        >
+          <Typography variant="h4" sx={{ ml: 1 }}>
+            Doctor Form
+          </Typography>
+          {mode === "modification" && (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "flex-end",
+                flexDirection: "column",
+              }}
+            >
+              <Typography variant="body1">Modification mode</Typography>
+              <Switch
+                checked={modify}
+                onChange={(e) => setModify(e.target.checked)}
+                inputProps={{ "aria-label": "controlled" }}
+              />
+            </Box>
+          )}
+        </Box>
         <div>
           <div>
             <TextField
@@ -423,8 +486,13 @@ export const DoctorForm = ({ onCancel, mode, doctor }: DoctorFormProps) => {
             <Button sx={{ ml: "auto" }} variant="text" onClick={onCancel}>
               CANCEL
             </Button>
-            <Button sx={{ mr: "8px" }} type="submit" variant="contained">
-              CREATE
+            <Button
+              sx={{ mr: "8px" }}
+              type="submit"
+              variant="contained"
+              disabled={areInputDisabled || isRequestPending}
+            >
+              {mode === "creation" ? "CREATE" : "SAVE"}
             </Button>
           </Box>
         </div>

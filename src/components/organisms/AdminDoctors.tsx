@@ -1,11 +1,18 @@
 import { useState } from "react";
-
+import { useQuery } from "react-query";
 import { Box, Typography, Button, Modal } from "@mui/material";
 
+import { TestApi } from "@densys/api-client";
+
+import { DoctorsTable } from "./DoctorsTable";
 import { DoctorForm } from "./DoctorForm";
+
+const doctorsApi = new TestApi();
 
 export const AdminDoctors = () => {
   const [formOpen, setFormOpen] = useState(false);
+
+  const { data, refetch } = useQuery("doctors", () => doctorsApi.getDoctors());
 
   const closeModal = () => setFormOpen(false);
 
@@ -19,8 +26,16 @@ export const AdminDoctors = () => {
           ADD DOCTOR
         </Button>
       </Box>
+      <DoctorsTable doctors={data ?? []} refetchDoctors={refetch} />
       <Modal open={formOpen} onClose={closeModal}>
-        <DoctorForm mode="creation" onCancel={closeModal} />
+        <DoctorForm
+          mode="creation"
+          onCancel={closeModal}
+          onDoctorChange={() => {
+            closeModal();
+            refetch();
+          }}
+        />
       </Modal>
     </div>
   );
