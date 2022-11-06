@@ -378,7 +378,7 @@ export const PatientForm = ({
               sx={{ mr: "8px" }}
               type="submit"
               variant="contained"
-              disabled={areInputDisabled && isRequestPending}
+              disabled={areInputDisabled || isRequestPending}
             >
               {mode === "creation" ? "CREATE" : "SAVE"}
             </Button>

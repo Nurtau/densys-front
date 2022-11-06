@@ -9,6 +9,7 @@ export default function HomePage() {
         alignItems: "center",
         gap: "4rem",
         margin: "auto",
+        width: "min-content",
         marginTop: "80px",
       }}
     >
