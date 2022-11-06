@@ -89,8 +89,8 @@ export const DoctorForm = ({
       name: "",
       surname: "",
       middle_name: "",
-      specialisation_id: 0,
-      department_id: 0,
+      specialisation_id: 1,
+      department_id: 1,
       experience: undefined as any,
       iin: undefined as any,
       category: "",
@@ -102,9 +102,9 @@ export const DoctorForm = ({
       rating: undefined as any,
       contact_number: "+7",
       address: "",
-      password: "",
       passwordConfirmation: "",
       ...doctor,
+      password: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (data) => {
@@ -184,6 +184,7 @@ export const DoctorForm = ({
               onChange={formik.handleChange}
               error={formik.touched.name && Boolean(formik.errors.name)}
               helperText={formik.touched.name && formik.errors.name}
+              disabled={areInputDisabled}
             />
             <TextField
               required
@@ -195,6 +196,7 @@ export const DoctorForm = ({
               onChange={formik.handleChange}
               error={formik.touched.surname && Boolean(formik.errors.surname)}
               helperText={formik.touched.surname && formik.errors.surname}
+              disabled={areInputDisabled}
             />
           </div>
           <div>
@@ -274,7 +276,7 @@ export const DoctorForm = ({
               disabled={areInputDisabled}
             >
               {SPECIALIZATIONS.map((specialization, index) => (
-                <MenuItem value={index}>{specialization}</MenuItem>
+                <MenuItem value={index + 1}>{specialization}</MenuItem>
               ))}
             </TextField>
             <TextField
@@ -296,7 +298,7 @@ export const DoctorForm = ({
               disabled={areInputDisabled}
             >
               {DEPARTMENTS.map((department_id, index) => (
-                <MenuItem value={index}>{department_id}</MenuItem>
+                <MenuItem value={index + 1}>{department_id}</MenuItem>
               ))}
             </TextField>
           </div>
@@ -367,40 +369,7 @@ export const DoctorForm = ({
               ))}
             </TextField>
           </div>
-          <div>
-            <TextField
-              required
-              id="outlined-required"
-              select
-              label="Degree"
-              placeholder="First"
-              name="education"
-              value={formik.values.education}
-              onChange={formik.handleChange}
-              error={
-                formik.touched.education && Boolean(formik.errors.education)
-              }
-              helperText={formik.touched.education && formik.errors.education}
-              disabled={areInputDisabled}
-            >
-              {degrees.map((education) => (
-                <MenuItem value={education}>{education}</MenuItem>
-              ))}
-            </TextField>
-            <TextField
-              required
-              id="outlined-required"
-              label="Rating"
-              type="number"
-              InputProps={{ inputProps: { min: 0, max: 10 } }}
-              name="rating"
-              value={formik.values.rating}
-              onChange={formik.handleChange}
-              error={formik.touched.rating && Boolean(formik.errors.rating)}
-              helperText={formik.touched.rating && formik.errors.rating}
-              disabled={areInputDisabled}
-            />
-          </div>
+          <div></div>
           <Box
             sx={{
               display: "flex",
@@ -423,19 +392,44 @@ export const DoctorForm = ({
               }}
             >
               <TextField
+                required
+                id="outlined-required"
+                select
+                label="Degree"
+                placeholder="First"
+                name="education"
+                value={formik.values.education}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.education && Boolean(formik.errors.education)
+                }
+                helperText={formik.touched.education && formik.errors.education}
+                disabled={areInputDisabled}
+              >
+                {degrees.map((education) => (
+                  <MenuItem value={education}>{education}</MenuItem>
+                ))}
+              </TextField>
+              <TextField
+                required
+                id="outlined-required"
+                label="Rating"
+                type="number"
+                InputProps={{ inputProps: { min: 0, max: 10 } }}
+                name="rating"
+                value={formik.values.rating}
+                onChange={formik.handleChange}
+                error={formik.touched.rating && Boolean(formik.errors.rating)}
+                helperText={formik.touched.rating && formik.errors.rating}
+                disabled={areInputDisabled}
+              />
+              <TextField
                 label="Homepage URL"
                 placeholder="Homepage URL"
                 name="url"
                 value={formik.values.url}
                 onChange={formik.handleChange}
                 helperText={formik.touched.url && formik.errors.url}
-                disabled={areInputDisabled}
-              />
-              <TextField
-                required
-                id="outlined-required"
-                label="ID number"
-                placeholder="ID number"
                 disabled={areInputDisabled}
               />
             </Box>

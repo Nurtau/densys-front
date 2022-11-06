@@ -25,6 +25,12 @@ export interface Specialisation {
    * @memberof Specialisation
    */
   name: string;
+  /**
+   *
+   * @type {number}
+   * @memberof Specialisation
+   */
+  id: number;
 }
 
 /**
@@ -33,6 +39,7 @@ export interface Specialisation {
 export function instanceOfSpecialisation(value: object): boolean {
   let isInstance = true;
   isInstance = isInstance && "name" in value;
+  isInstance = isInstance && "id" in value;
 
   return isInstance;
 }
@@ -50,6 +57,7 @@ export function SpecialisationFromJSONTyped(
   }
   return {
     name: json["name"],
+    id: json["id"],
   };
 }
 
@@ -62,5 +70,6 @@ export function SpecialisationToJSON(value?: Specialisation | null): any {
   }
   return {
     name: value.name,
+    id: value.id,
   };
 }

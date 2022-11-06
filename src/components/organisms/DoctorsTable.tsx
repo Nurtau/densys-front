@@ -9,9 +9,11 @@ import {
   Modal,
 } from "@mui/material";
 
-import { DoctorForm } from "./DoctorForm";
-
 import { type DoctorPublic } from "@densys/api-client";
+
+import { DEPARTMENTS, SPECIALIZATIONS } from "@app/constants";
+
+import { DoctorForm } from "./DoctorForm";
 
 interface PatientsTableProps {
   doctors: DoctorPublic[];
@@ -56,8 +58,8 @@ export const DoctorsTable = ({
                 <TableCell align="center">{doctor.name}</TableCell>
                 <TableCell align="center">{doctor.contact_number}</TableCell>
                 <TableCell align="center">{doctor.iin}</TableCell>
-                <TableCell align="center">{doctor.department_id}</TableCell>
-                <TableCell align="center">{doctor.specialisation_id}</TableCell>
+                <TableCell align="center">{DEPARTMENTS[doctor.department_id - 1]}</TableCell>
+                <TableCell align="center">{SPECIALIZATIONS[doctor.specialisation_id - 1]}</TableCell>
                 <TableCell align="center">{doctor.category}</TableCell>
               </TableRow>
             ))}

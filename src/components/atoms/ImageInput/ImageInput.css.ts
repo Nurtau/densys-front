@@ -21,7 +21,6 @@ export const containerStyle = style({
   backgroundColor: "hsl(0deg 0% 100%)",
   border: "1px solid black",
   transition: "background-color 0.3s",
-  cursor: "pointer",
   overflow: "hidden",
   flexShrink: "0",
   ":hover": {

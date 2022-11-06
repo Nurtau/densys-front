@@ -25,6 +25,12 @@ export interface Department {
    * @memberof Department
    */
   name: string;
+  /**
+   *
+   * @type {number}
+   * @memberof Department
+   */
+  id: number;
 }
 
 /**
@@ -33,6 +39,7 @@ export interface Department {
 export function instanceOfDepartment(value: object): boolean {
   let isInstance = true;
   isInstance = isInstance && "name" in value;
+  isInstance = isInstance && "id" in value;
 
   return isInstance;
 }
@@ -50,6 +57,7 @@ export function DepartmentFromJSONTyped(
   }
   return {
     name: json["name"],
+    id: json["id"],
   };
 }
 
@@ -62,5 +70,6 @@ export function DepartmentToJSON(value?: Department | null): any {
   }
   return {
     name: value.name,
+    id: value.id,
   };
 }

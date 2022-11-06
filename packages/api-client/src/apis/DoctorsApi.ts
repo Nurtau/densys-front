@@ -22,7 +22,6 @@ import {
   HTTPValidationErrorFromJSON,
   HTTPValidationErrorToJSON,
 } from "../models";
-
 import { UpdateDoctorRequest } from "./UpdateApi";
 
 /**
