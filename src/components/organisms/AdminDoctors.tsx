@@ -5,7 +5,7 @@ import { Box, Typography, Button, Modal } from "@mui/material";
 import { DoctorForm } from "./DoctorForm";
 
 export const AdminDoctors = () => {
-  const [formOpen, setFormOpen] = useState(false);
+  const [formOpen, setFormOpen] = useState(true);
 
   const closeModal = () => setFormOpen(false);
 

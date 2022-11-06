@@ -1,5 +1,4 @@
 import * as yup from "yup";
-import dayjs, { Dayjs } from "dayjs";
 import { useState } from "react";
 import { useFormik } from "formik";
 import { Box, TextField, Button, MenuItem } from "@mui/material";
@@ -7,7 +6,7 @@ import { Box, TextField, Button, MenuItem } from "@mui/material";
 import { type DoctorCreate, type DoctorPublic } from "@densys/api-client";
 
 import { useAuth } from "@app/auth";
-import { ModalInnerContainer } from "@app/components/atoms";
+import { ModalInnerContainer, ImageInput } from "@app/components/atoms";
 import { DEPARTMENTS, SPECIALIZATIONS, SCHEDULES } from "@app/constants";
 
 const validationSchema = yup.object({
@@ -77,7 +76,7 @@ export const DoctorForm = ({ onCancel, mode, doctor }: DoctorFormProps) => {
       schedule_id: 0,
       education: "",
       url: "",
-      photo: "",
+      photo: undefined as any,
       rating: undefined as any,
       contact_number: "+7",
       address: "",
@@ -187,15 +186,6 @@ export const DoctorForm = ({ onCancel, mode, doctor }: DoctorFormProps) => {
               helperText={formik.touched.address && formik.errors.address}
               disabled={areInputDisabled}
             />
-          </div>
-          <div>
-            {/* <TextField
-              required
-              id="outlined-required"
-              label="ID number"
-              placeholder="ID number"
-              disabled={areInputDisabled}
-            /> */}
           </div>
           <div>
             <TextField
@@ -345,27 +335,45 @@ export const DoctorForm = ({ onCancel, mode, doctor }: DoctorFormProps) => {
               disabled={areInputDisabled}
             />
           </div>
-          <div>
-            <TextField
-              label="Homepage URL"
-              placeholder="Homepage URL"
-              name="url"
-              value={formik.values.url}
-              onChange={formik.handleChange}
-              helperText={formik.touched.url && formik.errors.url}
-              disabled={areInputDisabled}
-            />
-            <TextField
-              label="Upload photo"
-              placeholder="Upload photo"
-              name="photo"
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              my: "16px",
+              ml: "24px",
+            }}
+          >
+            <ImageInput
               value={formik.values.photo}
-              onChange={formik.handleChange}
-              error={formik.touched.photo && Boolean(formik.errors.photo)}
-              helperText={formik.touched.photo && formik.errors.photo}
+              onChange={(base64) => formik.setFieldValue("photo", base64)}
               disabled={areInputDisabled}
             />
-          </div>
+            <Box
+              sx={{
+                width: "min-content",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-around",
+              }}
+            >
+              <TextField
+                label="Homepage URL"
+                placeholder="Homepage URL"
+                name="url"
+                value={formik.values.url}
+                onChange={formik.handleChange}
+                helperText={formik.touched.url && formik.errors.url}
+                disabled={areInputDisabled}
+              />
+              <TextField
+                required
+                id="outlined-required"
+                label="ID number"
+                placeholder="ID number"
+                disabled={areInputDisabled}
+              />
+            </Box>
+          </Box>
           <div>
             <TextField
               required
@@ -409,11 +417,7 @@ export const DoctorForm = ({ onCancel, mode, doctor }: DoctorFormProps) => {
               mt: "20px",
             }}
           >
-            <Button
-              sx={{ ml: "auto" }}
-              variant="text"
-              onClick={onCancel}
-            >
+            <Button sx={{ ml: "auto" }} variant="text" onClick={onCancel}>
               CANCEL
             </Button>
             <Button sx={{ mr: "8px" }} type="submit" variant="contained">
