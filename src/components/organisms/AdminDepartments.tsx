@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 
-import { DepartmentsTable } from "./DepartmentsTable";
+import { DepartmentsTable } from "@app/components/molecules";
 
 export const AdminDepartments = () => {
   return (
