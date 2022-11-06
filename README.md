@@ -3,6 +3,12 @@
 This github page corresponds to front-end part of DenSys.me project.
 The link to: [back-end part](https://gitlab.com/DaniilOr/sweauth).
 
+Front-end is built with TypeScript, React.
+
+Back-end is build with Python, FastAPI, Docker.
+
+Contract between front-end and back-end is established by OpenAPI.
+
 ## Main page
 
 ![main page photo](/app_pictures/main-page.png)
