@@ -25,7 +25,7 @@ export default function SignUp() {
     });
 
     const api = new UserLoginApi();
-    const response = await api.addAdmin({
+    const response = await api.createAdmin({
       adminCreate: {
         id: 0,
         username: data.get("email") as string,

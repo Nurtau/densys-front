@@ -22,6 +22,7 @@ const validationSchema = yup.object({
   name: yup.string().required("Name is required"),
   surname: yup.string().required("Surname is required"),
   iin: yup.number().required("IIN is required"),
+  government_id: yup.number().required("ID number is required"),
   contact_number: yup.string().required("Contact number is required"),
   day_of_birth: yup.date().required("Day of birth is required"),
   blood_group: yup.string().required("Blood group is required"),
@@ -72,6 +73,7 @@ export const PatientForm = ({ onCancel, mode, patient }: PatientFormProps) => {
       contact_number: "+7",
       blood_group: "A",
       emergency_contact_number: "+7",
+      government_id: "",
       address: "",
       password: "",
       day_of_birth: dayjs("2001-01-01").toDate(),
@@ -194,6 +196,16 @@ export const PatientForm = ({ onCancel, mode, patient }: PatientFormProps) => {
               id="outlined-required"
               label="ID number"
               placeholder="ID number"
+              name="government_id"
+              value={formik.values.government_id}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.government_id &&
+                Boolean(formik.errors.government_id)
+              }
+              helperText={
+                formik.touched.government_id && formik.errors.government_id
+              }
               disabled={areInputDisabled}
             />
             <TextField

@@ -26,6 +26,7 @@ import {
   PatientInDBFromJSON,
   PatientInDBToJSON,
 } from "../models";
+
 import { UpdatePatientRequest } from "./UpdateApi";
 
 /**

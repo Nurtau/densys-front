@@ -34,6 +34,7 @@ export const PatientsTable = ({ patients }: PatientsTableProps) => {
               contact_number,
               day_of_birth,
               iin,
+              government_id,
               registration_date,
             }) => (
               <TableRow
@@ -46,7 +47,7 @@ export const PatientsTable = ({ patients }: PatientsTableProps) => {
                   {day_of_birth.toLocaleDateString()}
                 </TableCell>
                 <TableCell align="center">{iin}</TableCell>
-                <TableCell align="center">{"ID shold be here"}</TableCell>
+                <TableCell align="center">{government_id}</TableCell>
                 <TableCell align="center">
                   {registration_date?.toLocaleDateString()}
                 </TableCell>

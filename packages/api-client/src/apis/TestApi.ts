@@ -13,13 +13,55 @@
  */
 
 import * as runtime from "../runtime";
-import type { PatientPublic } from "../models";
-import { PatientPublicFromJSON, PatientPublicToJSON } from "../models";
+import type { DoctorPublic, PatientPublic } from "../models";
+import {
+  DoctorPublicFromJSON,
+  DoctorPublicToJSON,
+  PatientPublicFromJSON,
+  PatientPublicToJSON,
+} from "../models";
 
 /**
  *
  */
 export class TestApi extends runtime.BaseAPI {
+  /**
+   * Get list of all doctors
+   * Get Doctors
+   */
+  async getDoctorsRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<Array<DoctorPublic>>> {
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/users/get_doctors`,
+        method: "GET",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      jsonValue.map(DoctorPublicFromJSON)
+    );
+  }
+
+  /**
+   * Get list of all doctors
+   * Get Doctors
+   */
+  async getDoctors(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<Array<DoctorPublic>> {
+    const response = await this.getDoctorsRaw(initOverrides);
+    return await response.value();
+  }
+
   /**
    * Get list of all patients
    * Get Patients

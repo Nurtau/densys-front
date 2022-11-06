@@ -33,7 +33,7 @@ import {
   HTTPValidationErrorToJSON,
 } from "../models";
 
-export interface AddAdminRequest {
+export interface CreateAdminRequest {
   adminCreate: AdminCreate;
 }
 
@@ -49,8 +49,8 @@ export class UserLoginApi extends runtime.BaseAPI {
    * Add admin
    * Admin Registration
    */
-  async addAdminRaw(
-    requestParameters: AddAdminRequest,
+  async createAdminRaw(
+    requestParameters: CreateAdminRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<Admin>> {
     if (
@@ -59,7 +59,7 @@ export class UserLoginApi extends runtime.BaseAPI {
     ) {
       throw new runtime.RequiredError(
         "adminCreate",
-        "Required parameter requestParameters.adminCreate was null or undefined when calling addAdmin."
+        "Required parameter requestParameters.adminCreate was null or undefined when calling createAdmin."
       );
     }
 
@@ -89,11 +89,14 @@ export class UserLoginApi extends runtime.BaseAPI {
    * Add admin
    * Admin Registration
    */
-  async addAdmin(
-    requestParameters: AddAdminRequest,
+  async createAdmin(
+    requestParameters: CreateAdminRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<Admin> {
-    const response = await this.addAdminRaw(requestParameters, initOverrides);
+    const response = await this.createAdminRaw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -119,7 +122,7 @@ export class UserLoginApi extends runtime.BaseAPI {
 
     const headerParameters: runtime.HTTPHeaders = {};
 
-    headerParameters["Content-Type"] = "text/plain";
+    headerParameters["Content-Type"] = "application/json";
 
     const response = await this.request(
       {

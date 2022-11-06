@@ -87,6 +87,12 @@ export interface PatientInDB {
   marital_status?: boolean;
   /**
    *
+   * @type {string}
+   * @memberof PatientInDB
+   */
+  government_id: string;
+  /**
+   *
    * @type {Date}
    * @memberof PatientInDB
    */
@@ -119,6 +125,7 @@ export function instanceOfPatientInDB(value: object): boolean {
   isInstance = isInstance && "blood_group" in value;
   isInstance = isInstance && "emergency_contact_number" in value;
   isInstance = isInstance && "address" in value;
+  isInstance = isInstance && "government_id" in value;
   isInstance = isInstance && "password" in value;
   isInstance = isInstance && "salt" in value;
 
@@ -150,6 +157,7 @@ export function PatientInDBFromJSONTyped(
     marital_status: !exists(json, "marital_status")
       ? undefined
       : json["marital_status"],
+    government_id: json["government_id"],
     registration_date: !exists(json, "registration_date")
       ? undefined
       : new Date(json["registration_date"]),
@@ -177,6 +185,7 @@ export function PatientInDBToJSON(value?: PatientInDB | null): any {
     email: value.email,
     address: value.address,
     marital_status: value.marital_status,
+    government_id: value.government_id,
     registration_date:
       value.registration_date === undefined
         ? undefined
