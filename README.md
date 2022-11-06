@@ -5,7 +5,7 @@ The link to: [back-end part](https://gitlab.com/DaniilOr/sweauth).
 
 Front-end is built with TypeScript, React.
 
-Back-end is build with Python, FastAPI, Docker.
+Back-end is built with Python, FastAPI, Docker.
 
 Contract between front-end and back-end is established by OpenAPI.
 
