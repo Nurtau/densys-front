@@ -1,12 +1,13 @@
 import dayjs from "dayjs";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import { Box, TextField, Button } from "@mui/material";
+import { Box, TextField, Button, Switch, Typography } from "@mui/material";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { useState } from "react";
 
 import {
   PatientRegistrationApi,
+  UpdateApi,
   type PatientCreate,
   type PatientPublic,
 } from "@densys/api-client";
@@ -39,6 +40,7 @@ const validationSchema = yup.object({
 
 interface PatientFormBaseProps {
   onCancel(): void;
+  onPatientChange(): void;
 }
 
 interface PatientCreateFormProps {
@@ -54,7 +56,16 @@ interface PatientModifyFormProps {
 type PatientFormProps = PatientFormBaseProps &
   (PatientCreateFormProps | PatientModifyFormProps);
 
-export const PatientForm = ({ onCancel, mode, patient }: PatientFormProps) => {
+const patientRegistrationApi = new PatientRegistrationApi();
+const patientUpdateApi = new UpdateApi();
+
+export const PatientForm = ({
+  onCancel,
+  mode,
+  patient,
+  onPatientChange,
+}: PatientFormProps) => {
+  const [isRequestPending, setIsRequestPending] = useState(false);
   const [modify, setModify] = useState(false);
   const { accessToken } = useAuth();
 
@@ -69,7 +80,7 @@ export const PatientForm = ({ onCancel, mode, patient }: PatientFormProps) => {
       name: "",
       surname: "",
       middle_name: "",
-      iin: patient?.iin ?? 0,
+      iin: 0,
       contact_number: "+7",
       blood_group: "A",
       emergency_contact_number: "+7",
@@ -83,14 +94,27 @@ export const PatientForm = ({ onCancel, mode, patient }: PatientFormProps) => {
     },
     validationSchema: validationSchema,
     onSubmit: async (data) => {
-      const api = new PatientRegistrationApi();
       const requestBody: PatientCreate = {
         ...data,
         access_token: accessToken?.access_token ?? "",
         registration_date: patient?.registration_date ?? new Date(),
       };
-      const response = await api.createPatient({ patientCreate: requestBody });
-      console.log(response);
+      try {
+        if (mode === "modification") {
+          setIsRequestPending(true);
+          await patientUpdateApi.updatePatient({ patientCreate: requestBody });
+          onPatientChange();
+        } else {
+          setIsRequestPending(true);
+          await patientRegistrationApi.createPatient({
+            patientCreate: requestBody,
+          });
+          onPatientChange();
+        }
+      } catch (error) {
+        console.log(error);
+        setIsRequestPending(false);
+      }
     },
   });
 
@@ -105,7 +129,34 @@ export const PatientForm = ({ onCancel, mode, patient }: PatientFormProps) => {
         onSubmit={formik.handleSubmit}
         noValidate
       >
-        <h1>Patient Form</h1>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "flex-start",
+            justifyContent: "space-between",
+            mb: 2,
+          }}
+        >
+          <Typography variant="h4" sx={{ ml: 1 }}>
+            Patient Form
+          </Typography>
+          {mode === "modification" && (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "flex-end",
+                flexDirection: "column",
+              }}
+            >
+              <Typography variant="body1">Modification mode</Typography>
+              <Switch
+                checked={modify}
+                onChange={(e) => setModify(e.target.checked)}
+                inputProps={{ "aria-label": "controlled" }}
+              />
+            </Box>
+          )}
+        </Box>
         <div>
           <div>
             <TextField
@@ -320,16 +371,16 @@ export const PatientForm = ({ onCancel, mode, patient }: PatientFormProps) => {
               mt: "20px",
             }}
           >
-            <Button
-              sx={{ ml: "auto" }}
-              type="submit"
-              variant="text"
-              onClick={onCancel}
-            >
+            <Button sx={{ ml: "auto" }} variant="text" onClick={onCancel}>
               CANCEL
             </Button>
-            <Button sx={{ mr: "8px" }} type="submit" variant="contained">
-              CREATE
+            <Button
+              sx={{ mr: "8px" }}
+              type="submit"
+              variant="contained"
+              disabled={areInputDisabled && isRequestPending}
+            >
+              {mode === "creation" ? "CREATE" : "SAVE"}
             </Button>
           </Box>
         </div>

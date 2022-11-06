@@ -4,8 +4,7 @@ import { Box, Typography, Button, Modal } from "@mui/material";
 
 import { TestApi } from "@densys/api-client";
 
-import { PatientsTable } from "@app/components/molecules";
-
+import { PatientsTable } from "./PatientsTable";
 import { PatientForm } from "./PatientForm";
 
 const patientsApi = new TestApi();
@@ -13,9 +12,9 @@ const patientsApi = new TestApi();
 export const AdminPatients = () => {
   const [formOpen, setFormOpen] = useState(false);
 
-  const { data, error } = useQuery("patients", () => patientsApi.getPatients());
-
-  console.log(data, error);
+  const { data, refetch } = useQuery("patients", () =>
+    patientsApi.getPatients()
+  );
 
   const closeModal = () => setFormOpen(false);
 
@@ -29,9 +28,16 @@ export const AdminPatients = () => {
           ADD PATIENT
         </Button>
       </Box>
-      <PatientsTable patients={data ?? []} />
+      <PatientsTable patients={data ?? []} refetchPatients={refetch} />
       <Modal open={formOpen} onClose={closeModal}>
-        <PatientForm mode="creation" onCancel={closeModal} />
+        <PatientForm
+          mode="creation"
+          onCancel={closeModal}
+          onPatientChange={() => {
+            closeModal();
+            refetch();
+          }}
+        />
       </Modal>
     </div>
   );
