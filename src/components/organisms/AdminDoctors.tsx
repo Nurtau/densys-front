@@ -7,6 +7,8 @@ import { DoctorForm } from "./DoctorForm";
 export const AdminDoctors = () => {
   const [formOpen, setFormOpen] = useState(false);
 
+  const closeModal = () => setFormOpen(false);
+
   return (
     <div>
       <Box
@@ -17,8 +19,8 @@ export const AdminDoctors = () => {
           ADD DOCTOR
         </Button>
       </Box>
-      <Modal open={formOpen} onClose={() => setFormOpen(false)}>
-        <DoctorForm />
+      <Modal open={formOpen} onClose={closeModal}>
+        <DoctorForm mode="creation" onCancel={closeModal} />
       </Modal>
     </div>
   );

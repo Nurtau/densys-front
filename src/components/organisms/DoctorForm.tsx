@@ -3,33 +3,26 @@ import dayjs, { Dayjs } from "dayjs";
 import { useState } from "react";
 import { useFormik } from "formik";
 import { Box, TextField, Button, MenuItem } from "@mui/material";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 
-import {
-  //DoctorRegistrationApi,
-  type DoctorCreate,
-  type DoctorPublic,
-} from "@densys/api-client";
+import { type DoctorCreate, type DoctorPublic } from "@densys/api-client";
 
 import { useAuth } from "@app/auth";
 import { ModalInnerContainer } from "@app/components/atoms";
-import { DEPARTMENTS, SPECIALIZATIONS } from "@app/constants";
+import { DEPARTMENTS, SPECIALIZATIONS, SCHEDULES } from "@app/constants";
 
 const validationSchema = yup.object({
   name: yup.string().required("Name is required"),
   surname: yup.string().required("Surname is required"),
-  role: yup.string().required("Role is required"),
-  specialization: yup.string().required("Specialization is required"),
-  department: yup.string().required("Department is required"),
+  specialisation_id: yup.string().required("Specialization is required"),
+  department_id: yup.string().required("Department is required"),
   experience: yup.number().required("Experience is required"),
   iin: yup.number().required("IIN is required"),
   category: yup.string().required("Category is required"),
   price: yup.number().required("Price is required"),
-  schedule: yup.string().required("Schedule is required"),
-  degree: yup.string().required("Degree is required"),
+  schedule_id: yup.string().required("Schedule is required"),
+  education: yup.string().required("Degree is required"),
   rating: yup.number().required("Rating is required"),
   contact_number: yup.string().required("Contact number is required"),
-  day_of_birth: yup.date().required("Day of birth is required"),
   address: yup.string().required("Address is required"),
   password: yup
     .string()
@@ -46,30 +39,28 @@ interface DoctorFormBaseProps {
 
 interface DoctorCreateFormProps {
   mode: "creation";
-  patient?: never;
+  doctor?: never;
 }
 
 interface DoctorModifyFormProps {
   mode: "modification";
-  patient: DoctorPublic;
+  doctor: DoctorPublic;
 }
 
 type DoctorFormProps = DoctorFormBaseProps &
   (DoctorCreateFormProps | DoctorModifyFormProps);
 
 const categories = ["Highest", "First", "Second"];
-const degrees = ["Highest", "First", "Second"];
-const schedules = ["Day", "Night"];
+const degrees = ["Bachelor", "Master", "Phd"];
 
-export const DoctorForm = ({ onCancel, mode, patient }: DoctorFormProps) => {
+export const DoctorForm = ({ onCancel, mode, doctor }: DoctorFormProps) => {
   const { accessToken } = useAuth();
   const [modify, setModify] = useState(false);
-  const [value, setValue] = useState<Dayjs | null>(dayjs("2022-04-07"));
 
   const areInputDisabled = mode === "modification" && !modify;
 
   const formik = useFormik<
-    Omit<DoctorCreate, "access_token" | "registration_date"> & {
+    Omit<DoctorCreate, "access_token"> & {
       passwordConfirmation: string;
     }
   >({
@@ -77,32 +68,30 @@ export const DoctorForm = ({ onCancel, mode, patient }: DoctorFormProps) => {
       name: "",
       surname: "",
       middle_name: "",
-      // role: "",
-      // specialization: "",
-      // department: "",
-      experience: 0,
-      iin: 0,
+      specialisation_id: 0,
+      department_id: 0,
+      experience: undefined as any,
+      iin: undefined as any,
       category: "",
       price: 0,
-      // schedule: "",
-      //degree: "",
-      rating: 0,
+      schedule_id: 0,
+      education: "",
+      url: "",
+      photo: "",
+      rating: undefined as any,
       contact_number: "+7",
       address: "",
       password: "",
-      // day_of_birth: dayjs("2001-01-01").toDate(),
       passwordConfirmation: "",
+      ...doctor,
     },
     validationSchema: validationSchema,
     onSubmit: async (data) => {
-      // const api = new DoctorRegistrationApi();
       const requestBody: DoctorCreate = {
         ...data,
-        access_token: `Bearer ${accessToken?.access_token ?? ""}`,
-        // registration_date: new Date(),
+        access_token: accessToken?.access_token ?? "",
       };
-      // const response = await api.createPatient({ DoctorCreate: requestBody });
-      // console.log(response);
+      console.log(requestBody);
     },
   });
 
@@ -114,8 +103,8 @@ export const DoctorForm = ({ onCancel, mode, patient }: DoctorFormProps) => {
           "& .MuiTextField-root": { m: 1, width: "25ch" },
           alignItems: "center",
         }}
+        onSubmit={formik.handleSubmit}
         noValidate
-        autoComplete="off"
       >
         <h1>Doctor Form</h1>
         <div>
@@ -145,16 +134,11 @@ export const DoctorForm = ({ onCancel, mode, patient }: DoctorFormProps) => {
           </div>
           <div>
             <TextField
-              required
-              id="outlined-required"
               label="Middle name"
               placeholder="Middle name"
               name="middle_name"
               value={formik.values.middle_name}
               onChange={formik.handleChange}
-              error={
-                formik.touched.middle_name && Boolean(formik.errors.middle_name)
-              }
               helperText={
                 formik.touched.middle_name && formik.errors.middle_name
               }
@@ -179,15 +163,6 @@ export const DoctorForm = ({ onCancel, mode, patient }: DoctorFormProps) => {
             />
           </div>
           <div>
-            <DesktopDatePicker
-              label="Birth date"
-              renderInput={(params) => <TextField {...params} />}
-              value={dayjs(formik.values.day_of_birth)}
-              onChange={(value) =>
-                formik.setFieldValue("day_of_birth", value?.toDate())
-              }
-              disabled={areInputDisabled}
-            />
             <TextField
               required
               id="outlined-required"
@@ -198,15 +173,6 @@ export const DoctorForm = ({ onCancel, mode, patient }: DoctorFormProps) => {
               onChange={formik.handleChange}
               error={formik.touched.iin && Boolean(formik.errors.iin)}
               helperText={formik.touched.iin && formik.errors.iin}
-              disabled={areInputDisabled}
-            />
-          </div>
-          <div>
-            <TextField
-              required
-              id="outlined-required"
-              label="ID number"
-              placeholder="ID number"
               disabled={areInputDisabled}
             />
             <TextField
@@ -223,21 +189,31 @@ export const DoctorForm = ({ onCancel, mode, patient }: DoctorFormProps) => {
             />
           </div>
           <div>
+            {/* <TextField
+              required
+              id="outlined-required"
+              label="ID number"
+              placeholder="ID number"
+              disabled={areInputDisabled}
+            /> */}
+          </div>
+          <div>
             <TextField
               required
               id="outlined-required"
               select
               label="Specialization"
               placeholder="Surgeon"
-              name="specialization"
-              value={formik.values.specialization}
+              name="specialisation_id"
+              value={formik.values.specialisation_id}
               onChange={formik.handleChange}
               error={
-                formik.touched.specialization &&
-                Boolean(formik.errors.specialization)
+                formik.touched.specialisation_id &&
+                Boolean(formik.errors.specialisation_id)
               }
               helperText={
-                formik.touched.specialization && formik.errors.specialization
+                formik.touched.specialisation_id &&
+                formik.errors.specialisation_id
               }
               disabled={areInputDisabled}
             >
@@ -251,22 +227,37 @@ export const DoctorForm = ({ onCancel, mode, patient }: DoctorFormProps) => {
               select
               label="Department"
               placeholder="Medicine"
-              name="department"
-              value={formik.values.department}
+              name="department_id"
+              value={formik.values.department_id}
               onChange={formik.handleChange}
               error={
-                formik.touched.department && Boolean(formik.errors.department)
+                formik.touched.department_id &&
+                Boolean(formik.errors.department_id)
               }
-              helperText={formik.touched.department && formik.errors.department}
+              helperText={
+                formik.touched.department_id && formik.errors.department_id
+              }
               disabled={areInputDisabled}
             >
-              {DEPARTMENTS.map((department, index) => (
-                <MenuItem value={index}>{department}</MenuItem>
+              {DEPARTMENTS.map((department_id, index) => (
+                <MenuItem value={index}>{department_id}</MenuItem>
               ))}
             </TextField>
           </div>
           <div>
-            <TextField required id="outlined-required" label="Experience" />
+            <TextField
+              required
+              id="outlined-required"
+              label="Experience"
+              name="experience"
+              value={formik.values.experience}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.experience && Boolean(formik.errors.experience)
+              }
+              helperText={formik.touched.experience && formik.errors.experience}
+              disabled={areInputDisabled}
+            />
             <TextField
               required
               id="outlined-required"
@@ -304,15 +295,19 @@ export const DoctorForm = ({ onCancel, mode, patient }: DoctorFormProps) => {
               select
               label="Schedule"
               placeholder="Day"
-              name="schedule"
-              value={formik.values.schedule}
+              name="schedule_id"
+              value={formik.values.schedule_id}
               onChange={formik.handleChange}
-              error={formik.touched.schedule && Boolean(formik.errors.schedule)}
-              helperText={formik.touched.schedule && formik.errors.schedule}
+              error={
+                formik.touched.schedule_id && Boolean(formik.errors.schedule_id)
+              }
+              helperText={
+                formik.touched.schedule_id && formik.errors.schedule_id
+              }
               disabled={areInputDisabled}
             >
-              {schedules.map((schedule, index) => (
-                <MenuItem value={index}>{schedule}</MenuItem>
+              {SCHEDULES.map((schedule_id, index) => (
+                <MenuItem value={index}>{schedule_id}</MenuItem>
               ))}
             </TextField>
           </div>
@@ -323,15 +318,17 @@ export const DoctorForm = ({ onCancel, mode, patient }: DoctorFormProps) => {
               select
               label="Degree"
               placeholder="First"
-              name="degree"
-              value={formik.values.degree}
+              name="education"
+              value={formik.values.education}
               onChange={formik.handleChange}
-              error={formik.touched.degree && Boolean(formik.errors.degree)}
-              helperText={formik.touched.degree && formik.errors.degree}
+              error={
+                formik.touched.education && Boolean(formik.errors.education)
+              }
+              helperText={formik.touched.education && formik.errors.education}
               disabled={areInputDisabled}
             >
-              {degrees.map((degree) => (
-                <MenuItem value={degree}>{degree}</MenuItem>
+              {degrees.map((education) => (
+                <MenuItem value={education}>{education}</MenuItem>
               ))}
             </TextField>
             <TextField
@@ -340,10 +337,34 @@ export const DoctorForm = ({ onCancel, mode, patient }: DoctorFormProps) => {
               label="Rating"
               type="number"
               InputProps={{ inputProps: { min: 0, max: 10 } }}
+              name="rating"
+              value={formik.values.rating}
+              onChange={formik.handleChange}
+              error={formik.touched.rating && Boolean(formik.errors.rating)}
+              helperText={formik.touched.rating && formik.errors.rating}
+              disabled={areInputDisabled}
             />
           </div>
           <div>
-            <TextField label="Homepage URL" placeholder="Homepage URL" />
+            <TextField
+              label="Homepage URL"
+              placeholder="Homepage URL"
+              name="url"
+              value={formik.values.url}
+              onChange={formik.handleChange}
+              helperText={formik.touched.url && formik.errors.url}
+              disabled={areInputDisabled}
+            />
+            <TextField
+              label="Upload photo"
+              placeholder="Upload photo"
+              name="photo"
+              value={formik.values.photo}
+              onChange={formik.handleChange}
+              error={formik.touched.photo && Boolean(formik.errors.photo)}
+              helperText={formik.touched.photo && formik.errors.photo}
+              disabled={areInputDisabled}
+            />
           </div>
           <div>
             <TextField
@@ -388,7 +409,11 @@ export const DoctorForm = ({ onCancel, mode, patient }: DoctorFormProps) => {
               mt: "20px",
             }}
           >
-            <Button sx={{ ml: "auto" }} type="submit" variant="text">
+            <Button
+              sx={{ ml: "auto" }}
+              variant="text"
+              onClick={onCancel}
+            >
               CANCEL
             </Button>
             <Button sx={{ mr: "8px" }} type="submit" variant="contained">
