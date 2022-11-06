@@ -18,8 +18,6 @@ interface AuthProviderProps {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [accessToken, setAccessToken] = useState<AccessToken | null>(() => {
-    if (typeof window === "undefined") return null;
-
     const rawData = localStorage?.getItem(ACCESS_TOKEN_KEY);
 
     if (!rawData) return null;

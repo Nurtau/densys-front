@@ -84,7 +84,7 @@ export const PatientForm = ({ onCancel, mode, patient }: PatientFormProps) => {
       const api = new PatientRegistrationApi();
       const requestBody: PatientCreate = {
         ...data,
-        access_token: `Bearer ${accessToken?.access_token ?? ""}`,
+        access_token: accessToken?.access_token ?? "",
         registration_date: patient?.registration_date ?? new Date(),
       };
       const response = await api.createPatient({ patientCreate: requestBody });
