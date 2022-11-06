@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import { Box, TextField, Button, MenuItem } from "@mui/material";
 
-import { type DoctorCreate, type DoctorPublic } from "@densys/api-client";
+import { PatientRegistrationApi, type DoctorCreate, type DoctorPublic } from "@densys/api-client";
 
 import { useAuth } from "@app/auth";
 import { ModalInnerContainer, ImageInput } from "@app/components/atoms";
@@ -52,6 +52,8 @@ type DoctorFormProps = DoctorFormBaseProps &
 const categories = ["Highest", "First", "Second"];
 const degrees = ["Bachelor", "Master", "Phd"];
 
+const doctorRegistrationApi = new PatientRegistrationApi();
+
 export const DoctorForm = ({ onCancel, mode, doctor }: DoctorFormProps) => {
   const { accessToken } = useAuth();
   const [modify, setModify] = useState(false);
@@ -90,7 +92,8 @@ export const DoctorForm = ({ onCancel, mode, doctor }: DoctorFormProps) => {
         ...data,
         access_token: accessToken?.access_token ?? "",
       };
-      console.log(requestBody);
+      const response = await doctorRegistrationApi.createDoctor({doctorCreate: requestBody});
+      console.log(response);
     },
   });
 
