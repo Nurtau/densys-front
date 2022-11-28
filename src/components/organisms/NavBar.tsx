@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import { useState } from "react";
 
 import {
   Container,
@@ -7,18 +8,34 @@ import {
   Box,
   Toolbar,
   Button,
+  TextField,
+  Modal,
 } from "@mui/material";
+import SearchIcon from '@mui/icons-material/Search';
 
 import { Logo } from "@app/ui";
-import { useAuth } from "@app/auth";
+//@TODO change to just useAuth
+import { useAdminAuth } from "@app/auth";
+import { ModalInnerContainer } from "@app/components/atoms";
 
 export const NavBar = () => {
-  const { accessToken, deleteToken } = useAuth();
+  const { accessToken, deleteToken } = useAdminAuth();
+  const [searchOpen, setSearchOpen] = useState(false);
+
   const location = useLocation();
 
-  if (accessToken && location.pathname.startsWith("/admin")) return null;
+  if (location.pathname.startsWith("/admin")) return null;
+
+  const openSearchModal = () => {
+    setSearchOpen(true);
+  }
+
+  const closeSearchModal = () => {
+    setSearchOpen(false);
+  }
 
   return (
+  <>
     <Container maxWidth="xl" sx={{ padding: "16px" }}>
       <AppBar
         elevation={0}
@@ -53,7 +70,8 @@ export const NavBar = () => {
               </Typography>
             </Box>
           </Box>
-          <Box sx={{ flexDirection: "row", display: "flex", gap: "42px" }}>
+          <Box sx={{ flexDirection: "row", display: "flex", gap: "42px", alignItems: "center" }}>
+            <Button variant="outlined" startIcon={<SearchIcon />} onClick={openSearchModal} sx={{width: "200px", justifyContent: "start"}}>Search</Button>
             {!accessToken && (
               <>
                 <Typography variant="h6" component="div">
@@ -69,5 +87,11 @@ export const NavBar = () => {
         </Toolbar>
       </AppBar>
     </Container>
+    <Modal open={searchOpen} onClose={closeSearchModal}>
+      <ModalInnerContainer>
+        Cool
+      </ModalInnerContainer>
+    </Modal>
+    </>
   );
 };

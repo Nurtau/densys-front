@@ -11,7 +11,7 @@ import {
   Container,
 } from "@mui/material";
 
-import { UserLoginApi } from "@densys/api-client";
+import { api } from "@app/api";
 
 import { LogoName } from "@app/components/atoms";
 
@@ -24,13 +24,10 @@ export default function SignUp() {
       password: data.get("password"),
     });
 
-    const api = new UserLoginApi();
     const response = await api.createAdmin({
-      adminCreate: {
         id: 0,
         username: data.get("email") as string,
         password: data.get("password") as string,
-      },
     });
 
     console.log(response);

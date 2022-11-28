@@ -10,65 +10,50 @@ import {
   Box,
   Typography,
   Container,
-  MenuItem,
 } from "@mui/material";
 
-import { api, type PatientPublic, type DoctorPublic, type OthersLogin } from "@app/api";
+import { api } from "@app/api";
+import { useAdminAuth } from "@app/auth";
 import { LogoName } from "@app/components/atoms";
-import { ROLES } from "@app/constants";
-import { useMe } from "@app/auth";
 
 const validationSchema = yup.object({
-  iin: yup.string().required("IIN is required"),
-  role: yup.string().required("Role is required"),
+  username: yup.string().required("Username is required"),
   password: yup
     .string()
     .min(7, "Password should be of minimum 7 characters length")
     .required("Password is required"),
 });
 
-export default function LoginPage() {
-  const { me, updateMe } = useMe(); 
-
+export const AdminLoginForm = () => {
+  const { accessToken, changeToken } = useAdminAuth();
   const navigate = useNavigate();
 
-  const formik = useFormik<{role: string} & OthersLogin>({
+  const formik = useFormik({
     initialValues: {
-      iin: undefined as any,
-      role: ROLES[1],
+      username: "",
       password: "",
     },
     validationSchema: validationSchema,
-    onSubmit: async ({ iin, role, password }) => {
-      const user = await api.login(role, {
-          iin,
+    onSubmit: async ({ username, password }) => {
+      const { access_token } = await api.adminLogin({
+          username,
           password,
       });
 
-      console.log(user);
-
-      if (role === "patient") {
-        updateMe({
-            role,
-            user: user as PatientPublic,
-          });
-      } else if (role === "doctor") {
-updateMe({
-            role,
-            user: user as DoctorPublic,
-          });
+      if (access_token) {
+        console.log(access_token);
+        changeToken(access_token);
+        navigate("/admin/patients");
       }
-
-        navigate("/");
     },
   });
 
-  if (me) {
+  if (accessToken) {
     return <Navigate to="/" replace />;
   }
 
   return (
-    <Container component="main" maxWidth="md">
+    <Container component="main" maxWidth="xs">
       <CssBaseline />
       <Box
         sx={{
@@ -86,46 +71,22 @@ updateMe({
           component="form"
           onSubmit={formik.handleSubmit}
           noValidate
-          sx={{ mt: 4 }}
+          sx={{ mt: 1 }}
         >
-          <Box sx={{display: "flex", alignItems: "center", gap: "12px",}}>
           <TextField
+            margin="normal"
             required
             fullWidth
-            type="number"
-            id="iin"
-            label="IIN"
-            name="iin"
+            id="username"
+            label="Username"
+            name="username"
             autoFocus
             autoComplete="username"
-            value={formik.values.iin}
+            value={formik.values.username}
             onChange={formik.handleChange}
-            error={formik.touched.iin && Boolean(formik.errors.iin)}
-            helperText={formik.touched.iin && formik.errors.iin}
+            error={formik.touched.username && Boolean(formik.errors.username)}
+            helperText={formik.touched.username && formik.errors.username}
           />
-<TextField
-              sx={{width: "200px"}}
-              required
-              id="outlined-required"
-              select
-              label="Role"
-              name="role"
-              value={formik.values.role}
-              onChange={formik.handleChange}
-              error={
-                formik.touched.role &&
-                Boolean(formik.errors.role)
-              }
-              helperText={
-                formik.touched.role &&
-                formik.errors.role
-              }
-            >
-              {ROLES.map((role) => (
-                <MenuItem value={role} key={role}>{role}</MenuItem>
-              ))}
-            </TextField>
-          </Box>
           <TextField
             margin="normal"
             required

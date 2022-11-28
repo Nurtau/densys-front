@@ -1,22 +1,22 @@
 import React, { useState, useMemo, useContext, createContext } from "react";
 
-import { type AccessToken } from "@densys/api-client";
+import { type AccessToken } from "@app/api";
 
-const ACCESS_TOKEN_KEY = "access_token_key";
+const ACCESS_TOKEN_KEY = "admin_access_token_key";
 
-interface AuthContextType {
+interface AdminAuthContextType {
   accessToken: AccessToken | null;
   changeToken(newToken: AccessToken): void;
   deleteToken(): void;
 }
 
-const AuthContext = createContext<AuthContextType | null>(null);
+const AdminAuthContext = createContext<AdminAuthContextType | null>(null);
 
-interface AuthProviderProps {
+interface AdminAuthProviderProps {
   children: React.ReactNode;
 }
 
-export const AuthProvider = ({ children }: AuthProviderProps) => {
+export const AdminAuthProvider = ({ children }: AdminAuthProviderProps) => {
   const [accessToken, setAccessToken] = useState<AccessToken | null>(() => {
     const rawData = localStorage?.getItem(ACCESS_TOKEN_KEY);
 
@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     return JSON.parse(rawData);
   });
 
-  const contextValue: AuthContextType = useMemo(
+  const contextValue: AdminAuthContextType = useMemo(
     () => ({
       accessToken,
       changeToken: (newToken: AccessToken) => {
@@ -41,12 +41,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   );
 
   return (
-    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
+    <AdminAuthContext.Provider value={contextValue}>{children}</AdminAuthContext.Provider>
   );
 };
 
-export const useAuth = (): AuthContextType => {
-  const contextValue = useContext(AuthContext);
+export const useAdminAuth = (): AdminAuthContextType => {
+  const contextValue = useContext(AdminAuthContext);
 
   if (!contextValue) {
     throw new Error("useAuth must be called within AuthProvider");

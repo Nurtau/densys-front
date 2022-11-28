@@ -1,6 +1,5 @@
 import { Routes, Route } from "react-router-dom";
 
-import { ProtectedRoute } from "@app/components/molecules";
 import { NavBar } from "@app/components/organisms";
 import HomePage from "@app/pages/HomePage";
 import LoginPage from "@app/pages/LoginPage";
@@ -18,9 +17,7 @@ export default function App() {
         <Route
           path="/admin/*"
           element={
-            <ProtectedRoute>
               <AdminPage />
-            </ProtectedRoute>
           }
         />
       </Routes>

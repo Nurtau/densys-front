@@ -1,16 +1,17 @@
 import { Navigate } from "react-router-dom";
 
-import { useAuth } from "@app/auth";
+import { useAdminAuth } from "@app/auth";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
+  navigateTo: string;
 }
 
-export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  const { accessToken } = useAuth();
+export const ProtectedRoute = ({ children, navigateTo }: ProtectedRouteProps) => {
+  const { accessToken } = useAdminAuth();
 
   if (!accessToken) {
-    return <Navigate to="/login" />;
+    return <Navigate to={navigateTo} />;
   }
 
   return <>{children}</>;

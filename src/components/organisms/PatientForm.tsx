@@ -6,13 +6,12 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { useState } from "react";
 
 import {
-  PatientRegistrationApi,
-  UpdateApi,
+  api,
   type PatientCreate,
   type PatientPublic,
-} from "@densys/api-client";
+} from "@app/api";
 
-import { useAuth } from "@app/auth";
+import { useAdminAuth } from "@app/auth";
 import {
   ModalInnerContainer,
   SelectBloodGroup,
@@ -56,9 +55,6 @@ interface PatientModifyFormProps {
 type PatientFormProps = PatientFormBaseProps &
   (PatientCreateFormProps | PatientModifyFormProps);
 
-const patientRegistrationApi = new PatientRegistrationApi();
-const patientUpdateApi = new UpdateApi();
-
 export const PatientForm = ({
   onCancel,
   mode,
@@ -67,7 +63,7 @@ export const PatientForm = ({
 }: PatientFormProps) => {
   const [isRequestPending, setIsRequestPending] = useState(false);
   const [modify, setModify] = useState(false);
-  const { accessToken } = useAuth();
+  const { accessToken } = useAdminAuth();
 
   const areInputDisabled = mode === "modification" && !modify;
 
@@ -93,22 +89,22 @@ export const PatientForm = ({
       ...patient,
     },
     validationSchema: validationSchema,
-    onSubmit: async (data) => {
+    onSubmit: async ({passwordConfirmation, iin, day_of_birth, ...data}) => {
       const requestBody: PatientCreate = {
         ...data,
+        iin: Number(iin),
+        day_of_birth: day_of_birth.toJSON().substring(0, 10) as any,
         access_token: accessToken?.access_token ?? "",
-        registration_date: patient?.registration_date ?? new Date(),
+        registration_date: (patient?.registration_date ?? new Date()).toJSON().substring(0, 10) as any,
       };
       try {
         if (mode === "modification") {
           setIsRequestPending(true);
-          await patientUpdateApi.updatePatient({ patientCreate: requestBody });
+          await api.updatePatient(requestBody);
           onPatientChange();
         } else {
           setIsRequestPending(true);
-          await patientRegistrationApi.createPatient({
-            patientCreate: requestBody,
-          });
+          await api.createPatient(requestBody);
           onPatientChange();
         }
       } catch (error) {
@@ -321,6 +317,7 @@ export const PatientForm = ({
               label="Email"
               placeholder="example@gmail.com"
               name="email"
+              type="email"
               value={formik.values.email}
               onChange={formik.handleChange}
               error={formik.touched.email && Boolean(formik.errors.email)}

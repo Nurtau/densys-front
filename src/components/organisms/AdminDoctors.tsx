@@ -2,17 +2,15 @@ import { useState } from "react";
 import { useQuery } from "react-query";
 import { Box, Typography, Button, Modal } from "@mui/material";
 
-import { TestApi } from "@densys/api-client";
+import { api } from "@app/api";
 
 import { DoctorsTable } from "./DoctorsTable";
 import { DoctorForm } from "./DoctorForm";
 
-const doctorsApi = new TestApi();
-
 export const AdminDoctors = () => {
   const [formOpen, setFormOpen] = useState(false);
 
-  const { data, refetch } = useQuery("doctors", () => doctorsApi.getDoctors());
+  const { data, refetch } = useQuery("doctors", () => api.getDoctors());
 
   const closeModal = () => setFormOpen(false);
 

@@ -7,7 +7,7 @@ import { ThemeProvider } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
-import { AuthProvider } from "@app/auth";
+import { AdminAuthProvider, AuthProvider } from "@app/auth";
 import { muiTheme } from "@app/styles";
 import "@app/styles/globals.css";
 
@@ -19,13 +19,15 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <ThemeProvider theme={muiTheme}>
-        <AuthProvider>
+        <AdminAuthProvider>
+          <AuthProvider>
           <QueryClientProvider client={queryClient}>
             <BrowserRouter>
               <App />
             </BrowserRouter>
           </QueryClientProvider>
-        </AuthProvider>
+            </AuthProvider>
+        </AdminAuthProvider>
       </ThemeProvider>
     </LocalizationProvider>
   </React.StrictMode>

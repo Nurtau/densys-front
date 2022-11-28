@@ -11,7 +11,7 @@ import {
 
 import { PatientForm } from "./PatientForm";
 
-import { type PatientPublic } from "@densys/api-client";
+import { type PatientPublic } from "@app/api";
 
 interface PatientsTableProps {
   patients: PatientPublic[];
@@ -56,12 +56,12 @@ export const PatientsTable = ({
                 <TableCell align="center">{patient.name}</TableCell>
                 <TableCell align="center">{patient.contact_number}</TableCell>
                 <TableCell align="center">
-                  {patient.day_of_birth.toLocaleDateString()}
+                  {new Date(patient.day_of_birth).toLocaleDateString()}
                 </TableCell>
                 <TableCell align="center">{patient.iin}</TableCell>
                 <TableCell align="center">{patient.government_id}</TableCell>
                 <TableCell align="center">
-                  {patient.registration_date?.toLocaleDateString()}
+                  {new Date(patient.registration_date ?? "").toLocaleDateString()}
                 </TableCell>
               </TableRow>
             ))}

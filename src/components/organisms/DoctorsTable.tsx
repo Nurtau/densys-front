@@ -9,7 +9,7 @@ import {
   Modal,
 } from "@mui/material";
 
-import { type DoctorPublic } from "@densys/api-client";
+import { type DoctorPublic } from "@app/api";
 
 import { DEPARTMENTS, SPECIALIZATIONS } from "@app/constants";
 

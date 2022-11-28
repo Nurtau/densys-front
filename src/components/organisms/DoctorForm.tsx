@@ -11,15 +11,14 @@ import {
 } from "@mui/material";
 
 import {
-  PatientRegistrationApi,
-  UpdateApi,
+  api,
   type DoctorCreate,
   type DoctorPublic,
-} from "@densys/api-client";
+} from "@app/api";
 
-import { useAuth } from "@app/auth";
+import { useAdminAuth } from "@app/auth";
 import { ModalInnerContainer, ImageInput } from "@app/components/atoms";
-import { DEPARTMENTS, SPECIALIZATIONS, SCHEDULES } from "@app/constants";
+import { DEPARTMENTS, SPECIALIZATIONS } from "@app/constants";
 
 const validationSchema = yup.object({
   name: yup.string().required("Name is required"),
@@ -30,7 +29,6 @@ const validationSchema = yup.object({
   iin: yup.number().required("IIN is required"),
   category: yup.string().required("Category is required"),
   price: yup.number().required("Price is required"),
-  schedule_id: yup.string().required("Schedule is required"),
   education: yup.string().required("Degree is required"),
   rating: yup.number().required("Rating is required"),
   contact_number: yup.string().required("Contact number is required"),
@@ -65,9 +63,6 @@ type DoctorFormProps = DoctorFormBaseProps &
 const categories = ["Highest", "First", "Second"];
 const degrees = ["Bachelor", "Master", "Phd"];
 
-const doctorRegistrationApi = new PatientRegistrationApi();
-const doctorUpdateApi = new UpdateApi();
-
 export const DoctorForm = ({
   onCancel,
   mode,
@@ -75,7 +70,7 @@ export const DoctorForm = ({
   onDoctorChange,
 }: DoctorFormProps) => {
   const [isRequestPending, setIsRequestPending] = useState(false);
-  const { accessToken } = useAuth();
+  const { accessToken } = useAdminAuth();
   const [modify, setModify] = useState(false);
 
   const areInputDisabled = mode === "modification" && !modify;
@@ -95,7 +90,6 @@ export const DoctorForm = ({
       iin: undefined as any,
       category: "",
       price: 0,
-      schedule_id: 0,
       education: "",
       url: "",
       photo: undefined as any,
@@ -116,13 +110,13 @@ export const DoctorForm = ({
       try {
         if (mode === "modification") {
           setIsRequestPending(true);
-          await doctorUpdateApi.updateDoctor({ doctorCreate: requestBody });
+          await api.updateDoctor(requestBody);
           onDoctorChange();
         } else {
           setIsRequestPending(true);
-          const response = await doctorRegistrationApi.createDoctor({
-            doctorCreate: requestBody,
-          });
+          const response = await api.createDoctor(
+            requestBody
+          );
           onDoctorChange();
           console.log(response);
         }
@@ -347,28 +341,7 @@ export const DoctorForm = ({
               helperText={formik.touched.price && formik.errors.price}
               disabled={areInputDisabled}
             />
-            <TextField
-              required
-              id="outlined-required"
-              select
-              label="Schedule"
-              placeholder="Day"
-              name="schedule_id"
-              value={formik.values.schedule_id}
-              onChange={formik.handleChange}
-              error={
-                formik.touched.schedule_id && Boolean(formik.errors.schedule_id)
-              }
-              helperText={
-                formik.touched.schedule_id && formik.errors.schedule_id
-              }
-              disabled={areInputDisabled}
-            >
-              {SCHEDULES.map((schedule_id, index) => (
-                <MenuItem value={index}>{schedule_id}</MenuItem>
-              ))}
-            </TextField>
-          </div>
+                      </div>
           <div></div>
           <Box
             sx={{
