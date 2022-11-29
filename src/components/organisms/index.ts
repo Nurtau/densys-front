@@ -6,3 +6,4 @@ export * from "./AdminSpecializations";
 export * from "./DoctorForm";
 export * from "./PatientForm";
 export * from "./AdminLoginForm";
+export * from "./DoctorSearchModal";

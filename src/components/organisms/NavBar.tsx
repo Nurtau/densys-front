@@ -14,7 +14,8 @@ import SearchIcon from "@mui/icons-material/Search";
 
 import { Logo } from "@app/ui";
 import { useMe } from "@app/auth";
-import { ModalInnerContainer } from "@app/components/atoms";
+
+import { DoctorSearchModal } from "./DoctorSearchModal";
 
 export const NavBar = () => {
   const { me, removeMe } = useMe();
@@ -100,7 +101,7 @@ export const NavBar = () => {
         </AppBar>
       </Container>
       <Modal open={searchOpen} onClose={closeSearchModal}>
-        <ModalInnerContainer>Cool</ModalInnerContainer>
+        <DoctorSearchModal closeModal={closeSearchModal} />
       </Modal>
     </>
   );
