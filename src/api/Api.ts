@@ -114,6 +114,8 @@ export interface DoctorCreate {
   middle_name: string;
   /** Contact Number */
   contact_number: string;
+  /** Id */
+  id: number;
   /** Experience */
   experience: number;
   /** Price */
@@ -165,6 +167,8 @@ export interface DoctorInDB {
   middle_name: string;
   /** Contact Number */
   contact_number: string;
+  /** Id */
+  id: number;
   /** Experience */
   experience: number;
   /** Price */
@@ -216,6 +220,8 @@ export interface DoctorPublic {
   middle_name: string;
   /** Contact Number */
   contact_number: string;
+  /** Id */
+  id: number;
   /** Experience */
   experience: number;
   /** Price */
@@ -306,7 +312,7 @@ export interface PatientCreate {
   /**
    * Registration Date
    * @format date
-   * @default "2022-11-29"
+   * @default "2022-11-29T17:58:29.927872"
    */
   registration_date?: Date;
   /**
@@ -357,7 +363,7 @@ export interface PatientInDB {
   /**
    * Registration Date
    * @format date
-   * @default "2022-11-29"
+   * @default "2022-11-29T17:58:29.927872"
    */
   registration_date?: Date;
   /**
@@ -408,7 +414,7 @@ export interface PatientPublic {
   /**
    * Registration Date
    * @format date
-   * @default "2022-11-29"
+   * @default "2022-11-29T17:58:29.927872"
    */
   registration_date?: Date;
 }
@@ -826,13 +832,13 @@ export class Api<SecurityDataType extends unknown> {
      * @description Register new department
      *
      * @tags department registration
-     * @name CreateDepartment
+     * @name CreateDeparment
      * @summary Department Create
      * @request POST:/users/create_department
      * @response `200` `Department` Successful Response
      * @response `422` `HTTPValidationError` Validation Error
      */
-    createDepartment: (data: Department, params: RequestParams = {}) =>
+    createDeparment: (data: Department, params: RequestParams = {}) =>
       this.http.request<Department, HTTPValidationError>({
         path: `/users/create_department`,
         method: "POST",
@@ -980,13 +986,13 @@ export class Api<SecurityDataType extends unknown> {
      * @description Get list of doctor schedules
      *
      * @tags get, list, schedules
-     * @name GetSchedule
+     * @name GetSchedules
      * @summary Get Schedules List
      * @request GET:/users/get_schedules/{doctor_id}
      * @response `200` `(DateRange)[]` Successful Response
      * @response `422` `HTTPValidationError` Validation Error
      */
-    getSchedule: (doctorId: any, params: RequestParams = {}) =>
+    getSchedules: (doctorId: any, params: RequestParams = {}) =>
       this.http.request<DateRange[], HTTPValidationError>({
         path: `/users/get_schedules/${doctorId}`,
         method: "GET",

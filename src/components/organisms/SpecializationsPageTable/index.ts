@@ -1,1 +1,1 @@
-export * from "./SpecializationsPageTable"
+export * from "./SpecializationsPageTable";

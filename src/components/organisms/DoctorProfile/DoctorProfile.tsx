@@ -17,6 +17,7 @@ interface DoctorProfileProps {
 export const DoctorProfile = ({ doctor }: DoctorProfileProps) => {
   const {
     name,
+    middle_name,
     surname,
     photo,
     iin,
@@ -34,7 +35,7 @@ export const DoctorProfile = ({ doctor }: DoctorProfileProps) => {
     <div className={profileBoxStyles}>
       <div className={infoBoxStyles}>
         <Typography variant="h3">
-          {name} {surname}
+          {name} {middle_name} {surname}
         </Typography>
         <div>IIN: {iin}</div>
         <div>Department: {DEPARTMENTS[department_id - 1]}</div>

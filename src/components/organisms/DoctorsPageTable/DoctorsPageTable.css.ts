@@ -10,7 +10,7 @@ export const rowStyles = style({
   cursor: "pointer",
   ":hover": {
     backgroundColor: "#B4D5FE",
-  }
+  },
 });
 
 export const infoBoxStyles = style({

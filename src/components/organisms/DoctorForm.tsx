@@ -73,7 +73,7 @@ export const DoctorForm = ({
   const areInputDisabled = mode === "modification" && !modify;
 
   const formik = useFormik<
-    Omit<DoctorCreate, "access_token" | "day_start" | "day_end"> & {
+    Omit<DoctorCreate, "access_token" | "day_start" | "day_end" | "id"> & {
       doctor_shift_index: number;
       passwordConfirmation: string;
     }
@@ -105,6 +105,7 @@ export const DoctorForm = ({
       const requestBody: DoctorCreate = {
         ...data,
         ...DOCTOR_SHIFTS[doctor_shift_index],
+        id: doctor?.id ?? Date.now(),
         access_token: accessToken?.access_token ?? "",
       };
 
