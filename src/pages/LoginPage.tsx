@@ -13,7 +13,12 @@ import {
   MenuItem,
 } from "@mui/material";
 
-import { api, type PatientPublic, type DoctorPublic, type OthersLogin } from "@app/api";
+import {
+  api,
+  type PatientPublic,
+  type DoctorPublic,
+  type OthersLogin,
+} from "@app/api";
 import { LogoName } from "@app/components/atoms";
 import { ROLES } from "@app/constants";
 import { useMe } from "@app/auth";
@@ -28,11 +33,11 @@ const validationSchema = yup.object({
 });
 
 export default function LoginPage() {
-  const { me, updateMe } = useMe(); 
+  const { me, updateMe } = useMe();
 
   const navigate = useNavigate();
 
-  const formik = useFormik<{role: string} & OthersLogin>({
+  const formik = useFormik<{ role: string } & OthersLogin>({
     initialValues: {
       iin: undefined as any,
       role: ROLES[1],
@@ -41,25 +46,25 @@ export default function LoginPage() {
     validationSchema: validationSchema,
     onSubmit: async ({ iin, role, password }) => {
       const user = await api.login(role, {
-          iin,
-          password,
+        iin,
+        password,
       });
 
       console.log(user);
 
       if (role === "patient") {
         updateMe({
-            role,
-            user: user as PatientPublic,
-          });
+          role,
+          user: user as PatientPublic,
+        });
       } else if (role === "doctor") {
-updateMe({
-            role,
-            user: user as DoctorPublic,
-          });
+        updateMe({
+          role,
+          user: user as DoctorPublic,
+        });
       }
 
-        navigate("/");
+      navigate("/");
     },
   });
 
@@ -88,23 +93,23 @@ updateMe({
           noValidate
           sx={{ mt: 4 }}
         >
-          <Box sx={{display: "flex", alignItems: "center", gap: "12px",}}>
-          <TextField
-            required
-            fullWidth
-            type="number"
-            id="iin"
-            label="IIN"
-            name="iin"
-            autoFocus
-            autoComplete="username"
-            value={formik.values.iin}
-            onChange={formik.handleChange}
-            error={formik.touched.iin && Boolean(formik.errors.iin)}
-            helperText={formik.touched.iin && formik.errors.iin}
-          />
-<TextField
-              sx={{width: "200px"}}
+          <Box sx={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <TextField
+              required
+              fullWidth
+              type="number"
+              id="iin"
+              label="IIN"
+              name="iin"
+              autoFocus
+              autoComplete="username"
+              value={formik.values.iin}
+              onChange={formik.handleChange}
+              error={formik.touched.iin && Boolean(formik.errors.iin)}
+              helperText={formik.touched.iin && formik.errors.iin}
+            />
+            <TextField
+              sx={{ width: "200px" }}
               required
               id="outlined-required"
               select
@@ -112,17 +117,13 @@ updateMe({
               name="role"
               value={formik.values.role}
               onChange={formik.handleChange}
-              error={
-                formik.touched.role &&
-                Boolean(formik.errors.role)
-              }
-              helperText={
-                formik.touched.role &&
-                formik.errors.role
-              }
+              error={formik.touched.role && Boolean(formik.errors.role)}
+              helperText={formik.touched.role && formik.errors.role}
             >
               {ROLES.map((role) => (
-                <MenuItem value={role} key={role}>{role}</MenuItem>
+                <MenuItem value={role} key={role}>
+                  {role}
+                </MenuItem>
               ))}
             </TextField>
           </Box>

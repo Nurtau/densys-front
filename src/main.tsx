@@ -21,12 +21,12 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       <ThemeProvider theme={muiTheme}>
         <AdminAuthProvider>
           <AuthProvider>
-          <QueryClientProvider client={queryClient}>
-            <BrowserRouter>
-              <App />
-            </BrowserRouter>
-          </QueryClientProvider>
-            </AuthProvider>
+            <QueryClientProvider client={queryClient}>
+              <BrowserRouter>
+                <App />
+              </BrowserRouter>
+            </QueryClientProvider>
+          </AuthProvider>
         </AdminAuthProvider>
       </ThemeProvider>
     </LocalizationProvider>

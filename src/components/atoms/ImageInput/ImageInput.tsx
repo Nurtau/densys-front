@@ -32,7 +32,11 @@ export const ImageInput = ({
   };
 
   return (
-    <label className={containerStyle} htmlFor="image-input" style={{cursor: disabled ? "auto" : "pointer"}}>
+    <label
+      className={containerStyle}
+      htmlFor="image-input"
+      style={{ cursor: disabled ? "auto" : "pointer" }}
+    >
       <input
         disabled={disabled}
         className={inputStyle}

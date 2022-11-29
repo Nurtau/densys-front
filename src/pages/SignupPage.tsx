@@ -25,9 +25,9 @@ export default function SignUp() {
     });
 
     const response = await api.createAdmin({
-        id: 0,
-        username: data.get("email") as string,
-        password: data.get("password") as string,
+      id: 0,
+      username: data.get("email") as string,
+      password: data.get("password") as string,
     });
 
     console.log(response);

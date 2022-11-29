@@ -105,7 +105,7 @@ export interface Department {
 /** DoctorCreate */
 export interface DoctorCreate {
   /** Iin */
-  iin: number;
+  iin: string;
   /** Name */
   name: string;
   /** Surname */
@@ -122,6 +122,10 @@ export interface DoctorCreate {
   rating: number;
   /** Url */
   url: string;
+  /** Day Start */
+  day_start: string;
+  /** Day End */
+  day_end: string;
   /** Address */
   address: string;
   /** Education */
@@ -133,6 +137,8 @@ export interface DoctorCreate {
   photo?: string;
   /** Category */
   category: string;
+  /** Procedure */
+  procedure: string;
   /** Specialisation Id */
   specialisation_id: number;
   /** Department Id */
@@ -150,7 +156,7 @@ export interface DoctorCreate {
 /** DoctorInDB */
 export interface DoctorInDB {
   /** Iin */
-  iin: number;
+  iin: string;
   /** Name */
   name: string;
   /** Surname */
@@ -167,6 +173,10 @@ export interface DoctorInDB {
   rating: number;
   /** Url */
   url: string;
+  /** Day Start */
+  day_start: string;
+  /** Day End */
+  day_end: string;
   /** Address */
   address: string;
   /** Education */
@@ -178,6 +188,8 @@ export interface DoctorInDB {
   photo?: string;
   /** Category */
   category: string;
+  /** Procedure */
+  procedure: string;
   /** Specialisation Id */
   specialisation_id: number;
   /** Department Id */
@@ -195,7 +207,7 @@ export interface DoctorInDB {
 /** DoctorPublic */
 export interface DoctorPublic {
   /** Iin */
-  iin: number;
+  iin: string;
   /** Name */
   name: string;
   /** Surname */
@@ -212,6 +224,10 @@ export interface DoctorPublic {
   rating: number;
   /** Url */
   url: string;
+  /** Day Start */
+  day_start: string;
+  /** Day End */
+  day_end: string;
   /** Address */
   address: string;
   /** Education */
@@ -223,6 +239,8 @@ export interface DoctorPublic {
   photo?: string;
   /** Category */
   category: string;
+  /** Procedure */
+  procedure: string;
   /** Specialisation Id */
   specialisation_id: number;
   /** Department Id */
@@ -241,7 +259,7 @@ export interface HTTPValidationError {
 /** OthersLogin */
 export interface OthersLogin {
   /** Iin */
-  iin: number;
+  iin: string;
   /**
    * Password
    * @minLength 7
@@ -253,7 +271,7 @@ export interface OthersLogin {
 /** PatientCreate */
 export interface PatientCreate {
   /** Iin */
-  iin: number;
+  iin: string;
   /** Name */
   name: string;
   /** Surname */
@@ -288,7 +306,7 @@ export interface PatientCreate {
   /**
    * Registration Date
    * @format date
-   * @default "2022-11-28"
+   * @default "2022-11-29"
    */
   registration_date?: Date;
   /**
@@ -304,7 +322,7 @@ export interface PatientCreate {
 /** PatientInDB */
 export interface PatientInDB {
   /** Iin */
-  iin: number;
+  iin: string;
   /** Name */
   name: string;
   /** Surname */
@@ -339,7 +357,7 @@ export interface PatientInDB {
   /**
    * Registration Date
    * @format date
-   * @default "2022-11-28"
+   * @default "2022-11-29"
    */
   registration_date?: Date;
   /**
@@ -355,7 +373,7 @@ export interface PatientInDB {
 /** PatientPublic */
 export interface PatientPublic {
   /** Iin */
-  iin: number;
+  iin: string;
   /** Name */
   name: string;
   /** Surname */
@@ -390,7 +408,7 @@ export interface PatientPublic {
   /**
    * Registration Date
    * @format date
-   * @default "2022-11-28"
+   * @default "2022-11-29"
    */
   registration_date?: Date;
 }
@@ -435,16 +453,22 @@ export interface FullRequestParams extends Omit<RequestInit, "body"> {
   cancelToken?: CancelToken;
 }
 
-export type RequestParams = Omit<FullRequestParams, "body" | "method" | "query" | "path">;
+export type RequestParams = Omit<
+  FullRequestParams,
+  "body" | "method" | "query" | "path"
+>;
 
 export interface ApiConfig<SecurityDataType = unknown> {
   baseUrl?: string;
   baseApiParams?: Omit<RequestParams, "baseUrl" | "cancelToken" | "signal">;
-  securityWorker?: (securityData: SecurityDataType | null) => Promise<RequestParams | void> | RequestParams | void;
+  securityWorker?: (
+    securityData: SecurityDataType | null
+  ) => Promise<RequestParams | void> | RequestParams | void;
   customFetch?: typeof fetch;
 }
 
-export interface HttpResponse<D extends unknown, E extends unknown = unknown> extends Response {
+export interface HttpResponse<D extends unknown, E extends unknown = unknown>
+  extends Response {
   data: D;
   error: E;
 }
@@ -463,7 +487,8 @@ export class HttpClient<SecurityDataType = unknown> {
   private securityData: SecurityDataType | null = null;
   private securityWorker?: ApiConfig<SecurityDataType>["securityWorker"];
   private abortControllers = new Map<CancelToken, AbortController>();
-  private customFetch = (...fetchParams: Parameters<typeof fetch>) => fetch(...fetchParams);
+  private customFetch = (...fetchParams: Parameters<typeof fetch>) =>
+    fetch(...fetchParams);
 
   private baseApiParams: RequestParams = {
     credentials: "same-origin",
@@ -482,7 +507,9 @@ export class HttpClient<SecurityDataType = unknown> {
 
   protected encodeQueryParam(key: string, value: any) {
     const encodedKey = encodeURIComponent(key);
-    return `${encodedKey}=${encodeURIComponent(typeof value === "number" ? value : `${value}`)}`;
+    return `${encodedKey}=${encodeURIComponent(
+      typeof value === "number" ? value : `${value}`
+    )}`;
   }
 
   protected addQueryParam(query: QueryParamsType, key: string) {
@@ -496,9 +523,15 @@ export class HttpClient<SecurityDataType = unknown> {
 
   protected toQueryString(rawQuery?: QueryParamsType): string {
     const query = rawQuery || {};
-    const keys = Object.keys(query).filter((key) => "undefined" !== typeof query[key]);
+    const keys = Object.keys(query).filter(
+      (key) => "undefined" !== typeof query[key]
+    );
     return keys
-      .map((key) => (Array.isArray(query[key]) ? this.addArrayQueryParam(query, key) : this.addQueryParam(query, key)))
+      .map((key) =>
+        Array.isArray(query[key])
+          ? this.addArrayQueryParam(query, key)
+          : this.addQueryParam(query, key)
+      )
       .join("&");
   }
 
@@ -509,8 +542,13 @@ export class HttpClient<SecurityDataType = unknown> {
 
   private contentFormatters: Record<ContentType, (input: any) => any> = {
     [ContentType.Json]: (input: any) =>
-      input !== null && (typeof input === "object" || typeof input === "string") ? JSON.stringify(input) : input,
-    [ContentType.Text]: (input: any) => (input !== null && typeof input !== "string" ? JSON.stringify(input) : input),
+      input !== null && (typeof input === "object" || typeof input === "string")
+        ? JSON.stringify(input)
+        : input,
+    [ContentType.Text]: (input: any) =>
+      input !== null && typeof input !== "string"
+        ? JSON.stringify(input)
+        : input,
     [ContentType.FormData]: (input: any) =>
       Object.keys(input || {}).reduce((formData, key) => {
         const property = input[key];
@@ -520,14 +558,17 @@ export class HttpClient<SecurityDataType = unknown> {
             ? property
             : typeof property === "object" && property !== null
             ? JSON.stringify(property)
-            : `${property}`,
+            : `${property}`
         );
         return formData;
       }, new FormData()),
     [ContentType.UrlEncoded]: (input: any) => this.toQueryString(input),
   };
 
-  protected mergeRequestParams(params1: RequestParams, params2?: RequestParams): RequestParams {
+  protected mergeRequestParams(
+    params1: RequestParams,
+    params2?: RequestParams
+  ): RequestParams {
     return {
       ...this.baseApiParams,
       ...params1,
@@ -540,7 +581,9 @@ export class HttpClient<SecurityDataType = unknown> {
     };
   }
 
-  protected createAbortSignal = (cancelToken: CancelToken): AbortSignal | undefined => {
+  protected createAbortSignal = (
+    cancelToken: CancelToken
+  ): AbortSignal | undefined => {
     if (this.abortControllers.has(cancelToken)) {
       const abortController = this.abortControllers.get(cancelToken);
       if (abortController) {
@@ -584,15 +627,27 @@ export class HttpClient<SecurityDataType = unknown> {
     const payloadFormatter = this.contentFormatters[type || ContentType.Json];
     const responseFormat = format || requestParams.format;
 
-    return this.customFetch(`${baseUrl || this.baseUrl || ""}${path}${queryString ? `?${queryString}` : ""}`, {
-      ...requestParams,
-      headers: {
-        ...(requestParams.headers || {}),
-        ...(type && type !== ContentType.FormData ? { "Content-Type": type } : {}),
-      },
-      signal: cancelToken ? this.createAbortSignal(cancelToken) : requestParams.signal,
-      body: typeof body === "undefined" || body === null ? null : payloadFormatter(body),
-    }).then(async (response) => {
+    return this.customFetch(
+      `${baseUrl || this.baseUrl || ""}${path}${
+        queryString ? `?${queryString}` : ""
+      }`,
+      {
+        ...requestParams,
+        headers: {
+          ...(requestParams.headers || {}),
+          ...(type && type !== ContentType.FormData
+            ? { "Content-Type": type }
+            : {}),
+        },
+        signal: cancelToken
+          ? this.createAbortSignal(cancelToken)
+          : requestParams.signal,
+        body:
+          typeof body === "undefined" || body === null
+            ? null
+            : payloadFormatter(body),
+      }
+    ).then(async (response) => {
       const r = response as HttpResponse<T, E>;
       r.data = null as unknown as T;
       r.error = null as unknown as E;
@@ -797,7 +852,10 @@ export class Api<SecurityDataType extends unknown> {
      * @response `200` `AppointmentRequestCreate` Successful Response
      * @response `422` `HTTPValidationError` Validation Error
      */
-    createAppointmentRequest: (data: AppointmentRequestCreate, params: RequestParams = {}) =>
+    createAppointmentRequest: (
+      data: AppointmentRequestCreate,
+      params: RequestParams = {}
+    ) =>
       this.http.request<AppointmentRequestCreate, HTTPValidationError>({
         path: `/users/create_appointment_request`,
         method: "POST",
@@ -922,13 +980,13 @@ export class Api<SecurityDataType extends unknown> {
      * @description Get list of doctor schedules
      *
      * @tags get, list, schedules
-     * @name GetSchedules
+     * @name GetSchedule
      * @summary Get Schedules List
      * @request GET:/users/get_schedules/{doctor_id}
      * @response `200` `(DateRange)[]` Successful Response
      * @response `422` `HTTPValidationError` Validation Error
      */
-    getSchedules: (doctorId: any, params: RequestParams = {}) =>
+    getSchedule: (doctorId: any, params: RequestParams = {}) =>
       this.http.request<DateRange[], HTTPValidationError>({
         path: `/users/get_schedules/${doctorId}`,
         method: "GET",
@@ -947,7 +1005,10 @@ export class Api<SecurityDataType extends unknown> {
      * @response `422` `HTTPValidationError` Validation Error
      */
     login: (role: string, data: OthersLogin, params: RequestParams = {}) =>
-      this.http.request<PatientPublic | DoctorPublic | (PatientPublic & DoctorPublic), HTTPValidationError>({
+      this.http.request<
+        PatientPublic | DoctorPublic | (PatientPublic & DoctorPublic),
+        HTTPValidationError
+      >({
         path: `/users/login/${role}`,
         method: "POST",
         body: data,

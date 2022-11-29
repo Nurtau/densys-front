@@ -5,14 +5,14 @@ import { type PatientPublic, type DoctorPublic } from "@app/api";
 const USER_STORAGE_KEY = "current_user";
 
 type PatientStored = {
-  role: "patient",
-  user: PatientPublic,
-}
+  role: "patient";
+  user: PatientPublic;
+};
 
 type DoctorStored = {
-  role: "doctor",
-  user: DoctorPublic,
-}
+  role: "doctor";
+  user: DoctorPublic;
+};
 
 interface AuthContextType {
   me: PatientStored | DoctorStored | null;

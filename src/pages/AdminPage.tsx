@@ -7,29 +7,35 @@ import {
   AdminPatients,
   AdminSpecializations,
   AdminDepartments,
-  AdminLoginForm
+  AdminLoginForm,
 } from "@app/components/organisms";
-import { AdminSidebar,  ProtectedRoute } from "@app/components/molecules";
+import { AdminSidebar, ProtectedRoute } from "@app/components/molecules";
 
 export default function AdminPage() {
   return (
-  <Routes>
-        <Route path="/login" element={<AdminLoginForm />} />
-        <Route path="*" element={
-    <ProtectedRoute navigateTo="/admin/login">
-    <Box sx={{ display: "flex", width: "100%" }}>
-      <AdminSidebar />
-      <Box sx={{ flexGrow: "1", p: "40px", pr: "200px" }}>
-        <Routes>
-          <Route path="/patients" element={<AdminPatients />} />
-          <Route path="/doctors" element={<AdminDoctors />} />
-          <Route path="/departments" element={<AdminDepartments />} />
-          <Route path="/specializations" element={<AdminSpecializations />} />
-        </Routes>
-      </Box>
-    </Box>
-    </ProtectedRoute>
-        } />
+    <Routes>
+      <Route path="/login" element={<AdminLoginForm />} />
+      <Route
+        path="*"
+        element={
+          <ProtectedRoute navigateTo="/admin/login">
+            <Box sx={{ display: "flex", width: "100%" }}>
+              <AdminSidebar />
+              <Box sx={{ flexGrow: "1", p: "40px", pr: "200px" }}>
+                <Routes>
+                  <Route path="/patients" element={<AdminPatients />} />
+                  <Route path="/doctors" element={<AdminDoctors />} />
+                  <Route path="/departments" element={<AdminDepartments />} />
+                  <Route
+                    path="/specializations"
+                    element={<AdminSpecializations />}
+                  />
+                </Routes>
+              </Box>
+            </Box>
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
 }

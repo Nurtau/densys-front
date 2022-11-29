@@ -41,7 +41,9 @@ export const AdminAuthProvider = ({ children }: AdminAuthProviderProps) => {
   );
 
   return (
-    <AdminAuthContext.Provider value={contextValue}>{children}</AdminAuthContext.Provider>
+    <AdminAuthContext.Provider value={contextValue}>
+      {children}
+    </AdminAuthContext.Provider>
   );
 };
 

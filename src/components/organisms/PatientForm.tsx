@@ -5,11 +5,7 @@ import { Box, TextField, Button, Switch, Typography } from "@mui/material";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { useState } from "react";
 
-import {
-  api,
-  type PatientCreate,
-  type PatientPublic,
-} from "@app/api";
+import { api, type PatientCreate, type PatientPublic } from "@app/api";
 
 import { useAdminAuth } from "@app/auth";
 import {
@@ -76,7 +72,7 @@ export const PatientForm = ({
       name: "",
       surname: "",
       middle_name: "",
-      iin: 0,
+      iin: "",
       contact_number: "+7",
       blood_group: "A",
       emergency_contact_number: "+7",
@@ -89,13 +85,14 @@ export const PatientForm = ({
       ...patient,
     },
     validationSchema: validationSchema,
-    onSubmit: async ({passwordConfirmation, iin, day_of_birth, ...data}) => {
+    onSubmit: async ({ passwordConfirmation, day_of_birth, ...data }) => {
       const requestBody: PatientCreate = {
         ...data,
-        iin: Number(iin),
         day_of_birth: day_of_birth.toJSON().substring(0, 10) as any,
         access_token: accessToken?.access_token ?? "",
-        registration_date: (patient?.registration_date ?? new Date()).toJSON().substring(0, 10) as any,
+        registration_date: (patient?.registration_date ?? new Date())
+          .toJSON()
+          .substring(0, 10) as any,
       };
       try {
         if (mode === "modification") {

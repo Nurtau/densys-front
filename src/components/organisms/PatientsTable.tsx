@@ -61,7 +61,9 @@ export const PatientsTable = ({
                 <TableCell align="center">{patient.iin}</TableCell>
                 <TableCell align="center">{patient.government_id}</TableCell>
                 <TableCell align="center">
-                  {new Date(patient.registration_date ?? "").toLocaleDateString()}
+                  {new Date(
+                    patient.registration_date ?? ""
+                  ).toLocaleDateString()}
                 </TableCell>
               </TableRow>
             ))}

@@ -10,11 +10,7 @@ import {
   Switch,
 } from "@mui/material";
 
-import {
-  api,
-  type DoctorCreate,
-  type DoctorPublic,
-} from "@app/api";
+import { api, type DoctorCreate, type DoctorPublic } from "@app/api";
 
 import { useAdminAuth } from "@app/auth";
 import { ModalInnerContainer, ImageInput } from "@app/components/atoms";
@@ -114,9 +110,7 @@ export const DoctorForm = ({
           onDoctorChange();
         } else {
           setIsRequestPending(true);
-          const response = await api.createDoctor(
-            requestBody
-          );
+          const response = await api.createDoctor(requestBody);
           onDoctorChange();
           console.log(response);
         }
@@ -341,7 +335,7 @@ export const DoctorForm = ({
               helperText={formik.touched.price && formik.errors.price}
               disabled={areInputDisabled}
             />
-                      </div>
+          </div>
           <div></div>
           <Box
             sx={{

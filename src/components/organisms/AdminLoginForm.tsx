@@ -36,8 +36,8 @@ export const AdminLoginForm = () => {
     validationSchema: validationSchema,
     onSubmit: async ({ username, password }) => {
       const { access_token } = await api.adminLogin({
-          username,
-          password,
+        username,
+        password,
       });
 
       if (access_token) {
@@ -118,4 +118,4 @@ export const AdminLoginForm = () => {
       </Box>
     </Container>
   );
-}
+};

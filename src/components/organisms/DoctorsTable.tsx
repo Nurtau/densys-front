@@ -58,8 +58,12 @@ export const DoctorsTable = ({
                 <TableCell align="center">{doctor.name}</TableCell>
                 <TableCell align="center">{doctor.contact_number}</TableCell>
                 <TableCell align="center">{doctor.iin}</TableCell>
-                <TableCell align="center">{DEPARTMENTS[doctor.department_id - 1]}</TableCell>
-                <TableCell align="center">{SPECIALIZATIONS[doctor.specialisation_id - 1]}</TableCell>
+                <TableCell align="center">
+                  {DEPARTMENTS[doctor.department_id - 1]}
+                </TableCell>
+                <TableCell align="center">
+                  {SPECIALIZATIONS[doctor.specialisation_id - 1]}
+                </TableCell>
                 <TableCell align="center">{doctor.category}</TableCell>
               </TableRow>
             ))}

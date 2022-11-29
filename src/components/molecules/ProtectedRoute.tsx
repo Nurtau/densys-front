@@ -7,7 +7,10 @@ interface ProtectedRouteProps {
   navigateTo: string;
 }
 
-export const ProtectedRoute = ({ children, navigateTo }: ProtectedRouteProps) => {
+export const ProtectedRoute = ({
+  children,
+  navigateTo,
+}: ProtectedRouteProps) => {
   const { accessToken } = useAdminAuth();
 
   if (!accessToken) {

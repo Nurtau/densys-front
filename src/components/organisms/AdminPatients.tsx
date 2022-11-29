@@ -10,9 +10,7 @@ import { PatientForm } from "./PatientForm";
 export const AdminPatients = () => {
   const [formOpen, setFormOpen] = useState(false);
 
-  const { data, refetch } = useQuery("patients", () =>
-    api.getPatients()
-  );
+  const { data, refetch } = useQuery("patients", () => api.getPatients());
 
   const closeModal = () => setFormOpen(false);
 
