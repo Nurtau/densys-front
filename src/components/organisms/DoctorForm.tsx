@@ -14,7 +14,7 @@ import { api, type DoctorCreate, type DoctorPublic } from "@app/api";
 
 import { useAdminAuth } from "@app/auth";
 import { ModalInnerContainer, ImageInput } from "@app/components/atoms";
-import { DEPARTMENTS, SPECIALIZATIONS } from "@app/constants";
+import { DEPARTMENTS, SPECIALIZATIONS, DOCTOR_SHIFTS } from "@app/constants";
 
 const validationSchema = yup.object({
   name: yup.string().required("Name is required"),
@@ -26,6 +26,7 @@ const validationSchema = yup.object({
   category: yup.string().required("Category is required"),
   price: yup.number().required("Price is required"),
   education: yup.string().required("Degree is required"),
+  procedure: yup.string().required("Procedure is required"),
   rating: yup.number().required("Rating is required"),
   contact_number: yup.string().required("Contact number is required"),
   address: yup.string().required("Address is required"),
@@ -72,7 +73,8 @@ export const DoctorForm = ({
   const areInputDisabled = mode === "modification" && !modify;
 
   const formik = useFormik<
-    Omit<DoctorCreate, "access_token"> & {
+    Omit<DoctorCreate, "access_token" | "day_start" | "day_end"> & {
+      doctor_shift_index: number;
       passwordConfirmation: string;
     }
   >({
@@ -82,8 +84,10 @@ export const DoctorForm = ({
       middle_name: "",
       specialisation_id: 1,
       department_id: 1,
+      procedure: "",
+      doctor_shift_index: 0,
       experience: undefined as any,
-      iin: undefined as any,
+      iin: "",
       category: "",
       price: 0,
       education: "",
@@ -97,9 +101,10 @@ export const DoctorForm = ({
       password: "",
     },
     validationSchema: validationSchema,
-    onSubmit: async (data) => {
+    onSubmit: async ({ doctor_shift_index, ...data }) => {
       const requestBody: DoctorCreate = {
         ...data,
+        ...DOCTOR_SHIFTS[doctor_shift_index],
         access_token: accessToken?.access_token ?? "",
       };
 
@@ -294,6 +299,44 @@ export const DoctorForm = ({
             <TextField
               required
               id="outlined-required"
+              label="Procedure"
+              placeholder="MRI"
+              name="procedure"
+              value={formik.values.procedure}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.procedure && Boolean(formik.errors.procedure)
+              }
+              helperText={formik.touched.procedure && formik.errors.procedure}
+              disabled={areInputDisabled}
+            />
+            <TextField
+              required
+              id="outlined-required"
+              select
+              label="Working shift"
+              name="doctor_shift_index"
+              value={formik.values.doctor_shift_index}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.doctor_shift_index &&
+                Boolean(formik.errors.doctor_shift_index)
+              }
+              helperText={
+                formik.touched.doctor_shift_index &&
+                formik.errors.doctor_shift_index
+              }
+              disabled={areInputDisabled}
+            >
+              {DOCTOR_SHIFTS.map(({ day_start, day_end }, index) => (
+                <MenuItem value={index}>{day_start + "-" + day_end}</MenuItem>
+              ))}
+            </TextField>
+          </div>
+          <div>
+            <TextField
+              required
+              id="outlined-required"
               label="Experience"
               name="experience"
               value={formik.values.experience}
@@ -335,6 +378,25 @@ export const DoctorForm = ({
               helperText={formik.touched.price && formik.errors.price}
               disabled={areInputDisabled}
             />
+            <TextField
+              required
+              id="outlined-required"
+              select
+              label="Degree"
+              placeholder="First"
+              name="education"
+              value={formik.values.education}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.education && Boolean(formik.errors.education)
+              }
+              helperText={formik.touched.education && formik.errors.education}
+              disabled={areInputDisabled}
+            >
+              {degrees.map((education) => (
+                <MenuItem value={education}>{education}</MenuItem>
+              ))}
+            </TextField>
           </div>
           <div></div>
           <Box
@@ -355,28 +417,9 @@ export const DoctorForm = ({
                 width: "min-content",
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "space-around",
+                justifyContent: "center",
               }}
             >
-              <TextField
-                required
-                id="outlined-required"
-                select
-                label="Degree"
-                placeholder="First"
-                name="education"
-                value={formik.values.education}
-                onChange={formik.handleChange}
-                error={
-                  formik.touched.education && Boolean(formik.errors.education)
-                }
-                helperText={formik.touched.education && formik.errors.education}
-                disabled={areInputDisabled}
-              >
-                {degrees.map((education) => (
-                  <MenuItem value={education}>{education}</MenuItem>
-                ))}
-              </TextField>
               <TextField
                 required
                 id="outlined-required"

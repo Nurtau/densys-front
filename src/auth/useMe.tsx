@@ -17,7 +17,7 @@ type DoctorStored = {
 interface AuthContextType {
   me: PatientStored | DoctorStored | null;
   updateMe(me: PatientStored | DoctorStored): void;
-  delete(): void;
+  removeMe(): void;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setMe(me);
         localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(me));
       },
-      delete: () => {
+      removeMe: () => {
         setMe(null);
         localStorage.removeItem(USER_STORAGE_KEY);
       },

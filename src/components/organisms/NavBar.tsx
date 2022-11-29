@@ -8,18 +8,16 @@ import {
   Box,
   Toolbar,
   Button,
-  TextField,
   Modal,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
 import { Logo } from "@app/ui";
-//@TODO change to just useAuth
-import { useAdminAuth } from "@app/auth";
+import { useMe } from "@app/auth";
 import { ModalInnerContainer } from "@app/components/atoms";
 
 export const NavBar = () => {
-  const { accessToken, deleteToken } = useAdminAuth();
+  const { me, removeMe } = useMe();
   const [searchOpen, setSearchOpen] = useState(false);
 
   const location = useLocation();
@@ -86,7 +84,7 @@ export const NavBar = () => {
               >
                 Search
               </Button>
-              {!accessToken && (
+              {!me && (
                 <>
                   <Typography variant="h6" component="div">
                     <Link to="/login">Login</Link>
@@ -96,7 +94,7 @@ export const NavBar = () => {
                   </Typography>
                 </>
               )}
-              {accessToken && <Button onClick={deleteToken}>Log out</Button>}
+              {me && <Button onClick={removeMe}>Log out</Button>}
             </Box>
           </Toolbar>
         </AppBar>
