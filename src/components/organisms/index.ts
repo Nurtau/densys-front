@@ -9,3 +9,4 @@ export * from "./AdminLoginForm";
 export * from "./DoctorSearchModal";
 export * from "./SpecializationsPageTable";
 export * from "./DoctorsPageTable";
+export * from "./DoctorProfile";
