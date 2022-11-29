@@ -7,9 +7,6 @@ export * from "./DoctorForm";
 export * from "./PatientForm";
 export * from "./AdminLoginForm";
 export * from "./DoctorSearchModal";
-<<<<<<< Updated upstream
 export * from "./SpecializationsPageTable";
 export * from "./DoctorsPageTable";
-=======
->>>>>>> Stashed changes
 export * from "./DoctorProfile";
