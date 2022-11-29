@@ -9,6 +9,7 @@ import {
   ListItemText,
   ListItemButton,
   ListItemIcon,
+  Button,
 } from "@mui/material";
 import {
   PeopleAltOutlined,
@@ -17,6 +18,7 @@ import {
   MedicalServicesOutlined,
 } from "@mui/icons-material";
 
+import { useAdminAuth } from "@app/auth";
 import { Logo } from "@app/ui";
 
 const SIDEBAR_SECTIONS = [
@@ -45,6 +47,7 @@ const SIDEBAR_SECTIONS = [
 const SIDEBAR_WIDTH = 240;
 
 export const AdminSidebar = () => {
+  const { deleteToken } = useAdminAuth();
   const location = useLocation();
 
   return (
@@ -64,21 +67,33 @@ export const AdminSidebar = () => {
         <Logo />
       </Box>
       <Divider />
-      <List>
-        {SIDEBAR_SECTIONS.map(({ text, icon, path }, index) => (
-          <ListItem key={index} disablePadding>
-            <Link to={path} style={{ width: "100%" }}>
-              <ListItemButton
-                selected={location.pathname === path}
-                component="div"
-              >
-                <ListItemIcon color="#1F2AD6">{icon}</ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </Link>
-          </ListItem>
-        ))}
-      </List>
+      <Box
+        sx={{
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+        }}
+      >
+        <List>
+          {SIDEBAR_SECTIONS.map(({ text, icon, path }, index) => (
+            <ListItem key={index} disablePadding>
+              <Link to={path} style={{ width: "100%" }}>
+                <ListItemButton
+                  selected={location.pathname === path}
+                  component="div"
+                >
+                  <ListItemIcon color="#1F2AD6">{icon}</ListItemIcon>
+                  <ListItemText primary={text} />
+                </ListItemButton>
+              </Link>
+            </ListItem>
+          ))}
+        </List>
+        <Button sx={{ m: 3 }} variant="outlined" onClick={deleteToken}>
+          Logout
+        </Button>
+      </Box>
     </Drawer>
   );
 };
