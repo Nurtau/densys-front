@@ -59,13 +59,7 @@ export const NavBar = () => {
               </Link>
               <Box sx={{ flexDirection: "row", display: "flex", gap: "64px" }}>
                 <Typography variant="h6" component="div">
-                  <Link to="/services">Services</Link>
-                </Typography>
-                <Typography variant="h6" component="div">
-                  <Link to="/contacts">Contacts</Link>
-                </Typography>
-                <Typography variant="h6" component="div">
-                  <Link to="/about-us">About us</Link>
+                  <Link to="/specializations">Specializations</Link>
                 </Typography>
               </Box>
             </Box>
@@ -89,9 +83,6 @@ export const NavBar = () => {
                 <>
                   <Typography variant="h6" component="div">
                     <Link to="/login">Login</Link>
-                  </Typography>
-                  <Typography variant="h6" component="div">
-                    <Link to="/sign-up">Sign up</Link>
                   </Typography>
                 </>
               )}
