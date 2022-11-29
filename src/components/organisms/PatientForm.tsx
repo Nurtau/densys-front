@@ -23,6 +23,7 @@ const validationSchema = yup.object({
   day_of_birth: yup.date().required("Day of birth is required"),
   blood_group: yup.string().required("Blood group is required"),
   emergency_contact_number: yup.string().required("It is is required"),
+  email: yup.string().required("Email is required"),
   address: yup.string().required("Address is required"),
   password: yup
     .string()
@@ -78,6 +79,7 @@ export const PatientForm = ({
       emergency_contact_number: "+7",
       government_id: "",
       address: "",
+      email: "",
       password: "",
       day_of_birth: dayjs("2001-01-01").toDate(),
       passwordConfirmation: "",

@@ -11,3 +11,4 @@ export * from "./SpecializationsPageTable";
 export * from "./SpecializationDoctorsPageTable";
 export * from "./DoctorProfile";
 export * from "./DoctorsPageTable";
+export * from "./AppointmentForm";
