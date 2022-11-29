@@ -61,6 +61,9 @@ export const NavBar = () => {
                 <Typography variant="h6" component="div">
                   <Link to="/specializations">Specializations</Link>
                 </Typography>
+                <Typography variant="h6" component="div">
+                  <Link to="/doctors">Doctors</Link>
+                </Typography>
               </Box>
             </Box>
             <Box

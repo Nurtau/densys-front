@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 import { Box, Typography } from "@mui/material";
 
-import { rowStyles, infoBoxStyles } from "./SpecializationsPageTable.css";
+import { rowStyles } from "./SpecializationsPageTable.css";
 import { SPECIALIZATIONS } from "@app/constants";
 
 export const SpecializationsPageTable = () => {
@@ -17,13 +17,9 @@ export const SpecializationsPageTable = () => {
       <Box sx={{ mb: "30px" }}>
         <Typography variant="h4">Specializations</Typography>
       </Box>
-      <Box
-        sx={{
-          width: "100%",
-        }}
-      >
+      <Box>
         {SPECIALIZATIONS.map((name, index) => (
-          <Link to="/specializations/doctors">
+          <Link to={`/specializations/${index + 1}`}>
             <div className={rowStyles}>{name}</div>
           </Link>
         ))}

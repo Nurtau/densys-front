@@ -6,6 +6,7 @@ import LoginPage from "@app/pages/LoginPage";
 import SignupPage from "@app/pages/SignupPage";
 import AdminPage from "@app/pages/AdminPage";
 import SpecializationsPage from "@app/pages/SpecializationsPage";
+import SpecializationDoctorsPage from "@app/pages/SpecializationDoctorsPage";
 import DoctorsPage from "@app/pages/DoctorsPage";
 import DoctorPage from "@app/pages/DoctorPage";
 
@@ -19,7 +20,11 @@ export default function App() {
         <Route path="/sign-up" element={<SignupPage />} />
         <Route path="/admin/*" element={<AdminPage />} />
         <Route path="/specializations" element={<SpecializationsPage />} />
-        <Route path="/specializations/doctors" element={<DoctorsPage />} />
+        <Route
+          path="/specializations/:id"
+          element={<SpecializationDoctorsPage />}
+        />
+        <Route path="/doctors" element={<DoctorsPage />} />
         <Route path="/doctors/:iin" element={<DoctorPage />} />
       </Routes>
     </div>

@@ -1,4 +1,4 @@
-import { DoctorsPageTable } from "@app/components/organisms/DoctorsPageTable/DoctorsPageTable";
+import { DoctorsPageTable } from "@app/components/organisms/DoctorsPageTable";
 
 export default function DoctorsPage() {
   return (

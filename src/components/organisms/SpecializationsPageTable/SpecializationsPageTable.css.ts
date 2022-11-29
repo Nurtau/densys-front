@@ -13,9 +13,3 @@ export const rowStyles = style({
     backgroundColor: "#B4D5FE",
   },
 });
-
-export const infoBoxStyles = style({
-  display: "flex",
-  flexDirection: "column",
-  gap: "4px",
-});

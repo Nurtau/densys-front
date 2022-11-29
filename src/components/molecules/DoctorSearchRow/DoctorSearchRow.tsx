@@ -13,7 +13,7 @@ interface DoctorSearchRowProps {
 
 export const DoctorSearchRow = ({ doctor, onClick }: DoctorSearchRowProps) => {
   return (
-    <Link to={`doctors/${doctor.iin}`} onClick={onClick}>
+    <Link to={`/doctors/${doctor.iin}`} onClick={onClick}>
       <div className={rowStyles}>
         <Avatar
           alt="doctor photo"
