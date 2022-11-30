@@ -39,12 +39,13 @@ export default function LoginPage() {
 
   const formik = useFormik<{ role: string } & OthersLogin>({
     initialValues: {
-      iin: undefined as any,
+      iin: "",
       role: ROLES[1],
       password: "",
     },
     validationSchema: validationSchema,
     onSubmit: async ({ iin, role, password }) => {
+      console.log({iin, role, password});
       const user = await api.login(role, {
         iin,
         password,
@@ -97,7 +98,6 @@ export default function LoginPage() {
             <TextField
               required
               fullWidth
-              type="number"
               id="iin"
               label="IIN"
               name="iin"

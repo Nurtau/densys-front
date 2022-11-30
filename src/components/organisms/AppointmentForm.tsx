@@ -1,5 +1,6 @@
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { useQueryClient } from "react-query";
 import { Box, Typography, TextField, Button } from "@mui/material";
 
 import { ModalInnerContainer } from "@app/components/atoms";
@@ -9,6 +10,7 @@ import {
   type AppointmentRequestCreate,
   type DateRange,
 } from "@app/api";
+import { useMe } from "@app/auth";
 
 interface AppointmentFormProps {
   doctor: DoctorPublic;
@@ -29,16 +31,21 @@ export const AppointmentForm = ({
   timeslot,
   onCancel,
   onCreate,
-}: AppointmentFormProps) => {
+}:  AppointmentFormProps) => {
+  const { me } = useMe();
+  const isPatient = me?.role === "patient";
+
+  const queryClient = useQueryClient();
+
   const formik = useFormik<Omit<AppointmentRequestCreate, "time_slots">>({
     initialValues: {
       doctor_id: doctor.id,
       specialisation_id: doctor.specialisation_id,
-      name: "",
-      surname: "",
-      middlename: "",
-      email: "",
-      phone: "+7",
+      name: me?.user.name ?? "",
+      surname: me?.user.surname ?? "",
+      middlename: me?.user.middle_name ?? "",
+      email: isPatient ? (me.user.email ?? "") : "",
+      phone: me?.user.contact_number ?? "+7",
       is_active: true,
     },
     validationSchema: validationSchema,
@@ -48,6 +55,7 @@ export const AppointmentForm = ({
         time_slots: [timeslot],
       };
       await api.createAppointmentRequest(requestBody);
+      queryClient.invalidateQueries(["active_requests"]);
       onCreate();
     },
   });
@@ -87,6 +95,7 @@ export const AppointmentForm = ({
               onChange={formik.handleChange}
               error={formik.touched.name && Boolean(formik.errors.name)}
               helperText={formik.touched.name && formik.errors.name}
+              disabled={isPatient}
             />
             <TextField
               required
@@ -98,6 +107,7 @@ export const AppointmentForm = ({
               onChange={formik.handleChange}
               error={formik.touched.surname && Boolean(formik.errors.surname)}
               helperText={formik.touched.surname && formik.errors.surname}
+              disabled={isPatient}
             />
           </div>
           <div>
@@ -112,6 +122,7 @@ export const AppointmentForm = ({
                 formik.touched.middlename && Boolean(formik.errors.middlename)
               }
               helperText={formik.touched.middlename && formik.errors.middlename}
+              disabled={isPatient}
             />
             <TextField
               required
@@ -123,6 +134,7 @@ export const AppointmentForm = ({
               onChange={formik.handleChange}
               error={formik.touched.phone && Boolean(formik.errors.phone)}
               helperText={formik.touched.phone && formik.errors.phone}
+              disabled={isPatient}
             />
           </div>
           <div>
@@ -135,6 +147,7 @@ export const AppointmentForm = ({
               onChange={formik.handleChange}
               error={formik.touched.email && Boolean(formik.errors.email)}
               helperText={formik.touched.email && formik.errors.email}
+              disabled={isPatient}
             />
           </div>
           <Box
@@ -148,7 +161,7 @@ export const AppointmentForm = ({
               CANCEL
             </Button>
             <Button sx={{ mr: "8px" }} type="submit" variant="contained">
-              "CREATE"{" "}
+              CREATE  
             </Button>
           </Box>
         </div>

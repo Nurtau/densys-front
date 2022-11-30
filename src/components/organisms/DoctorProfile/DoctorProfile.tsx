@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import { useState } from "react";
-import { Typography, TextField, MenuItem, Button, Modal } from "@mui/material";
+import { Typography, TextField, MenuItem, Button, Modal, Snackbar, Alert } from "@mui/material";
 
 import { api, type DoctorPublic } from "@app/api";
 import { DEPARTMENTS, SPECIALIZATIONS } from "@app/constants";
@@ -41,13 +41,27 @@ export const DoctorProfile = ({ doctor }: DoctorProfileProps) => {
 
   const [timeslotIndex, setTimeslotIndex] = useState<number | null>(null);
   const [formOpen, setFormOpen] = useState(false);
+  const [messageOpen, setMessageOpen] = useState(false);
 
   const openModal = () => setFormOpen(true);
   const closeModal = () => setFormOpen(false);
 
-  const timeslots = getTimeslots(doctor.day_start, doctor.day_end);
+  const timeslots = getTimeslots(doctor.day_start, doctor.day_end).filter(ts => {
+    if (!data) return false;
+    const bookedTimeslotsStart: string[] = [];
 
-  const selectedTimeslot = timeslotIndex ? timeslots[timeslotIndex] : undefined;
+    const doctorRequests = data.filter(d => d.doctor_id === doctor.id);
+
+    doctorRequests.forEach(d => {
+      if (d.time_slots) {
+        bookedTimeslotsStart.push(d.time_slots[0].start_datetime);
+      }
+    });
+    
+    return !bookedTimeslotsStart.find(booked => booked === ts.start_datetime);
+  });
+
+  const selectedTimeslot = timeslotIndex !== null ? timeslots[timeslotIndex] : undefined;
 
   return (
     <>
@@ -70,7 +84,7 @@ export const DoctorProfile = ({ doctor }: DoctorProfileProps) => {
           <div>Price: {price}</div>
 
           <TextField
-            sx={{ mt: "20px", width: "50%" }}
+            sx={{ mt: "20px", width: "50%", minWidth: "250px", }}
             select
             label="Available timeslots"
             placeholder="12:00-12:30"
@@ -86,7 +100,7 @@ export const DoctorProfile = ({ doctor }: DoctorProfileProps) => {
           </TextField>
           <Button
             variant="outlined"
-            sx={{ width: "50%" }}
+            sx={{ width: "50%", minWidth: "250px" }}
             disabled={timeslotIndex === null}
             onClick={openModal}
           >
@@ -103,12 +117,22 @@ export const DoctorProfile = ({ doctor }: DoctorProfileProps) => {
             <AppointmentForm
               doctor={doctor}
               onCancel={closeModal}
-              onCreate={closeModal}
+              onCreate={() => {
+                closeModal();
+                setMessageOpen(true);
+              }}
               timeslot={selectedTimeslot}
             />
           )}
         </>
       </Modal>
+      <Snackbar open={messageOpen} autoHideDuration={6000} onClose={() => setMessageOpen(false)}
+      anchorOrigin={{vertical: "top", horizontal: "center"}}
+      >
+        <Alert onClose={() => setMessageOpen(false)} severity="success" sx={{ width: '100%' }}>
+          Successfully sent appointment request!
+        </Alert>
+      </Snackbar>
     </>
   );
 };

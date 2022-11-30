@@ -50,8 +50,13 @@ export const DoctorSearchModal = ({ closeModal }: DoctorSearchModalProps) => {
       clearTimeout(timerId);
     };
   }, [input]);
-
-  console.log(input);
+  
+  const options = ([
+...doctorNames,
+            ...doctorSurnames,
+            ...specializationsNames,
+            ...procedures,
+  ]).filter(option => option.toLowerCase().includes(input.toLowerCase()));
 
   return (
     <div className={modalBoxStyles}>
@@ -72,12 +77,7 @@ export const DoctorSearchModal = ({ closeModal }: DoctorSearchModalProps) => {
           onChange={(_: any, newValue: string | null) => {
             setInput(newValue ?? "");
           }}
-          options={[
-            ...doctorNames,
-            ...doctorSurnames,
-            ...specializationsNames,
-            ...procedures,
-          ]}
+          options={options}
           renderInput={(params) => (
             <TextField
               {...params}
