@@ -25,7 +25,7 @@ Contract between front-end and back-end is established by OpenAPI.
 
 ## Doctors by Specialization Page
 
-![doctors by specialization page photo](/app_pictures/doctors-by-specialization-page.png)
+![doctors by specialization page photo](/app_pictures/doctors-by-specialization.png)
 
 ## Doctors Page
 
@@ -46,6 +46,10 @@ Contract between front-end and back-end is established by OpenAPI.
 ## Successfully created appointment message
 
 ![created appointment message form photo](/app_pictures/created-appointment-message.png)
+
+## Doctors and Patients Login
+
+![doctors and patients page photo](/app_pictures/doctor-patient-login.png)
 
 ## Second Milestone
 
