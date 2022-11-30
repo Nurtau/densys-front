@@ -11,35 +11,35 @@ Contract between front-end and back-end is established by OpenAPI.
 
 ## Third Milestone
 
-## Search Bar
+## Search bar
 
 ![search bar photo](/app_pictures/search-modal.png)
 
-## Search Bar in Action
+## Search bar in action
 
 ![search bar in action photo](/app_pictures/search-modal-in-action.png)
 
-## Specializations Page
+## Specializations page
 
 ![specializations page photo](/app_pictures/specializations-page.png)
 
-## Doctors by Specialization Page
+## Doctors by specialization page
 
 ![doctors by specialization page photo](/app_pictures/doctors-by-specialization.png)
 
-## Doctors Page
+## Doctors page
 
 ![doctors page photo](/app_pictures/doctors-page.png)
 
-## Doctor Page
+## Doctor page
 
 ![doctor page photo](/app_pictures/doctor-page.png)
 
-## Available Appointment Slots
+## Available appointment slots
 
 ![available appointment slots photo](/app_pictures/appointment-slots.png)
 
-## Appointment Form
+## Appointment form
 
 ![appointment form photo](/app_pictures/appointment-form.png)
 
@@ -47,7 +47,7 @@ Contract between front-end and back-end is established by OpenAPI.
 
 ![created appointment message form photo](/app_pictures/created-appointment-message.png)
 
-## Doctors and Patients Login
+## Doctors and patients login
 
 ![doctors and patients page photo](/app_pictures/doctor-patient-login.png)
 
