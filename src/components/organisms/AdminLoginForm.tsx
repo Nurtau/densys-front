@@ -41,6 +41,7 @@ export const AdminLoginForm = () => {
       });
 
       if (access_token) {
+        console.log(access_token);
         changeToken(access_token);
         navigate("/admin/patients");
       }

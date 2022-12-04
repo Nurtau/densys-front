@@ -11,7 +11,8 @@ import {
 } from "@mui/material";
 
 import { api, type DoctorPublic } from "@app/api";
-import { DEPARTMENTS, SPECIALIZATIONS } from "@app/constants";
+import { SPECIALIZATIONS } from "@app/constants";
+import { useDepartments } from "@app/components/molecules";
 import { getTimeslots } from "@app/lib";
 
 import { AppointmentForm } from "../AppointmentForm";
@@ -45,6 +46,7 @@ export const DoctorProfile = ({ doctor }: DoctorProfileProps) => {
   } = doctor;
 
   const { data } = useQuery("active_requests", () => api.getActiveRequests());
+  const departments = useDepartments();
 
   const [timeslotIndex, setTimeslotIndex] = useState<number | null>(null);
   const [formOpen, setFormOpen] = useState(false);
@@ -72,6 +74,10 @@ export const DoctorProfile = ({ doctor }: DoctorProfileProps) => {
     }
   );
 
+  const doctorDepartment = departments.find(
+    (department) => department.id === department_id
+  );
+
   const selectedTimeslot =
     timeslotIndex !== null ? timeslots[timeslotIndex] : undefined;
 
@@ -83,7 +89,7 @@ export const DoctorProfile = ({ doctor }: DoctorProfileProps) => {
             {name} {middle_name} {surname}
           </Typography>
           <div>IIN: {iin}</div>
-          <div>Department: {DEPARTMENTS[department_id - 1]}</div>
+          <div>Department: {doctorDepartment?.name ?? "NOT FOUND"}</div>
           <div>Specialization: {SPECIALIZATIONS[specialisation_id - 1]}</div>
           <div>Procedure: {procedure}</div>
           <div>

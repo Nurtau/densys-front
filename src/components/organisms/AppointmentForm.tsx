@@ -39,7 +39,7 @@ export const AppointmentForm = ({
 
   const formik = useFormik<Omit<AppointmentRequestCreate, "time_slots">>({
     initialValues: {
-      doctor_id: doctor.id,
+      doctor_id: doctor.id!,
       specialisation_id: doctor.specialisation_id,
       name: me?.user.name ?? "",
       surname: me?.user.surname ?? "",

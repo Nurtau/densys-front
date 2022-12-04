@@ -10,8 +10,8 @@ import {
 } from "@mui/material";
 
 import { type DoctorPublic } from "@app/api";
-
-import { DEPARTMENTS, SPECIALIZATIONS } from "@app/constants";
+import { useDepartments } from "@app/components/molecules";
+import { SPECIALIZATIONS } from "@app/constants";
 
 import { DoctorForm } from "./DoctorForm";
 
@@ -27,6 +27,12 @@ export const DoctorsTable = ({
   const [selectedDoctor, setSelectedDoctor] = useState<DoctorPublic | null>(
     null
   );
+
+  const departments = useDepartments();
+  const departmentsMap = departments.reduce((obj, { id, name }) => {
+    obj[id] = name;
+    return obj;
+  }, {} as Record<number, string>);
 
   const closeModal = () => setSelectedDoctor(null);
 
@@ -59,7 +65,7 @@ export const DoctorsTable = ({
                 <TableCell align="center">{doctor.contact_number}</TableCell>
                 <TableCell align="center">{doctor.iin}</TableCell>
                 <TableCell align="center">
-                  {DEPARTMENTS[doctor.department_id - 1]}
+                  {departmentsMap[doctor.department_id]}
                 </TableCell>
                 <TableCell align="center">
                   {SPECIALIZATIONS[doctor.specialisation_id - 1]}

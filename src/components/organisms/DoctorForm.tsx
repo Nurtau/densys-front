@@ -14,7 +14,8 @@ import { api, type DoctorCreate, type DoctorPublic } from "@app/api";
 
 import { useAdminAuth } from "@app/auth";
 import { ModalInnerContainer, ImageInput } from "@app/components/atoms";
-import { DEPARTMENTS, SPECIALIZATIONS, DOCTOR_SHIFTS } from "@app/constants";
+import { useDepartments } from "@app/components/molecules";
+import { SPECIALIZATIONS, DOCTOR_SHIFTS } from "@app/constants";
 
 const validationSchema = yup.object({
   name: yup.string().required("Name is required"),
@@ -70,6 +71,8 @@ export const DoctorForm = ({
   const { accessToken } = useAdminAuth();
   const [modify, setModify] = useState(false);
 
+  const departments = useDepartments();
+
   const areInputDisabled = mode === "modification" && !modify;
 
   const formik = useFormik<
@@ -82,8 +85,8 @@ export const DoctorForm = ({
       name: "",
       surname: "",
       middle_name: "",
-      specialisation_id: 1,
-      department_id: 1,
+      specialisation_id: undefined as any,
+      department_id: undefined as any,
       procedure: "",
       doctor_shift_index: 0,
       experience: undefined as any,
@@ -289,8 +292,8 @@ export const DoctorForm = ({
               }
               disabled={areInputDisabled}
             >
-              {DEPARTMENTS.map((department_id, index) => (
-                <MenuItem value={index + 1}>{department_id}</MenuItem>
+              {departments.map(({ name, id }) => (
+                <MenuItem value={id}>{name}</MenuItem>
               ))}
             </TextField>
           </div>

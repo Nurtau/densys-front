@@ -7,9 +7,13 @@ import {
   TableBody,
 } from "@mui/material";
 
-import { DEPARTMENTS } from "@app/constants";
+import { type Department } from "@app/api";
 
-export const DepartmentsTable = () => {
+interface DepartmentsTableProps {
+  departments: Department[];
+}
+
+export const DepartmentsTable = ({ departments }: DepartmentsTableProps) => {
   return (
     <TableContainer sx={{ width: "400px" }}>
       <Table>
@@ -22,12 +26,12 @@ export const DepartmentsTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {DEPARTMENTS.map((name, index) => (
+          {departments.map(({ name, id }) => (
             <TableRow
-              key={index}
+              key={id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell align="center">{index + 1}</TableCell>
+              <TableCell align="center">{id}</TableCell>
               <TableCell align="center">{name}</TableCell>
             </TableRow>
           ))}

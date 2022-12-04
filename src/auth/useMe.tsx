@@ -59,7 +59,7 @@ export const useMe = (): AuthContextType => {
   const contextValue = useContext(AuthContext);
 
   if (!contextValue) {
-    throw new Error("useAuth must be called within AuthProvider");
+    throw new Error("useMe must be called within AuthProvider");
   }
 
   return contextValue;
