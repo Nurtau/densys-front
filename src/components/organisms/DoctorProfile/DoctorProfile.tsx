@@ -1,6 +1,14 @@
 import { useQuery } from "react-query";
 import { useState } from "react";
-import { Typography, TextField, MenuItem, Button, Modal, Snackbar, Alert } from "@mui/material";
+import {
+  Typography,
+  TextField,
+  MenuItem,
+  Button,
+  Modal,
+  Snackbar,
+  Alert,
+} from "@mui/material";
 
 import { api, type DoctorPublic } from "@app/api";
 import { DEPARTMENTS, SPECIALIZATIONS } from "@app/constants";
@@ -37,7 +45,6 @@ export const DoctorProfile = ({ doctor }: DoctorProfileProps) => {
   } = doctor;
 
   const { data } = useQuery("active_requests", () => api.getActiveRequests());
-  console.log(data);
 
   const [timeslotIndex, setTimeslotIndex] = useState<number | null>(null);
   const [formOpen, setFormOpen] = useState(false);
@@ -46,22 +53,27 @@ export const DoctorProfile = ({ doctor }: DoctorProfileProps) => {
   const openModal = () => setFormOpen(true);
   const closeModal = () => setFormOpen(false);
 
-  const timeslots = getTimeslots(doctor.day_start, doctor.day_end).filter(ts => {
-    if (!data) return false;
-    const bookedTimeslotsStart: string[] = [];
+  const timeslots = getTimeslots(doctor.day_start!, doctor.day_end!).filter(
+    (ts) => {
+      if (!data) return false;
+      const bookedTimeslotsStart: string[] = [];
 
-    const doctorRequests = data.filter(d => d.doctor_id === doctor.id);
+      const doctorRequests = data.filter((d) => d.doctor_id === doctor.id);
 
-    doctorRequests.forEach(d => {
-      if (d.time_slots) {
-        bookedTimeslotsStart.push(d.time_slots[0].start_datetime);
-      }
-    });
-    
-    return !bookedTimeslotsStart.find(booked => booked === ts.start_datetime);
-  });
+      doctorRequests.forEach((d) => {
+        if (d.time_slots) {
+          bookedTimeslotsStart.push(d.time_slots[0].start_datetime);
+        }
+      });
 
-  const selectedTimeslot = timeslotIndex !== null ? timeslots[timeslotIndex] : undefined;
+      return !bookedTimeslotsStart.find(
+        (booked) => booked === ts.start_datetime
+      );
+    }
+  );
+
+  const selectedTimeslot =
+    timeslotIndex !== null ? timeslots[timeslotIndex] : undefined;
 
   return (
     <>
@@ -84,7 +96,7 @@ export const DoctorProfile = ({ doctor }: DoctorProfileProps) => {
           <div>Price: {price}</div>
 
           <TextField
-            sx={{ mt: "20px", width: "50%", minWidth: "250px", }}
+            sx={{ mt: "20px", width: "50%", minWidth: "250px" }}
             select
             label="Available timeslots"
             placeholder="12:00-12:30"
@@ -126,10 +138,17 @@ export const DoctorProfile = ({ doctor }: DoctorProfileProps) => {
           )}
         </>
       </Modal>
-      <Snackbar open={messageOpen} autoHideDuration={6000} onClose={() => setMessageOpen(false)}
-      anchorOrigin={{vertical: "top", horizontal: "center"}}
+      <Snackbar
+        open={messageOpen}
+        autoHideDuration={6000}
+        onClose={() => setMessageOpen(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
-        <Alert onClose={() => setMessageOpen(false)} severity="success" sx={{ width: '100%' }}>
+        <Alert
+          onClose={() => setMessageOpen(false)}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
           Successfully sent appointment request!
         </Alert>
       </Snackbar>

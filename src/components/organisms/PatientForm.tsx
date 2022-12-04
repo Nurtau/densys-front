@@ -103,11 +103,10 @@ export const PatientForm = ({
           onPatientChange();
         } else {
           setIsRequestPending(true);
-          await api.createPatient(requestBody);
+          await api.createPatinet(requestBody);
           onPatientChange();
         }
       } catch (error) {
-        console.log(error);
         setIsRequestPending(false);
       }
     },

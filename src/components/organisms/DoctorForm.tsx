@@ -116,12 +116,10 @@ export const DoctorForm = ({
           onDoctorChange();
         } else {
           setIsRequestPending(true);
-          const response = await api.createDoctor(requestBody);
+          await api.createDoctor(requestBody);
           onDoctorChange();
-          console.log(response);
         }
       } catch (error) {
-        console.log(error);
         setIsRequestPending(false);
       }
     },

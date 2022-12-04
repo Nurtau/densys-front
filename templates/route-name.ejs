@@ -1,0 +1,43 @@
+<%
+const { routeInfo, utils } = it;
+const {
+  operationId,
+  method,
+  route,
+  moduleName,
+  responsesTypes,
+  description,
+  tags,
+  summary,
+  pathArgs,
+} = routeInfo;
+const { _, fmtToJSDocLine, require } = utils;
+
+const createCustomOperationId = (method, route, moduleName) => {
+  const hasPathInserts = /\{(\w){1,}\}/g.test(route);
+  const splitedRouteBySlash = _.compact(_.replace(route, /\{(\w){1,}\}/g, "").split("/"));
+  console.log(`=== ${method} ${route}`, hasPathInserts, splitedRouteBySlash);
+  
+  let query = splitedRouteBySlash[splitedRouteBySlash.length - 1];
+  
+  // QUICK WORKAROUND
+  if (route.includes("search")) {
+    const context =  query.split("_")[1];
+    query = `search_${context}`;
+  } else if (route.includes("login")) {
+    if (hasPathInserts) {
+      query = "login";
+    } else {
+      query = "admin_login";
+    }
+  }
+
+  return _.camelCase(query);
+};
+
+if (route === "/")
+  return _.camelCase(`${_.lowerCase(method)}Root`);
+
+return createCustomOperationId(method, route, moduleName);
+%>
+u

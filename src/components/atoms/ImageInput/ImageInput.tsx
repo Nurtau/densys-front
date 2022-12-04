@@ -27,7 +27,7 @@ export const ImageInput = ({
       const base64 = await toBase64(file);
       onChange(base64);
     } catch (error) {
-      console.log(error);
+      console.warn(error);
     }
   };
 

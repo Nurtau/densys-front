@@ -86,6 +86,36 @@ export interface AppointmentRequestCreate {
   is_active?: boolean;
 }
 
+/** AppointmentRequestUpdate */
+export interface AppointmentRequestUpdate {
+  /** Doctor Id */
+  doctor_id: number;
+  /** Specialisation Id */
+  specialisation_id: number;
+  /** Name */
+  name: string;
+  /** Surname */
+  surname: string;
+  /** Middlename */
+  middlename: string;
+  /** Email */
+  email: string;
+  /** Phone */
+  phone: string;
+  /**
+   * Time Slots
+   * @default []
+   */
+  time_slots?: DateRange[];
+  /**
+   * Is Active
+   * @default true
+   */
+  is_active?: boolean;
+  /** Id */
+  id: number;
+}
+
 /** DateRange */
 export interface DateRange {
   /** Start Datetime */
@@ -115,7 +145,7 @@ export interface DoctorCreate {
   /** Contact Number */
   contact_number: string;
   /** Id */
-  id: number;
+  id?: number;
   /** Experience */
   experience: number;
   /** Price */
@@ -125,9 +155,9 @@ export interface DoctorCreate {
   /** Url */
   url: string;
   /** Day Start */
-  day_start: string;
+  day_start?: string;
   /** Day End */
-  day_end: string;
+  day_end?: string;
   /** Address */
   address: string;
   /** Education */
@@ -140,7 +170,7 @@ export interface DoctorCreate {
   /** Category */
   category: string;
   /** Procedure */
-  procedure: string;
+  procedure?: string;
   /** Specialisation Id */
   specialisation_id: number;
   /** Department Id */
@@ -168,7 +198,7 @@ export interface DoctorInDB {
   /** Contact Number */
   contact_number: string;
   /** Id */
-  id: number;
+  id?: number;
   /** Experience */
   experience: number;
   /** Price */
@@ -178,9 +208,9 @@ export interface DoctorInDB {
   /** Url */
   url: string;
   /** Day Start */
-  day_start: string;
+  day_start?: string;
   /** Day End */
-  day_end: string;
+  day_end?: string;
   /** Address */
   address: string;
   /** Education */
@@ -193,7 +223,7 @@ export interface DoctorInDB {
   /** Category */
   category: string;
   /** Procedure */
-  procedure: string;
+  procedure?: string;
   /** Specialisation Id */
   specialisation_id: number;
   /** Department Id */
@@ -221,7 +251,7 @@ export interface DoctorPublic {
   /** Contact Number */
   contact_number: string;
   /** Id */
-  id: number;
+  id?: number;
   /** Experience */
   experience: number;
   /** Price */
@@ -231,9 +261,9 @@ export interface DoctorPublic {
   /** Url */
   url: string;
   /** Day Start */
-  day_start: string;
+  day_start?: string;
   /** Day End */
-  day_end: string;
+  day_end?: string;
   /** Address */
   address: string;
   /** Education */
@@ -246,7 +276,7 @@ export interface DoctorPublic {
   /** Category */
   category: string;
   /** Procedure */
-  procedure: string;
+  procedure?: string;
   /** Specialisation Id */
   specialisation_id: number;
   /** Department Id */
@@ -260,6 +290,16 @@ export interface DoctorPublic {
 export interface HTTPValidationError {
   /** Detail */
   detail?: ValidationError[];
+}
+
+/** History */
+export interface History {
+  /** Medications */
+  medications: PrescriptionCreate[];
+  /** Procedures */
+  procedures: ProcedureCreate[];
+  /** Appointments */
+  appointments: AppointmentRequestUpdate[];
 }
 
 /** OthersLogin */
@@ -312,7 +352,7 @@ export interface PatientCreate {
   /**
    * Registration Date
    * @format date
-   * @default "2022-11-29T17:58:29.927872"
+   * @default "2022-12-04T17:35:00.755867"
    */
   registration_date?: Date;
   /**
@@ -363,7 +403,7 @@ export interface PatientInDB {
   /**
    * Registration Date
    * @format date
-   * @default "2022-11-29T17:58:29.927872"
+   * @default "2022-12-04T17:35:00.755867"
    */
   registration_date?: Date;
   /**
@@ -374,6 +414,51 @@ export interface PatientInDB {
   password: string;
   /** Salt */
   salt: string;
+}
+
+/** PatientListed */
+export interface PatientListed {
+  /** Iin */
+  iin: string;
+  /** Name */
+  name: string;
+  /** Surname */
+  surname: string;
+  /** Middle Name */
+  middle_name: string;
+  /** Contact Number */
+  contact_number: string;
+  /**
+   * Day Of Birth
+   * @format date
+   */
+  day_of_birth: Date;
+  /** Blood Group */
+  blood_group: string;
+  /** Emergency Contact Number */
+  emergency_contact_number: string;
+  /**
+   * Email
+   * @format email
+   */
+  email?: string;
+  /** Address */
+  address: string;
+  /**
+   * Marital Status
+   * @default true
+   */
+  marital_status?: boolean;
+  /** Government Id */
+  government_id: string;
+  /**
+   * Registration Date
+   * @format date
+   * @default "2022-12-04T17:35:00.755867"
+   */
+  registration_date?: Date;
+  /** Id */
+  id: number;
 }
 
 /** PatientPublic */
@@ -414,9 +499,54 @@ export interface PatientPublic {
   /**
    * Registration Date
    * @format date
-   * @default "2022-11-29T17:58:29.927872"
+   * @default "2022-12-04T17:35:00.755867"
    */
   registration_date?: Date;
+  access_token?: AccessToken;
+}
+
+/** PrescriptionCreate */
+export interface PrescriptionCreate {
+  /** Doctor Id */
+  doctor_id: number;
+  /** Patient Id */
+  patient_id: number;
+  /** Name */
+  name: string;
+  /** Start Date */
+  start_date: string;
+  /** End Date */
+  end_date: string;
+}
+
+/** ProcedureCreate */
+export interface ProcedureCreate {
+  /** Doctor Id */
+  doctor_id: number;
+  /** Patient Id */
+  patient_id: number;
+  /** Name */
+  name: string;
+  /** Date */
+  date: string;
+  /** Cost */
+  cost: number;
+}
+
+/** Report */
+export interface Report {
+  /** Patient Counts Chart */
+  patient_counts_chart: Record<string, number>;
+  /** Procedures Sums Chart */
+  procedures_sums_chart: Record<string, number>;
+  /** Procedures Counts Chart */
+  procedures_counts_chart: Record<string, number>;
+  /** Procedures By Name */
+  procedures_by_name: Record<string, number>;
+  /** Prescriptions Counts Chart */
+  prescriptions_counts_chart: Record<string, number>;
+  /** Medications By Name */
+  medications_by_name: Record<string, number>;
 }
 
 /** Specialisation */
@@ -700,13 +830,13 @@ export class Api<SecurityDataType extends unknown> {
      * @description Register the Patient
      *
      * @tags patient registration
-     * @name CreatePatient
+     * @name CreatePatinet
      * @summary Patient Create
      * @request POST:/users/create_patinet
      * @response `200` `PatientPublic` Successful Response
      * @response `422` `HTTPValidationError` Validation Error
      */
-    createPatient: (data: PatientCreate, params: RequestParams = {}) =>
+    createPatinet: (data: PatientCreate, params: RequestParams = {}) =>
       this.http.request<PatientPublic, HTTPValidationError>({
         path: `/users/create_patinet`,
         method: "POST",
@@ -723,10 +853,10 @@ export class Api<SecurityDataType extends unknown> {
      * @name GetPatients
      * @summary Get Patients
      * @request GET:/users/get_patients
-     * @response `200` `(PatientPublic)[]` Successful Response
+     * @response `200` `(PatientListed)[]` Successful Response
      */
     getPatients: (params: RequestParams = {}) =>
-      this.http.request<PatientPublic[], any>({
+      this.http.request<PatientListed[], any>({
         path: `/users/get_patients`,
         method: "GET",
         format: "json",
@@ -832,13 +962,13 @@ export class Api<SecurityDataType extends unknown> {
      * @description Register new department
      *
      * @tags department registration
-     * @name CreateDeparment
+     * @name CreateDepartment
      * @summary Department Create
      * @request POST:/users/create_department
      * @response `200` `Department` Successful Response
      * @response `422` `HTTPValidationError` Validation Error
      */
-    createDeparment: (data: Department, params: RequestParams = {}) =>
+    createDepartment: (data: Department, params: RequestParams = {}) =>
       this.http.request<Department, HTTPValidationError>({
         path: `/users/create_department`,
         method: "POST",
@@ -878,10 +1008,10 @@ export class Api<SecurityDataType extends unknown> {
      * @name GetActiveRequests
      * @summary Active Requests Get
      * @request GET:/users/get_active_requests
-     * @response `200` `(AppointmentRequestCreate)[]` Successful Response
+     * @response `200` `(AppointmentRequestUpdate)[]` Successful Response
      */
     getActiveRequests: (params: RequestParams = {}) =>
-      this.http.request<AppointmentRequestCreate[], any>({
+      this.http.request<AppointmentRequestUpdate[], any>({
         path: `/users/get_active_requests`,
         method: "GET",
         format: "json",
@@ -932,13 +1062,13 @@ export class Api<SecurityDataType extends unknown> {
      * @description Add admin
      *
      * @tags user login
-     * @name CreateAdmin
+     * @name AddAdmin
      * @summary Admin Registration
      * @request POST:/users/add_admin
      * @response `200` `Admin` Successful Response
      * @response `422` `HTTPValidationError` Validation Error
      */
-    createAdmin: (data: AdminCreate, params: RequestParams = {}) =>
+    addAdmin: (data: AdminCreate, params: RequestParams = {}) =>
       this.http.request<Admin, HTTPValidationError>({
         path: `/users/add_admin`,
         method: "POST",
@@ -1019,6 +1149,225 @@ export class Api<SecurityDataType extends unknown> {
         method: "POST",
         body: data,
         type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Change appointment status
+     *
+     * @tags appointment request
+     * @name MarkAppointment
+     * @summary Accept Appointment
+     * @request POST:/users/mark_appointment
+     * @response `200` `AppointmentRequestUpdate` Successful Response
+     * @response `422` `HTTPValidationError` Validation Error
+     */
+    markAppointment: (
+      query: {
+        /** Token */
+        token: string;
+        /** Status */
+        status: number;
+      },
+      data: AppointmentRequestUpdate,
+      params: RequestParams = {}
+    ) =>
+      this.http.request<AppointmentRequestUpdate, HTTPValidationError>({
+        path: `/users/mark_appointment`,
+        method: "POST",
+        query: query,
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Get appointments for doctor
+     *
+     * @tags appointment request
+     * @name GetDoctorAppointments
+     * @summary Get Doctor Appointments
+     * @request GET:/users/get_doctor_appointments
+     * @response `200` `(AppointmentRequestUpdate)[]` Successful Response
+     * @response `422` `HTTPValidationError` Validation Error
+     */
+    getDoctorAppointments: (
+      query: {
+        /** Doctor Id */
+        doctor_id: number;
+        /** Token */
+        token: string;
+      },
+      params: RequestParams = {}
+    ) =>
+      this.http.request<AppointmentRequestUpdate[], HTTPValidationError>({
+        path: `/users/get_doctor_appointments`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Prescribe medication
+     *
+     * @tags prescriptions
+     * @name PrescribeMedication
+     * @summary Get Doctor Appointments
+     * @request POST:/users/prescribe_medication
+     * @response `200` `PrescriptionCreate` Successful Response
+     * @response `422` `HTTPValidationError` Validation Error
+     */
+    prescribeMedication: (
+      query: {
+        /** Token */
+        token: string;
+      },
+      data: PrescriptionCreate,
+      params: RequestParams = {}
+    ) =>
+      this.http.request<PrescriptionCreate, HTTPValidationError>({
+        path: `/users/prescribe_medication`,
+        method: "POST",
+        query: query,
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Prescribe medication
+     *
+     * @tags prescriptions
+     * @name GetPrescriptions
+     * @summary Get Doctor Appointments
+     * @request GET:/users/get_prescriptions
+     * @response `200` `(PrescriptionCreate)[]` Successful Response
+     * @response `422` `HTTPValidationError` Validation Error
+     */
+    getPrescriptions: (
+      query: {
+        /** Id */
+        id: number;
+        /** Token */
+        token: string;
+      },
+      params: RequestParams = {}
+    ) =>
+      this.http.request<PrescriptionCreate[], HTTPValidationError>({
+        path: `/users/get_prescriptions`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Prescribe procedure
+     *
+     * @tags prescriptions
+     * @name PrescribeProcedure
+     * @summary Prescribe Procedure Handler
+     * @request POST:/users/prescribe_procedure
+     * @response `200` `ProcedureCreate` Successful Response
+     * @response `422` `HTTPValidationError` Validation Error
+     */
+    prescribeProcedure: (
+      query: {
+        /** Token */
+        token: string;
+      },
+      data: ProcedureCreate,
+      params: RequestParams = {}
+    ) =>
+      this.http.request<ProcedureCreate, HTTPValidationError>({
+        path: `/users/prescribe_procedure`,
+        method: "POST",
+        query: query,
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Get procedures
+     *
+     * @tags prescriptions
+     * @name GetProcedures
+     * @summary Get Procedures
+     * @request GET:/users/get_procedures
+     * @response `200` `(ProcedureCreate)[]` Successful Response
+     * @response `422` `HTTPValidationError` Validation Error
+     */
+    getProcedures: (
+      query: {
+        /** Id */
+        id: number;
+        /** Token */
+        token: string;
+      },
+      params: RequestParams = {}
+    ) =>
+      this.http.request<ProcedureCreate[], HTTPValidationError>({
+        path: `/users/get_procedures`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Get treatment history
+     *
+     * @tags history
+     * @name GetTreatmentHistory
+     * @summary Get Treatment History
+     * @request GET:/users/get_treatment_history
+     * @response `200` `History` Successful Response
+     * @response `422` `HTTPValidationError` Validation Error
+     */
+    getTreatmentHistory: (
+      query: {
+        /** Token */
+        token: string;
+      },
+      params: RequestParams = {}
+    ) =>
+      this.http.request<History, HTTPValidationError>({
+        path: `/users/get_treatment_history`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Get patients for period
+     *
+     * @tags report
+     * @name PatientsForPeriod
+     * @summary Patients For Period
+     * @request GET:/users/patients_for_period
+     * @response `200` `Report` Successful Response
+     * @response `422` `HTTPValidationError` Validation Error
+     */
+    patientsForPeriod: (
+      query: {
+        /** Start Date */
+        start_date: string;
+        /** End Date */
+        end_date: string;
+      },
+      params: RequestParams = {}
+    ) =>
+      this.http.request<Report, HTTPValidationError>({
+        path: `/users/patients_for_period`,
+        method: "GET",
+        query: query,
         format: "json",
         ...params,
       }),

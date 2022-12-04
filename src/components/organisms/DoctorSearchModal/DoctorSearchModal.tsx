@@ -24,15 +24,22 @@ export const DoctorSearchModal = ({ closeModal }: DoctorSearchModalProps) => {
     () => api.searchDoctors(debouncedInput)
   );
 
-  console.log(debouncedInput, searchedDoctors);
-
   const procedures = useMemo(() => {
-    const procedures = (allDoctors ?? []).map((doctor) => doctor.procedure);
+    const procedures = (allDoctors ?? [])
+      .map((doctor) => doctor.procedure)
+      .filter((p) => p !== undefined) as string[];
+
     return [...new Set(procedures)];
   }, [allDoctors]);
 
   const specializationsNames = useMemo(
-    () => [...new Set((allDoctors ?? []).map((doctor) => SPECIALIZATIONS[doctor.specialisation_id]))],
+    () => [
+      ...new Set(
+        (allDoctors ?? []).map(
+          (doctor) => SPECIALIZATIONS[doctor.specialisation_id]
+        )
+      ),
+    ],
     [allDoctors]
   );
 
@@ -48,13 +55,13 @@ export const DoctorSearchModal = ({ closeModal }: DoctorSearchModalProps) => {
       clearTimeout(timerId);
     };
   }, [input]);
-  
-  const options = ([
-...doctorNames,
-            ...doctorSurnames,
-            ...specializationsNames,
-            ...procedures,
-  ]).filter(option => option.toLowerCase().includes(input.toLowerCase()));
+
+  const options = [
+    ...doctorNames,
+    ...doctorSurnames,
+    ...specializationsNames,
+    ...procedures,
+  ].filter((option) => option.toLowerCase().includes(input.toLowerCase()));
 
   return (
     <div className={modalBoxStyles}>

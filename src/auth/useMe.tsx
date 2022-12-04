@@ -38,9 +38,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const contextValue: AuthContextType = useMemo(
     () => ({
       me,
-      updateMe: (me) => {
-        setMe(me);
-        localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(me));
+      updateMe: (newMe) => {
+        setMe(newMe);
+        localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(newMe));
       },
       removeMe: () => {
         setMe(null);

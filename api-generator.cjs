@@ -1,11 +1,11 @@
 const { generateApi } = require("swagger-typescript-api");
 const path = require("path");
-const fs = require("fs");
 
 generateApi({
   name: "Api.ts",
   output: path.resolve(process.cwd(), "./src/api"),
-  input: "../swagger.json",
+  url: "http://localhost:8000/openapi.json",
+  templates: path.resolve(process.cwd(), "./templates"),
   httpClientType: "fetch", // or "fetch"
   defaultResponseAsSuccess: false,
   generateClient: true,
@@ -51,10 +51,6 @@ generateApi({
   anotherArrayType: false,
   fixInvalidTypeNamePrefix: "Type",
   fixInvalidEnumKeyPrefix: "Value",
-  codeGenConstructs: (constructs) => ({
-    ...constructs,
-    RecordType: (key, value) => `MyRecord<key, value>`,
-  }),
   primitiveTypeConstructs: (constructs) => ({
     ...constructs,
     string: {

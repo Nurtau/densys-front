@@ -45,13 +45,10 @@ export default function LoginPage() {
     },
     validationSchema: validationSchema,
     onSubmit: async ({ iin, role, password }) => {
-      console.log({iin, role, password});
       const user = await api.login(role, {
         iin,
         password,
       });
-
-      console.log(user);
 
       if (role === "patient") {
         updateMe({

@@ -31,7 +31,7 @@ export const AppointmentForm = ({
   timeslot,
   onCancel,
   onCreate,
-}:  AppointmentFormProps) => {
+}: AppointmentFormProps) => {
   const { me } = useMe();
   const isPatient = me?.role === "patient";
 
@@ -44,7 +44,7 @@ export const AppointmentForm = ({
       name: me?.user.name ?? "",
       surname: me?.user.surname ?? "",
       middlename: me?.user.middle_name ?? "",
-      email: isPatient ? (me.user.email ?? "") : "",
+      email: isPatient ? me.user.email ?? "" : "",
       phone: me?.user.contact_number ?? "+7",
       is_active: true,
     },
@@ -161,7 +161,7 @@ export const AppointmentForm = ({
               CANCEL
             </Button>
             <Button sx={{ mr: "8px" }} type="submit" variant="contained">
-              CREATE  
+              CREATE
             </Button>
           </Box>
         </div>
