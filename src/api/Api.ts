@@ -352,7 +352,7 @@ export interface PatientCreate {
   /**
    * Registration Date
    * @format date
-   * @default "2022-12-04T17:35:00.755867"
+   * @default "2022-12-04T17:35:00.683518"
    */
   registration_date?: Date;
   /**
@@ -403,7 +403,7 @@ export interface PatientInDB {
   /**
    * Registration Date
    * @format date
-   * @default "2022-12-04T17:35:00.755867"
+   * @default "2022-12-04T17:35:00.683518"
    */
   registration_date?: Date;
   /**
@@ -454,7 +454,7 @@ export interface PatientListed {
   /**
    * Registration Date
    * @format date
-   * @default "2022-12-04T17:35:00.755867"
+   * @default "2022-12-04T17:35:00.683518"
    */
   registration_date?: Date;
   /** Id */
@@ -499,7 +499,7 @@ export interface PatientPublic {
   /**
    * Registration Date
    * @format date
-   * @default "2022-12-04T17:35:00.755867"
+   * @default "2022-12-04T17:35:00.683518"
    */
   registration_date?: Date;
   access_token?: AccessToken;

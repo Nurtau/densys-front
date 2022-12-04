@@ -6,7 +6,7 @@ generateApi({
   output: path.resolve(process.cwd(), "./src/api"),
   url: "http://localhost:8000/openapi.json",
   templates: path.resolve(process.cwd(), "./templates"),
-  httpClientType: "fetch", // or "fetch"
+  httpClientType: "fetch",
   defaultResponseAsSuccess: false,
   generateClient: true,
   generateRouteTypes: false,
@@ -16,7 +16,6 @@ generateApi({
   extractRequestBody: false,
   unwrapResponseData: true,
   prettier: {
-    // By default prettier config is load from your project
     printWidth: 120,
     tabWidth: 2,
     trailingComma: "all",
@@ -46,7 +45,6 @@ generateApi({
       "BadResponse",
     ],
   },
-  /** allow to generate extra files based with this extra templates, see more below */
   extraTemplates: [],
   anotherArrayType: false,
   fixInvalidTypeNamePrefix: "Type",
@@ -54,18 +52,7 @@ generateApi({
   primitiveTypeConstructs: (constructs) => ({
     ...constructs,
     string: {
-      "date-time": "Date",
+      date: "Date",
     },
   }),
-  hooks: {
-    onParseSchema: (originalSchema, parsedSchema) => {
-      if (
-        originalSchema.type === "string" &&
-        ["date-time", "date"].indexOf(originalSchema.format) > -1
-      ) {
-        parsedSchema.content = "Date";
-      }
-      return parsedSchema;
-    },
-  },
 });
