@@ -16,6 +16,7 @@ import {
   BadgeOutlined,
   BusinessOutlined,
   MedicalServicesOutlined,
+  PendingActions,
 } from "@mui/icons-material";
 
 import { useAdminAuth } from "@app/auth";
@@ -41,6 +42,11 @@ const SIDEBAR_SECTIONS = [
     text: "Specializations",
     icon: <MedicalServicesOutlined />,
     path: "/admin/specializations",
+  },
+  {
+    text: "Pending appointments",
+    icon: <PendingActions />,
+    path: "/admin/pending-appointments",
   },
 ] as const;
 

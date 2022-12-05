@@ -32,6 +32,10 @@ export const muiTheme = createTheme({
       lineHeight: 1,
       fontWeight: 700,
     },
+    subtitle1: {
+      fontSize: "0.85rem",
+      textDecoration: "underline",
+    },
     subtitle2: {
       fontWeight: 800,
       fontSize: "1.375rem",

@@ -5,6 +5,7 @@ import { Box } from "@mui/material";
 import {
   AdminDoctors,
   AdminPatients,
+  AdminPendingAppointments,
   AdminSpecializations,
   AdminDepartments,
   AdminLoginForm,
@@ -29,6 +30,10 @@ export default function AdminPage() {
                   <Route
                     path="/specializations"
                     element={<AdminSpecializations />}
+                  />
+                  <Route
+                    path="/pending-appointments"
+                    element={<AdminPendingAppointments />}
                   />
                 </Routes>
               </Box>

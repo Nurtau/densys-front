@@ -1,6 +1,7 @@
 export * from "./NavBar";
 export * from "./AdminDoctors";
 export * from "./AdminPatients";
+export * from "./AdminPendingAppointments";
 export * from "./AdminDepartments";
 export * from "./AdminSpecializations";
 export * from "./DoctorForm";
