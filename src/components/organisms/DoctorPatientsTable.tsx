@@ -116,6 +116,8 @@ export const DoctorPatientsTable = ({ doctor }: DoctorsPageTableProps) => {
                   <PrescribeProcedureForm
                     doctor={doctor}
                     patient={selectedPatient}
+                    onCancel={closeModal}
+                    onCreate={closeModal}
                   />
                 </TabPanel>
               </Box>
