@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Avatar } from "@mui/material";
 
 import { type DoctorPublic } from "@app/api";
-import { SPECIALIZATIONS } from "@app/constants";
+import { useSpecialisations } from "../useSpecialisations";
 
 import { rowStyles, infoBoxStyles } from "./DoctorSearchRow.css";
 
@@ -12,6 +12,12 @@ interface DoctorSearchRowProps {
 }
 
 export const DoctorSearchRow = ({ doctor, onClick }: DoctorSearchRowProps) => {
+  const specialisations = useSpecialisations();
+  const specialisationsMap = specialisations.reduce((obj, { id, name }) => {
+    obj[id] = name;
+    return obj;
+  }, {} as Record<number, string>);
+
   return (
     <Link to={`/doctors/${doctor.iin}`} onClick={onClick}>
       <div className={rowStyles}>
@@ -24,7 +30,7 @@ export const DoctorSearchRow = ({ doctor, onClick }: DoctorSearchRowProps) => {
           <div>
             {doctor.name} {doctor.surname}
           </div>
-          <div>Specialization: {SPECIALIZATIONS[doctor.department_id - 1]}</div>
+          <div>Specialization: {specialisationsMap[doctor.department_id]}</div>
           <div>Procedure: {doctor.procedure}</div>
         </div>
       </div>

@@ -10,9 +10,8 @@ import {
   Alert,
 } from "@mui/material";
 
-import { api, type DoctorPublic } from "@app/api";
-import { SPECIALIZATIONS } from "@app/constants";
-import { useDepartments } from "@app/components/molecules";
+import { api, type DoctorPublic, type Specialisation } from "@app/api";
+import { useDepartments, useSpecialisations } from "@app/components/molecules";
 import { getTimeslots } from "@app/lib";
 
 import { AppointmentForm } from "../AppointmentForm";
@@ -47,6 +46,7 @@ export const DoctorProfile = ({ doctor }: DoctorProfileProps) => {
 
   const { data } = useQuery("active_requests", () => api.getActiveRequests());
   const departments = useDepartments();
+  const specialisations = useSpecialisations();
 
   const [timeslotIndex, setTimeslotIndex] = useState<number | null>(null);
   const [formOpen, setFormOpen] = useState(false);
@@ -78,6 +78,10 @@ export const DoctorProfile = ({ doctor }: DoctorProfileProps) => {
     (department) => department.id === department_id
   );
 
+  const doctorSpecialisation = specialisations.find(
+    (specialisation) => specialisation.id === specialisation_id
+  );
+
   const selectedTimeslot =
     timeslotIndex !== null ? timeslots[timeslotIndex] : undefined;
 
@@ -90,7 +94,7 @@ export const DoctorProfile = ({ doctor }: DoctorProfileProps) => {
           </Typography>
           <div>IIN: {iin}</div>
           <div>Department: {doctorDepartment?.name ?? "NOT FOUND"}</div>
-          <div>Specialization: {SPECIALIZATIONS[specialisation_id - 1]}</div>
+          <div>Specialization: {doctorSpecialisation?.name ?? "NOT FOUND"}</div>
           <div>Procedure: {procedure}</div>
           <div>
             Experience: {experience} {experience > 1 ? "years" : "year"}

@@ -4,3 +4,4 @@ export * from "./DepartmentsTable";
 export * from "./SpecializationsTable";
 export * from "./DoctorSearchRow";
 export * from "./useDepartments";
+export * from "./useSpecialisations";

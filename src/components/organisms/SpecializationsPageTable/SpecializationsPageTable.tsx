@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
 
 import { rowStyles } from "./SpecializationsPageTable.css";
-import { SPECIALIZATIONS } from "@app/constants";
+import { useSpecialisations } from "@app/components/molecules";
 
 export const SpecializationsPageTable = () => {
+  const specialisations = useSpecialisations();
+
   return (
     <Box
       sx={{
@@ -18,9 +20,11 @@ export const SpecializationsPageTable = () => {
         <Typography variant="h4">Specializations</Typography>
       </Box>
       <Box>
-        {SPECIALIZATIONS.map((name, index) => (
-          <Link to={`/specializations/${index + 1}`}>
-            <div className={rowStyles}>{name}</div>
+        {specialisations.map(({ name, id }) => (
+          <Link to={`/specializations/${id}`}>
+            <div key={id} className={rowStyles}>
+              {name}
+            </div>
           </Link>
         ))}
       </Box>

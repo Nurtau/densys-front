@@ -5,7 +5,7 @@ import SearchIcon from "@mui/icons-material/Search";
 
 import { api } from "@app/api";
 import { DoctorSearchRow } from "@app/components/molecules";
-import { SPECIALIZATIONS } from "@app/constants";
+import { useSpecialisations } from "@app/components/molecules";
 
 import { modalBoxStyles } from "./DoctorSearchModal.css";
 
@@ -16,6 +16,12 @@ interface DoctorSearchModalProps {
 export const DoctorSearchModal = ({ closeModal }: DoctorSearchModalProps) => {
   const [input, setInput] = useState("");
   const [debouncedInput, setDebouncedInput] = useState("");
+  const specialisations = useSpecialisations();
+
+  const specialisationsMap = specialisations.reduce((obj, { id, name }) => {
+    obj[id] = name;
+    return obj;
+  }, {} as Record<number, string>);
 
   const { data: allDoctors } = useQuery("doctors", () => api.getDoctors());
 
@@ -36,7 +42,7 @@ export const DoctorSearchModal = ({ closeModal }: DoctorSearchModalProps) => {
     () => [
       ...new Set(
         (allDoctors ?? []).map(
-          (doctor) => SPECIALIZATIONS[doctor.specialisation_id]
+          (doctor) => specialisationsMap[doctor.specialisation_id]
         )
       ),
     ],

@@ -7,9 +7,15 @@ import {
   TableBody,
 } from "@mui/material";
 
-import { SPECIALIZATIONS } from "@app/constants";
+import { type Specialisation } from "@app/api";
 
-export const SpecializationsTable = () => {
+interface SpecialisationsTableProps {
+  specialisations: Specialisation[];
+}
+
+export const SpecializationsTable = ({
+  specialisations,
+}: SpecialisationsTableProps) => {
   return (
     <TableContainer sx={{ width: "400px" }}>
       <Table>
@@ -22,12 +28,12 @@ export const SpecializationsTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {SPECIALIZATIONS.map((name, index) => (
+          {specialisations.map(({ name, id }) => (
             <TableRow
-              key={index}
+              key={id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell align="center">{index + 1}</TableCell>
+              <TableCell align="center">{id}</TableCell>
               <TableCell align="center">{name}</TableCell>
             </TableRow>
           ))}

@@ -8,7 +8,10 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 import { AdminAuthProvider, AuthProvider } from "@app/auth";
-import { DepartmentsProvider } from "@app/components/molecules";
+import {
+  DepartmentsProvider,
+  SpecialisationsProvider,
+} from "@app/components/molecules";
 import { muiTheme } from "@app/styles";
 import "@app/styles/globals.css";
 
@@ -23,11 +26,13 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         <AdminAuthProvider>
           <AuthProvider>
             <QueryClientProvider client={queryClient}>
-              <DepartmentsProvider>
-                <BrowserRouter>
-                  <App />
-                </BrowserRouter>
-              </DepartmentsProvider>
+              <SpecialisationsProvider>
+                <DepartmentsProvider>
+                  <BrowserRouter>
+                    <App />
+                  </BrowserRouter>
+                </DepartmentsProvider>
+              </SpecialisationsProvider>
             </QueryClientProvider>
           </AuthProvider>
         </AdminAuthProvider>
