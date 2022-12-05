@@ -51,7 +51,7 @@ const SIDEBAR_SECTIONS = [
   },
   {
     text: "Report",
-    icon: <Assessment  />,
+    icon: <Assessment />,
     path: "/admin/report",
   },
 ] as const;

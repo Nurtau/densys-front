@@ -36,11 +36,7 @@ export default function AdminPage() {
                     path="/pending-appointments"
                     element={<AdminPendingAppointments />}
                   />
-                  <Route
-                    path="/report"
-                    element={<AdminReport />}
-                  />
-
+                  <Route path="/report" element={<AdminReport />} />
                 </Routes>
               </Box>
             </Box>

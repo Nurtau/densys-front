@@ -295,11 +295,25 @@ export interface HTTPValidationError {
 /** History */
 export interface History {
   /** Medications */
-  medications: PrescriptionCreate[];
+  medications?: PrescriptionCreate[];
   /** Procedures */
-  procedures: ProcedureCreate[];
+  procedures?: ProcedureCreate[];
   /** Appointments */
-  appointments: AppointmentRequestUpdate[];
+  appointments?: AppointmentRequestUpdate[];
+}
+
+/** Message */
+export interface Message {
+  /** Id */
+  id: string;
+  /** Sender Iin */
+  sender_iin: string;
+  /** Receiver Iin */
+  receiver_iin: string;
+  /** Send Time */
+  send_time: string;
+  /** Message Text */
+  message_text: string;
 }
 
 /** OthersLogin */
@@ -352,7 +366,7 @@ export interface PatientCreate {
   /**
    * Registration Date
    * @format date
-   * @default "2022-12-04T17:35:00.683518"
+   * @default "2022-12-05T18:53:09.649676"
    */
   registration_date?: Date;
   /**
@@ -403,7 +417,7 @@ export interface PatientInDB {
   /**
    * Registration Date
    * @format date
-   * @default "2022-12-04T17:35:00.683518"
+   * @default "2022-12-05T18:53:09.649676"
    */
   registration_date?: Date;
   /**
@@ -454,7 +468,7 @@ export interface PatientListed {
   /**
    * Registration Date
    * @format date
-   * @default "2022-12-04T17:35:00.683518"
+   * @default "2022-12-05T18:53:09.649676"
    */
   registration_date?: Date;
   /** Id */
@@ -499,7 +513,7 @@ export interface PatientPublic {
   /**
    * Registration Date
    * @format date
-   * @default "2022-12-04T17:35:00.683518"
+   * @default "2022-12-05T18:53:09.649676"
    */
   registration_date?: Date;
   access_token?: AccessToken;
@@ -536,17 +550,17 @@ export interface ProcedureCreate {
 /** Report */
 export interface Report {
   /** Patient Counts Chart */
-  patient_counts_chart: Record<string, number>;
+  patient_counts_chart?: Record<string, number>;
   /** Procedures Sums Chart */
-  procedures_sums_chart: Record<string, number>;
+  procedures_sums_chart?: Record<string, number>;
   /** Procedures Counts Chart */
-  procedures_counts_chart: Record<string, number>;
+  procedures_counts_chart?: Record<string, number>;
   /** Procedures By Name */
-  procedures_by_name: Record<string, number>;
+  procedures_by_name?: Record<string, number>;
   /** Prescriptions Counts Chart */
-  prescriptions_counts_chart: Record<string, number>;
+  prescriptions_counts_chart?: Record<string, number>;
   /** Medications By Name */
-  medications_by_name: Record<string, number>;
+  medications_by_name?: Record<string, number>;
 }
 
 /** Specialisation */
@@ -1341,6 +1355,55 @@ export class Api<SecurityDataType extends unknown> {
         path: `/users/get_treatment_history`,
         method: "GET",
         query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Get list of user messages
+     *
+     * @tags get, list, messages
+     * @name GetMessages
+     * @summary Get Messages List
+     * @request GET:/users/get_messages/{user_iin}
+     * @response `200` `(Message)[]` Successful Response
+     * @response `422` `HTTPValidationError` Validation Error
+     */
+    getMessages: (
+      userIin: string,
+      query?: {
+        /**
+         * Iin
+         * @default 0
+         */
+        iin?: any;
+      },
+      params: RequestParams = {}
+    ) =>
+      this.http.request<Message[], HTTPValidationError>({
+        path: `/users/get_messages/${userIin}`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Send message
+     *
+     * @tags send message
+     * @name SendMessage
+     * @summary Post Message
+     * @request POST:/users/send_message
+     * @response `200` `Message` Successful Response
+     * @response `422` `HTTPValidationError` Validation Error
+     */
+    sendMessage: (data: Message, params: RequestParams = {}) =>
+      this.http.request<Message, HTTPValidationError>({
+        path: `/users/send_message`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),

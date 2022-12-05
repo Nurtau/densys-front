@@ -31,9 +31,7 @@ export const PrescribeProcedureForm = ({
 }: PrescribeProcedureFormProps) => {
   const queryClient = useQueryClient();
 
-  const formik = useFormik<
-    Omit<ProcedureCreate, "doctor_id" | "patient_id">
-  >({
+  const formik = useFormik<Omit<ProcedureCreate, "doctor_id" | "patient_id">>({
     initialValues: {
       name: "",
       date: "",

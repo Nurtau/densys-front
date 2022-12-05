@@ -16,4 +16,4 @@ export * from "./AppointmentForm";
 export * from "./DoctorHistory";
 export * from "./DoctorAppointments";
 export * from "./DoctorPatientsTable";
-export *  from "./AdminReport";
+export * from "./AdminReport";
