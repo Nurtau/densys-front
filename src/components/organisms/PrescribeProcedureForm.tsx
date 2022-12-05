@@ -1,7 +1,9 @@
+import dayjs from "dayjs";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useQueryClient } from "react-query";
 import { Box, TextField, Button } from "@mui/material";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 
 import {
   api,
@@ -34,7 +36,7 @@ export const PrescribeProcedureForm = ({
   const formik = useFormik<Omit<ProcedureCreate, "doctor_id" | "patient_id">>({
     initialValues: {
       name: "",
-      date: "",
+      date: dayjs("2023-01-01").toDate().toISOString(),
       cost: 0,
     },
     validationSchema: validationSchema,
@@ -86,23 +88,15 @@ export const PrescribeProcedureForm = ({
           sx={{ mb: 2 }}
         />
       </div>
-      <div>
-        <TextField
-          required
-          fullWidth
-          id="outlined-required"
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <DesktopDatePicker
           label="Date"
-          placeholder="31/12/2000"
-          name="date"
-          value={formik.values.date}
-          onChange={formik.handleChange}
-          error={formik.touched.date && Boolean(formik.errors.date)}
-          helperText={formik.touched.date && formik.errors.date}
-          sx={{ mb: 2 }}
+          renderInput={(params) => <TextField {...params} />}
+          value={dayjs(formik.values.date)}
+          onChange={(value) => formik.setFieldValue("date", value?.toDate())}
         />
         <TextField
           required
-          fullWidth
           id="outlined-required"
           label="Cost"
           placeholder="31/12/2000"
@@ -112,7 +106,7 @@ export const PrescribeProcedureForm = ({
           onChange={formik.handleChange}
           error={formik.touched.cost && Boolean(formik.errors.cost)}
           helperText={formik.touched.cost && formik.errors.cost}
-          sx={{ mb: 2 }}
+          sx={{ width: "47.5%" }}
         />
       </div>
       <Box

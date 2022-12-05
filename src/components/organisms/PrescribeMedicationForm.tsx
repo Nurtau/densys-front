@@ -1,7 +1,9 @@
+import dayjs from "dayjs";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useQueryClient } from "react-query";
 import { Box, TextField, Button } from "@mui/material";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 
 import {
   api,
@@ -30,14 +32,15 @@ export const PrescribeMedicationForm = ({
   onCancel,
 }: PrescribeMedicationFormProps) => {
   const queryClient = useQueryClient();
+  const date = new Date();
 
   const formik = useFormik<
     Omit<PrescriptionCreate, "doctor_id" | "patient_id">
   >({
     initialValues: {
       name: "",
-      start_date: "",
-      end_date: "",
+      start_date: date.toISOString(),
+      end_date: dayjs("2023-01-01").toDate().toISOString(),
     },
     validationSchema: validationSchema,
     onSubmit: async (data) => {
@@ -88,32 +91,22 @@ export const PrescribeMedicationForm = ({
           sx={{ mb: 2 }}
         />
       </div>
-      <div>
-        <TextField
-          required
-          fullWidth
-          id="outlined-required"
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <DesktopDatePicker
           label="Start date"
-          placeholder="31/12/2000"
-          name="start_date"
-          value={formik.values.start_date}
-          onChange={formik.handleChange}
-          error={formik.touched.start_date && Boolean(formik.errors.start_date)}
-          helperText={formik.touched.start_date && formik.errors.start_date}
-          sx={{ mb: 2 }}
+          renderInput={(params) => <TextField {...params} />}
+          value={dayjs(formik.values.start_date)}
+          onChange={(value) =>
+            formik.setFieldValue("start_date", value?.toDate())
+          }
         />
-        <TextField
-          required
-          fullWidth
-          id="outlined-required"
+        <DesktopDatePicker
           label="End date"
-          placeholder="31/12/2000"
-          name="end_date"
-          value={formik.values.end_date}
-          onChange={formik.handleChange}
-          error={formik.touched.end_date && Boolean(formik.errors.end_date)}
-          helperText={formik.touched.end_date && formik.errors.end_date}
-          sx={{ mb: 2 }}
+          renderInput={(params) => <TextField {...params} />}
+          value={dayjs(formik.values.end_date)}
+          onChange={(value) =>
+            formik.setFieldValue("end_date", value?.toDate())
+          }
         />
       </div>
       <Box
