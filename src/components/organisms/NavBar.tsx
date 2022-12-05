@@ -89,7 +89,14 @@ export const NavBar = () => {
                   </Typography>
                 </>
               )}
-              {me && <Button onClick={removeMe}>Log out</Button>}
+              {me && (
+                <>
+                  <Typography variant="h6" component="div">
+                    <Link to={`/profile/${me.role}`}>Profile</Link>
+                  </Typography>
+                  <Button onClick={removeMe}>Log out</Button>
+                </>
+              )}
             </Box>
           </Toolbar>
         </AppBar>

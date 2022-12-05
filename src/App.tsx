@@ -8,6 +8,7 @@ import SpecializationsPage from "@app/pages/SpecializationsPage";
 import SpecializationDoctorsPage from "@app/pages/SpecializationDoctorsPage";
 import DoctorsPage from "@app/pages/DoctorsPage";
 import DoctorPage from "@app/pages/DoctorPage";
+import DoctorProfilePage from "@app/pages/DoctorProfilePage";
 
 export default function App() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
         />
         <Route path="/doctors" element={<DoctorsPage />} />
         <Route path="/doctors/:iin" element={<DoctorPage />} />
+        <Route path="/profile/doctor" element={<DoctorProfilePage />} />
       </Routes>
     </div>
   );

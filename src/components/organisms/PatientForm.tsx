@@ -88,13 +88,19 @@ export const PatientForm = ({
     },
     validationSchema: validationSchema,
     onSubmit: async ({ passwordConfirmation, day_of_birth, ...data }) => {
+      let registration_date = patient?.registration_date;
+
+      if (typeof registration_date === "string") {
+        registration_date = new Date(registration_date);
+      } else if (registration_date === undefined) {
+        registration_date = new Date();
+      }
+
       const requestBody: PatientCreate = {
         ...data,
         day_of_birth: day_of_birth.toJSON().substring(0, 10) as any,
         access_token: accessToken?.access_token ?? "",
-        registration_date: (patient?.registration_date ?? new Date())
-          .toJSON()
-          .substring(0, 10) as any,
+        registration_date: registration_date.toJSON().substring(0, 10) as any,
       };
       try {
         if (mode === "modification") {

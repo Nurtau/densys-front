@@ -13,3 +13,6 @@ export * from "./SpecializationDoctorsPageTable";
 export * from "./DoctorProfile";
 export * from "./DoctorsPageTable";
 export * from "./AppointmentForm";
+export * from "./DoctorHistory";
+export * from "./DoctorAppointments";
+export * from "./DoctorPatientsTable";

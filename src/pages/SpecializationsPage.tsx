@@ -1,9 +1,10 @@
-import { SpecializationsPageTable } from "@app/components/organisms/SpecializationsPageTable/SpecializationsPageTable";
+import { Container } from "@mui/material";
+import { SpecializationsPageTable } from "@app/components/organisms";
 
 export default function SpecializationsPage() {
   return (
-    <div>
+    <Container maxWidth="xl" sx={{ padding: "16px" }}>
       <SpecializationsPageTable />
-    </div>
+    </Container>
   );
 }

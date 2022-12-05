@@ -16,7 +16,7 @@ export const AdminDepartments = () => {
       <Box
         sx={{ display: "flex", justifyContent: "space-between", mb: "30px" }}
       >
-        <Typography variant="h4">DEPARTMENTS</Typography>
+        <Typography variant="h4">Departments</Typography>
         <Button variant="contained" onClick={() => setFormOpen(true)}>
           ADD DEPARTMENT
         </Button>

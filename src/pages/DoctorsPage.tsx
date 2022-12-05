@@ -1,9 +1,11 @@
-import { DoctorsPageTable } from "@app/components/organisms/DoctorsPageTable";
+import { Container } from "@mui/material";
+
+import { DoctorsPageTable } from "@app/components/organisms";
 
 export default function DoctorsPage() {
   return (
-    <div>
+    <Container maxWidth="xl" sx={{ padding: "16px" }}>
       <DoctorsPageTable />
-    </div>
+    </Container>
   );
 }

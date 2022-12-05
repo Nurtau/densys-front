@@ -13,7 +13,7 @@ export const SpecializationsPageTable = () => {
       sx={{
         display: "flex",
         flexDirection: "column",
-        margin: "72px 160px",
+        margin: "72px 0px",
       }}
     >
       <Box sx={{ mb: "30px" }}>

@@ -22,13 +22,9 @@ import { useAdminAuth } from "@app/auth";
 
 interface AppointmentsTableProps {
   requests: AppointmentRequestUpdate[];
-  refetchAppointments(): void;
 }
 
-export const AppointmentsTable = ({
-  requests,
-  refetchAppointments,
-}: AppointmentsTableProps) => {
+export const AppointmentsTable = ({ requests }: AppointmentsTableProps) => {
   const queryClient = useQueryClient();
   const { accessToken } = useAdminAuth();
 
@@ -63,6 +59,7 @@ export const AppointmentsTable = ({
   });
 
   const onApprove = (appointment: AppointmentRequestUpdate) => {
+    console.log(appointment);
     mutationApprove.mutate(appointment);
   };
 
@@ -70,7 +67,7 @@ export const AppointmentsTable = ({
     mutationReject.mutate(appointment);
   };
 
-  const { data, refetch } = useQuery("doctors", () => api.getDoctors());
+  const { data } = useQuery("doctors", () => api.getDoctors());
 
   const doctorsMap = (data ?? []).reduce((obj, doctor) => {
     obj[doctor.id!] = doctor;
@@ -85,7 +82,6 @@ export const AppointmentsTable = ({
             <TableRow>
               <TableCell align="center">Name</TableCell>
               <TableCell align="center">Surname</TableCell>
-              <TableCell align="center">Id</TableCell>
               <TableCell align="center">Email</TableCell>
               <TableCell align="center">Phone</TableCell>
               <TableCell align="center">Time slots</TableCell>
@@ -104,9 +100,6 @@ export const AppointmentsTable = ({
               >
                 <TableCell align="center">{appointment.name}</TableCell>
                 <TableCell align="center">{appointment.surname}</TableCell>
-                <TableCell align="center">
-                  {new Date(appointment.id).toLocaleDateString()}
-                </TableCell>
                 <TableCell align="center">{appointment.email}</TableCell>
                 <TableCell align="center">{appointment.phone}</TableCell>
                 <TableCell align="center">
