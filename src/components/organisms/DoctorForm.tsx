@@ -100,9 +100,9 @@ export const DoctorForm = ({
       rating: undefined as any,
       contact_number: "+7",
       address: "",
-      passwordConfirmation: "",
       ...doctor,
-      password: "",
+      password: doctor?.password ?? "",
+      passwordConfirmation: doctor?.password ?? "",
     },
     validationSchema: validationSchema,
     onSubmit: async ({ doctor_shift_index, ...data }) => {
@@ -447,42 +447,46 @@ export const DoctorForm = ({
               />
             </Box>
           </Box>
-          <div>
-            <TextField
-              required
-              id="outlined-password-input"
-              label="Password"
-              type="password"
-              autoComplete="current-password"
-              placeholder="Password"
-              name="password"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
-              disabled={areInputDisabled}
-            />
-            <TextField
-              required
-              id="outlined-password-input"
-              label="Confirm password"
-              type="password"
-              autoComplete="current-password"
-              placeholder="Confirm password"
-              name="passwordConfirmation"
-              value={formik.values.passwordConfirmation}
-              onChange={formik.handleChange}
-              error={
-                formik.touched.passwordConfirmation &&
-                Boolean(formik.errors.passwordConfirmation)
-              }
-              helperText={
-                formik.touched.passwordConfirmation &&
-                formik.errors.passwordConfirmation
-              }
-              disabled={areInputDisabled}
-            />
-          </div>
+          {mode === "creation" && (
+            <div>
+              <TextField
+                required
+                id="outlined-password-input"
+                label="Password"
+                type="password"
+                autoComplete="current-password"
+                placeholder="Password"
+                name="password"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.password && Boolean(formik.errors.password)
+                }
+                helperText={formik.touched.password && formik.errors.password}
+                disabled={areInputDisabled}
+              />
+              <TextField
+                required
+                id="outlined-password-input"
+                label="Confirm password"
+                type="password"
+                autoComplete="current-password"
+                placeholder="Confirm password"
+                name="passwordConfirmation"
+                value={formik.values.passwordConfirmation}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.passwordConfirmation &&
+                  Boolean(formik.errors.passwordConfirmation)
+                }
+                helperText={
+                  formik.touched.passwordConfirmation &&
+                  formik.errors.passwordConfirmation
+                }
+                disabled={areInputDisabled}
+              />
+            </div>
+          )}
           <Box
             sx={{
               display: "flex",

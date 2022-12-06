@@ -86,7 +86,7 @@ export const DoctorPatientsTable = ({ doctor }: DoctorsPageTableProps) => {
                   </TableCell>
                   <TableCell align="center">
                     <Link to={`/profile/patient/${patient.iin}`}>
-                      <Typography sx={{ color: "blue" }}>Profile</Typography>
+                      <Typography sx={{ color: "blue" }}>History</Typography>
                     </Link>
                   </TableCell>
                 </TableRow>

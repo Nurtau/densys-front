@@ -1,4 +1,4 @@
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { useFormik } from "formik";
 
@@ -6,7 +6,6 @@ import {
   Button,
   CssBaseline,
   TextField,
-  Grid,
   Box,
   Typography,
   Container,
@@ -109,11 +108,6 @@ export const AdminLoginForm = () => {
           >
             Sign In
           </Button>
-          <Grid item sx={{ textAlign: "center" }}>
-            <Typography variant="subtitle1" component="div">
-              <Link to="/sign-up">Don't have an account? Sign Up</Link>
-            </Typography>
-          </Grid>
         </Box>
       </Box>
     </Container>

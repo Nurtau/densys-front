@@ -366,7 +366,7 @@ export interface PatientCreate {
   /**
    * Registration Date
    * @format date
-   * @default "2022-12-06T16:11:59.076372"
+   * @default "2022-12-06T18:08:25.931789"
    */
   registration_date?: Date;
   /**
@@ -417,7 +417,7 @@ export interface PatientInDB {
   /**
    * Registration Date
    * @format date
-   * @default "2022-12-06T16:11:59.076372"
+   * @default "2022-12-06T18:08:25.931789"
    */
   registration_date?: Date;
   /**
@@ -468,7 +468,7 @@ export interface PatientListed {
   /**
    * Registration Date
    * @format date
-   * @default "2022-12-06T16:11:59.076372"
+   * @default "2022-12-06T18:08:25.931789"
    */
   registration_date?: Date;
   /** Id */
@@ -513,7 +513,7 @@ export interface PatientPublic {
   /**
    * Registration Date
    * @format date
-   * @default "2022-12-06T16:11:59.076372"
+   * @default "2022-12-06T18:08:25.931789"
    */
   registration_date?: Date;
   access_token?: AccessToken;
@@ -1247,8 +1247,6 @@ export class Api<SecurityDataType extends unknown> {
       query: {
         /** Doctor Id */
         doctor_id: number;
-        /** Token */
-        token: string;
       },
       params: RequestParams = {}
     ) =>

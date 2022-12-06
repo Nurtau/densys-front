@@ -73,6 +73,8 @@ export const AppointmentsTable = ({ requests }: AppointmentsTableProps) => {
     return obj;
   }, {} as Record<number, DoctorPublic>);
 
+  if (!data) return null;
+
   return (
     <>
       <TableContainer>

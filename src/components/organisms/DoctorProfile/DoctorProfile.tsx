@@ -45,6 +45,9 @@ export const DoctorProfile = ({ doctor }: DoctorProfileProps) => {
   } = doctor;
 
   const { data } = useQuery("active_requests", () => api.getActiveRequests());
+  const { data: doctorAppointments } = useQuery("doctor_appointments", () =>
+    api.getDoctorAppointments({ doctor_id: doctor.id! })
+  );
   const departments = useDepartments();
   const specialisations = useSpecialisations();
 
@@ -57,7 +60,7 @@ export const DoctorProfile = ({ doctor }: DoctorProfileProps) => {
 
   const timeslots = getTimeslots(doctor.day_start!, doctor.day_end!).filter(
     (ts) => {
-      if (!data) return false;
+      if (!data || !doctorAppointments) return false;
       const bookedTimeslotsStart: string[] = [];
 
       const doctorRequests = data.filter((d) => d.doctor_id === doctor.id);
@@ -67,6 +70,14 @@ export const DoctorProfile = ({ doctor }: DoctorProfileProps) => {
           bookedTimeslotsStart.push(d.time_slots[0].start_datetime);
         }
       });
+
+      doctorAppointments.forEach((d) => {
+        if (d.time_slots) {
+          bookedTimeslotsStart.push(d.time_slots[0].start_datetime);
+        }
+      });
+
+      console.log(doctorAppointments);
 
       return !bookedTimeslotsStart.find(
         (booked) => booked === ts.start_datetime
