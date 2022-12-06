@@ -8,10 +8,10 @@ export default function DoctorPage() {
   const { data: doctors, isLoading } = useQuery("doctors", () =>
     api.getDoctors()
   );
+  const { iin } = useParams();
 
   if (isLoading) return null;
 
-  const { iin } = useParams();
   const doctor = (doctors ?? []).find((d) => d.iin === iin);
 
   if (!doctor) {

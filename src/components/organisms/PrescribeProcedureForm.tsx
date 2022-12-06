@@ -99,7 +99,7 @@ export const PrescribeProcedureForm = ({
           required
           id="outlined-required"
           label="Cost"
-          placeholder="31/12/2000"
+          placeholder="2000"
           type="number"
           name="cost"
           value={formik.values.cost}

@@ -10,15 +10,15 @@ import {
   Typography,
 } from "@mui/material";
 
-import { api, type DoctorPublic } from "@app/api";
+import { api, type PatientPublic } from "@app/api";
 
-interface DoctorHistoryProps {
-  doctor: DoctorPublic;
+interface PatientHistoryProps {
+  patient: PatientPublic;
 }
 
-export const DoctorHistory = ({ doctor }: DoctorHistoryProps) => {
-  const { data } = useQuery("doctor_history", () =>
-    api.getTreatmentHistoryDoctorIin({ iin: doctor.iin })
+export const PatientHistory = ({ patient }: PatientHistoryProps) => {
+  const { data } = useQuery(["doctor_history", patient.iin], () =>
+    api.getTreatmentHistoryPatientIin({ iin: patient.iin })
   );
 
   if (!data) return null;
@@ -39,7 +39,7 @@ export const DoctorHistory = ({ doctor }: DoctorHistoryProps) => {
             <Table>
               <TableHead sx={{ borderBottom: "2px solid black" }}>
                 <TableRow>
-                  <TableCell align="center">Patient ID</TableCell>
+                  <TableCell align="center">Doctor ID</TableCell>
                   <TableCell align="center">Name</TableCell>
                   <TableCell align="center">From</TableCell>
                   <TableCell align="center">To</TableCell>
@@ -53,9 +53,7 @@ export const DoctorHistory = ({ doctor }: DoctorHistoryProps) => {
                       "&:last-child td, &:last-child th": { border: 0 },
                     }}
                   >
-                    <TableCell align="center">
-                      {medication.patient_id}
-                    </TableCell>
+                    <TableCell align="center">{medication.doctor_id}</TableCell>
                     <TableCell align="center">{medication.name}</TableCell>
                     <TableCell align="center">
                       {new Date(medication.start_date).toLocaleDateString()}
@@ -80,7 +78,7 @@ export const DoctorHistory = ({ doctor }: DoctorHistoryProps) => {
             <Table>
               <TableHead sx={{ borderBottom: "2px solid black" }}>
                 <TableRow>
-                  <TableCell align="center">Patient ID</TableCell>
+                  <TableCell align="center">Doctor ID</TableCell>
                   <TableCell align="center">Name</TableCell>
                   <TableCell align="center">Date</TableCell>
                   <TableCell align="center">Cost</TableCell>
@@ -94,7 +92,7 @@ export const DoctorHistory = ({ doctor }: DoctorHistoryProps) => {
                       "&:last-child td, &:last-child th": { border: 0 },
                     }}
                   >
-                    <TableCell align="center">{procedure.patient_id}</TableCell>
+                    <TableCell align="center">{procedure.doctor_id}</TableCell>
                     <TableCell align="center">{procedure.name}</TableCell>
                     <TableCell align="center">
                       {new Date(procedure.date).toLocaleDateString()}

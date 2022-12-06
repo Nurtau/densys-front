@@ -1,4 +1,5 @@
 import { useQuery } from "react-query";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import {
   Box,
@@ -12,7 +13,6 @@ import {
   TableHead,
   TableRow,
   TableBody,
-  selectClasses,
 } from "@mui/material";
 
 import { ModalInnerContainer } from "@app/components/atoms";
@@ -58,6 +58,7 @@ export const DoctorPatientsTable = ({ doctor }: DoctorsPageTableProps) => {
                 <TableCell align="center">IIN number</TableCell>
                 <TableCell align="center">ID number</TableCell>
                 <TableCell align="center">Registration date</TableCell>
+                <TableCell align="center"></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -82,6 +83,11 @@ export const DoctorPatientsTable = ({ doctor }: DoctorsPageTableProps) => {
                     {new Date(
                       patient.registration_date ?? ""
                     ).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell align="center">
+                    <Link to={`/profile/patient/${patient.iin}`}>
+                      <Typography sx={{ color: "blue" }}>Profile</Typography>
+                    </Link>
                   </TableCell>
                 </TableRow>
               ))}

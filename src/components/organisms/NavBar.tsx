@@ -92,7 +92,13 @@ export const NavBar = () => {
               {me && (
                 <>
                   <Typography variant="h6" component="div">
-                    <Link to={`/profile/${me.role}`}>Profile</Link>
+                    <Link
+                      to={`/profile/${me.role}${
+                        me.role === "patient" ? `/${me.user.iin}` : ""
+                      }`}
+                    >
+                      Profile
+                    </Link>
                   </Typography>
                   <Button onClick={removeMe}>Log out</Button>
                 </>

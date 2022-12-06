@@ -10,7 +10,7 @@ import {
   Alert,
 } from "@mui/material";
 
-import { api, type DoctorPublic, type Specialisation } from "@app/api";
+import { api, type DoctorPublic } from "@app/api";
 import { useDepartments, useSpecialisations } from "@app/components/molecules";
 import { getTimeslots } from "@app/lib";
 

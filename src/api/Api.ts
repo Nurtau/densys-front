@@ -366,7 +366,7 @@ export interface PatientCreate {
   /**
    * Registration Date
    * @format date
-   * @default "2022-12-05T18:53:09.649676"
+   * @default "2022-12-06T16:11:59.076372"
    */
   registration_date?: Date;
   /**
@@ -417,7 +417,7 @@ export interface PatientInDB {
   /**
    * Registration Date
    * @format date
-   * @default "2022-12-05T18:53:09.649676"
+   * @default "2022-12-06T16:11:59.076372"
    */
   registration_date?: Date;
   /**
@@ -468,7 +468,7 @@ export interface PatientListed {
   /**
    * Registration Date
    * @format date
-   * @default "2022-12-05T18:53:09.649676"
+   * @default "2022-12-06T16:11:59.076372"
    */
   registration_date?: Date;
   /** Id */
@@ -513,7 +513,7 @@ export interface PatientPublic {
   /**
    * Registration Date
    * @format date
-   * @default "2022-12-05T18:53:09.649676"
+   * @default "2022-12-06T16:11:59.076372"
    */
   registration_date?: Date;
   access_token?: AccessToken;
@@ -953,6 +953,42 @@ export class Api<SecurityDataType extends unknown> {
       }),
 
     /**
+     * @description Get doctor by iin
+     *
+     * @tags test, doctor
+     * @name GetDoctorByIin
+     * @summary Get Doctor By Iin Handler
+     * @request GET:/users/get_doctor_by_iin/{iin}
+     * @response `200` `DoctorPublic` Successful Response
+     * @response `422` `HTTPValidationError` Validation Error
+     */
+    getDoctorByIin: (iin: any, params: RequestParams = {}) =>
+      this.http.request<DoctorPublic, HTTPValidationError>({
+        path: `/users/get_doctor_by_iin/${iin}`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Get patient by iin
+     *
+     * @tags test, patient
+     * @name GetPatientByIin
+     * @summary Get Patient By Iin Handler
+     * @request GET:/users/get_patient_by_iin/{iin}
+     * @response `200` `PatientListed` Successful Response
+     * @response `422` `HTTPValidationError` Validation Error
+     */
+    getPatientByIin: (iin: any, params: RequestParams = {}) =>
+      this.http.request<PatientListed, HTTPValidationError>({
+        path: `/users/get_patient_by_iin/${iin}`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
      * @description Register the Patient
      *
      * @tags patient registration
@@ -1229,7 +1265,7 @@ export class Api<SecurityDataType extends unknown> {
      *
      * @tags prescriptions
      * @name PrescribeMedication
-     * @summary Get Doctor Appointments
+     * @summary Post Prescribe Medication
      * @request POST:/users/prescribe_medication
      * @response `200` `PrescriptionCreate` Successful Response
      * @response `422` `HTTPValidationError` Validation Error
@@ -1257,7 +1293,7 @@ export class Api<SecurityDataType extends unknown> {
      *
      * @tags prescriptions
      * @name GetPrescriptions
-     * @summary Get Doctor Appointments
+     * @summary Get Prescriptions Handler
      * @request GET:/users/get_prescriptions
      * @response `200` `(PrescriptionCreate)[]` Successful Response
      * @response `422` `HTTPValidationError` Validation Error
@@ -1335,6 +1371,81 @@ export class Api<SecurityDataType extends unknown> {
       }),
 
     /**
+     * @description Get procedures patient
+     *
+     * @tags procedures
+     * @name GetProceduresPatient
+     * @summary Get Procedures
+     * @request GET:/users/get_procedures_patient
+     * @response `200` `(ProcedureCreate)[]` Successful Response
+     * @response `422` `HTTPValidationError` Validation Error
+     */
+    getProceduresPatient: (
+      query: {
+        /** Id */
+        id: number;
+      },
+      params: RequestParams = {}
+    ) =>
+      this.http.request<ProcedureCreate[], HTTPValidationError>({
+        path: `/users/get_procedures_patient`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Get prescriptions patient
+     *
+     * @tags prescriptions
+     * @name GetPrescriptionsPatient
+     * @summary Get Procedures
+     * @request GET:/users/get_prescriptions_patient
+     * @response `200` `(PrescriptionCreate)[]` Successful Response
+     * @response `422` `HTTPValidationError` Validation Error
+     */
+    getPrescriptionsPatient: (
+      query: {
+        /** Id */
+        id: number;
+      },
+      params: RequestParams = {}
+    ) =>
+      this.http.request<PrescriptionCreate[], HTTPValidationError>({
+        path: `/users/get_prescriptions_patient`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Get prescriptions patient
+     *
+     * @tags prescriptions
+     * @name GetAppointmentsByEmailPatient
+     * @summary Get Procedures
+     * @request GET:/users/get_appointments_by_email_patient
+     * @response `200` `(AppointmentRequestUpdate)[]` Successful Response
+     * @response `422` `HTTPValidationError` Validation Error
+     */
+    getAppointmentsByEmailPatient: (
+      query: {
+        /** Email */
+        email: string;
+      },
+      params: RequestParams = {}
+    ) =>
+      this.http.request<AppointmentRequestUpdate[], HTTPValidationError>({
+        path: `/users/get_appointments_by_email_patient`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
      * @description Get treatment history
      *
      * @tags history
@@ -1353,6 +1464,56 @@ export class Api<SecurityDataType extends unknown> {
     ) =>
       this.http.request<History, HTTPValidationError>({
         path: `/users/get_treatment_history`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Get patient treatment history
+     *
+     * @tags history
+     * @name GetTreatmentHistoryPatientIin
+     * @summary Get Treatment History Patient Iin
+     * @request GET:/users/get_treatment_history_patient_iin
+     * @response `200` `History` Successful Response
+     * @response `422` `HTTPValidationError` Validation Error
+     */
+    getTreatmentHistoryPatientIin: (
+      query: {
+        /** Iin */
+        iin: string;
+      },
+      params: RequestParams = {}
+    ) =>
+      this.http.request<History, HTTPValidationError>({
+        path: `/users/get_treatment_history_patient_iin`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Get doctor treatment history
+     *
+     * @tags history
+     * @name GetTreatmentHistoryDoctorIin
+     * @summary Get Treatment History Patient Iin
+     * @request GET:/users/get_treatment_history_doctor_iin
+     * @response `200` `History` Successful Response
+     * @response `422` `HTTPValidationError` Validation Error
+     */
+    getTreatmentHistoryDoctorIin: (
+      query: {
+        /** Iin */
+        iin: string;
+      },
+      params: RequestParams = {}
+    ) =>
+      this.http.request<History, HTTPValidationError>({
+        path: `/users/get_treatment_history_doctor_iin`,
         method: "GET",
         query: query,
         format: "json",

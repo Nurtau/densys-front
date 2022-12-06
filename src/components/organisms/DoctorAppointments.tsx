@@ -24,9 +24,10 @@ export const DoctorAppointments = ({ doctor }: DoctorAppointmentsProps) => {
     })
   );
 
+  console.log(data);
   if (!data) return null;
 
-  console.log(data);
+  if (data.length === 0) return null;
 
   return (
     <Box
@@ -58,7 +59,11 @@ export const DoctorAppointments = ({ doctor }: DoctorAppointmentsProps) => {
                 <TableCell align="center">{appointment.surname}</TableCell>
                 <TableCell align="center">{appointment.email}</TableCell>
                 <TableCell align="center">{appointment.phone}</TableCell>
-                <TableCell align="center">TIME NOT AVAILABLE</TableCell>
+                <TableCell align="center">
+                  {appointment.time_slots![0].start_datetime +
+                    "-" +
+                    appointment.time_slots![0].end_datetime}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

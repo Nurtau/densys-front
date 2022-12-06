@@ -68,7 +68,6 @@ export const AppointmentsTable = ({ requests }: AppointmentsTableProps) => {
   };
 
   const { data } = useQuery("doctors", () => api.getDoctors());
-
   const doctorsMap = (data ?? []).reduce((obj, doctor) => {
     obj[doctor.id!] = doctor;
     return obj;

@@ -27,6 +27,8 @@ export const DoctorsTable = ({
     null
   );
 
+  console.log(doctors);
+
   const departments = useDepartments();
   const specialisations = useSpecialisations();
 

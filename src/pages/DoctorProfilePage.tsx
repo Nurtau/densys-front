@@ -1,5 +1,5 @@
 import { Navigate } from "react-router-dom";
-import { Container } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 
 import { useMe } from "@app/auth";
 import {
@@ -26,9 +26,12 @@ export default function DoctorProfilePage() {
         gap: "32px",
       }}
     >
-      <DoctorHistory doctor={me.user} />
+      <Typography variant="h4">
+        Welcome Doctor, {me.user.name + " " + me.user.surname}
+      </Typography>
       <DoctorPatientsTable doctor={me.user} />
       <DoctorAppointments doctor={me.user} />
+      <DoctorHistory doctor={me.user} />
     </Container>
   );
 }
